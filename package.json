@@ -22,7 +22,10 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
+    "@types/koa-router": "^7.0.31",
     "koa": "^2.5.3",
-    "koa-helmet": "^4.0.0"
+    "koa-body": "^4.0.4",
+    "koa-helmet": "^4.0.0",
+    "koa-router": "^7.4.0"
   }
 }

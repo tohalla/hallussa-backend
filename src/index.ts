@@ -1,11 +1,12 @@
 import Koa from "koa";
 import helmet from "koa-helmet";
 
+import router from "./router";
+
 const app = new Koa();
 
 app
   .use(helmet()) // security headers
-  .use((ctx) => {
-    ctx.body = "CS-E4110";
-  })
+  .use(router.routes())
+  .use(router.allowedMethods())
   .listen(8080);
