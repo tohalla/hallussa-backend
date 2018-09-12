@@ -1,0 +1,19 @@
+version: '3'
+services:
+  server:
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - ./dist:/server/dist
+    tty: true
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+  postgres:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
