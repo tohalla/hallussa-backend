@@ -8,18 +8,13 @@ const connection = {
   password: process.env.PGPASSWORD,
 };
 
-const pool = {
-  min: 2,
-  max: 10,
-};
-
 const knex = {
   client: "postgres",
   connection,
   pool,
   migrations: {
     tableName: "migration",
-    stub: "migrationTemplate.js"
+    stub: "migrations/migrationTemplate.js"
   },
 };
 
@@ -27,6 +22,5 @@ module.exports = {
   development: knex,
   staging: knex,
   production: knex,
-  pg: {pool, connection},
   defaultSchema: "hallussa",
 };
