@@ -1,7 +1,5 @@
 import Knex from "knex";
 
-import { defaultSchema } from "../knex";
-
 exports.up = (knex: Knex) => {
   //
 };
