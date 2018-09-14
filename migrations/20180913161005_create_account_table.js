@@ -1,5 +1,3 @@
-const {defaultSchema} = require('../db');
-
 exports.up = knex =>
   knex.schema.createTable('account', table => {
     table.increments();
