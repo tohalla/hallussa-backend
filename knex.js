@@ -11,7 +11,6 @@ const connection = {
 const knex = {
   client: "postgres",
   connection,
-  pool,
   migrations: {
     tableName: "migration",
     stub: "migrations/migrationTemplate.js"
