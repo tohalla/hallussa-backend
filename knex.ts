@@ -1,16 +1,24 @@
 import { config } from "dotenv";
+import { ConnectionConfig } from "Knex";
 
 config({path: ".env"});
 
-const connection = {
+if (!(
+  process.env.POSTGRES_DB &&
+  process.env.POSTGRES_HOST &&
+  process.env.POSTGRES_PASSWORD &&
+  process.env.POSTGRES_USER
+)) {
+  throw new Error("define environment variables for psotgres");
+}
+const connection: ConnectionConfig = {
   database: process.env.POSTGRES_DB,
   host: process.env.POSTGRES_HOST,
   password: process.env.POSTGRES_PASSWORD,
-  port: process.env.POSTGRES_PORT,
   user: process.env.POSTGRES_USER,
 };
 
-const knex = {
+export const knex = {
   client: "postgres",
   connection,
   migrations: {
