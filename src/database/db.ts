@@ -1,5 +1,10 @@
+import Knex from "knex";
 import { Model, QueryBuilder } from "objection";
 import { writeAuditLogEntry, writeErrorLogEntry } from "./logger";
+
+import { knex } from "../../knex";
+
+Model.knex(Knex(knex));
 
 export const query = async (queryBuilder: QueryBuilder<Model>) =>  {
   try {
