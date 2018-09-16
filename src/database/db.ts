@@ -6,14 +6,15 @@ import { knex } from "../../knex";
 
 Model.knex(Knex(knex));
 
-export const query = async (queryBuilder: QueryBuilder<Model>) =>  {
+export const query = async <T extends Model>(queryBuilder: QueryBuilder<T, T | T[], T | T[]>) =>  {
   try {
     if (!queryBuilder.isFind()) { // should append to audit log if inserting / updating values to the db
       await writeAuditLogEntry(queryBuilder.toSql());
     }
-    await queryBuilder; // if audit written succesfully, attempt to query db
+    return await queryBuilder; // if audit written succesfully, attempt to query db
   } catch (e) {
     // TODO: remove audit log entry if inserted
     await writeErrorLogEntry(e);
+    throw e;
   }
 };
