@@ -10,7 +10,7 @@ export interface JWTPayload {
   accountId: number;
 }
 
-export const signToken = ({accountId}: {accountId: number}) => new Promise((resolve, reject) => {
+export const signToken = (accountId: number) => new Promise((resolve, reject) => {
   if (!process.env.JWT_SECRET) {
     return reject(new Error("define JWT_SECRET environment variable"));
   }
@@ -26,10 +26,12 @@ export const signToken = ({accountId}: {accountId: number}) => new Promise((reso
   );
 });
 
-export const verify = (token: string) => new Promise((resolve, reject) => {
+export const verify = (token: string) => new Promise<JWTPayload>((resolve, reject) => {
   if (!process.env.JWT_SECRET) {
     return reject(new Error("define JWT_SECRET environment variable"));
   }
    // TODO: also issuer and subject should be verified here
-  jwt.verify(token, process.env.JWT_SECRET, (err, payload) => err ? reject(err) : resolve(payload));
+  jwt.verify(token, process.env.JWT_SECRET, (err, payload) =>
+    err ? reject(err) : resolve(payload as JWTPayload)
+  );
 });
