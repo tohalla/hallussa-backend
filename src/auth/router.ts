@@ -4,20 +4,15 @@ import Router from "koa-router";
 import { Model } from "objection";
 import { path } from "ramda";
 
-import { signToken, verify } from "./jwt";
+import { signToken } from "./jwt";
 
 export default new Router({prefix: "/auth"})
   .get("/", async (ctx) => { // renew JWT using old token
-    const token: string = path(["header", "authorization"], ctx) || "";
-    try {
-      if (!token.startsWith("Bearer")) {
-        throw new Error("provided token in wrong format");
-      }
-      const {accountId} = await verify(token.replace("Bearer ", ""));
+    const accountId = path(["state", "claims", "accountId"], ctx);
+    if (typeof accountId === "number") {
       ctx.body = await signToken(accountId);
-    } catch (e) {
+    } else {
       ctx.status = 401;
-      throw e;
     }
   })
   .post("/", bodyParser(), async (ctx) => {
