@@ -1,12 +1,14 @@
 import Knex from "knex";
-import { Model, QueryBuilder } from "objection";
+import { Model, QueryBuilder, QueryBuilderYieldingOneOrNone } from "objection";
 import { writeAuditLogEntry, writeErrorLogEntry } from "./logger";
 
 import { knex } from "../../knex";
 
 Model.knex(Knex(knex));
 
-export const query = async <T extends Model>(queryBuilder: QueryBuilder<T, T | T[], T | T[]>) =>  {
+export const query = async <T extends Model>(
+  queryBuilder: QueryBuilder<T, T | T[], T | T[]> | QueryBuilderYieldingOneOrNone<T>
+) =>  {
   try {
     if (!queryBuilder.isFind()) { // should append to audit log if inserting / updating values to the db
       await writeAuditLogEntry(queryBuilder.toSql());
