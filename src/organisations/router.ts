@@ -1,4 +1,4 @@
-import koaBody from "koa-body";
+import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 
 export default new Router({prefix: "/organisations"})
@@ -7,6 +7,6 @@ export default new Router({prefix: "/organisations"})
       id: ctx.params.organisation,
     };
   })
-  .post("/", koaBody(), () => {
+  .post("/", bodyParser(), () => {
     // create organisation
   });
