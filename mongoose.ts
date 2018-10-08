@@ -17,7 +17,7 @@ if (!(
   throw new Error("define environment variables for mongodb.");
 }
 
-mongoose.connect(process.env.MONGODB_URL || "");
+mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost:27017/", { useNewUrlParser: true });
 
 // Return next available index for document to be inserted
 export const findIndex = async (model: ModelType<AuditLog | ErrorLog>) => {
