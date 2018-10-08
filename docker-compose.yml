@@ -10,7 +10,8 @@ services:
     tty: true
     depends_on:
       - postgres
-      - mongodb
+    links:
+      - mongo:mongo
     env_file:
       - .env
   postgres:
@@ -19,7 +20,7 @@ services:
       - 5432:5432
     env_file:
       - .env
-  mongodb:
+  mongo:
     image: mongo:3.6.1
     ports:
       - 27017:27017

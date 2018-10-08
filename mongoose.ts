@@ -17,7 +17,20 @@ if (!(
   throw new Error("define environment variables for mongodb.");
 }
 
-mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost:27017/", { useNewUrlParser: true });
+export const connectWithRetry = () => {
+  mongoose.connect(process.env.MONGODB_URL || "0.0.0:27017", { useNewUrlParser: true })
+    .then(() => {
+      // Connection successful.
+      console.log("MongoDB is connected");
+    })
+    .catch((err) => {
+      // console.log("MongoDB connection unsuccesful, retry after 5 seconds.");
+      // Connection failed retry in 5 seconds.
+      setTimeout(connectWithRetry, 5000);
+    });
+};
+
+connectWithRetry();
 
 // Return next available index for document to be inserted
 export const findIndex = async (model: ModelType<AuditLog | ErrorLog>) => {
