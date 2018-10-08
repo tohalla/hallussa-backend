@@ -8,6 +8,7 @@ services:
     volumes:
       - .:/server/
     tty: true
+    restart: always
     depends_on:
       - postgres
     links:
@@ -24,6 +25,8 @@ services:
     image: mongo:3.6.1
     ports:
       - 27017:27017
+    volumes:
+      - ./data:/data/db
     restart: always
     env_file:
       - .env
