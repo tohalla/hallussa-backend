@@ -10,11 +10,19 @@ services:
     tty: true
     depends_on:
       - postgres
+      - mongodb
     env_file:
       - .env
   postgres:
     image: postgres:alpine
     ports:
       - 5432:5432
+    env_file:
+      - .env
+  mongodb:
+    image: mongo:3.6.1
+    ports:
+      - 27017:27017
+    restart: always
     env_file:
       - .env
