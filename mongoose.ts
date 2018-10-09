@@ -1,9 +1,5 @@
 import { config } from "dotenv";
 import mongoose from "mongoose";
-import { ModelType } from "typegoose";
-
-import { AuditLog } from "./src/audit/audit";
-import { ErrorLog } from "./src/error/error";
 
 config({ path: ".env" });
 
