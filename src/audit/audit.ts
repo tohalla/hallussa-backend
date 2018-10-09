@@ -12,8 +12,6 @@ import { pre, prop, Typegoose } from "typegoose";
 // Schema
 export class AuditLog extends Typegoose {
   @prop({ required: true })
-  public index: number;
-  @prop({ required: true })
   public query: string;
   @prop({ required: true })
   public timestamp: number;

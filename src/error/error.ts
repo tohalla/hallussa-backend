@@ -12,8 +12,6 @@ import { pre, prop, Typegoose } from "typegoose";
 // Schema
 export class ErrorLog extends Typegoose {
   @prop({ required: true })
-  public index: number;
-  @prop({ required: true })
   public timestamp: number;
   @prop({ required: true })
   public reason: Error;

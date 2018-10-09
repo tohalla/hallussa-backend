@@ -10,9 +10,8 @@ interface Args {
 }
 
 const insert = async (mType: ModelType<AuditLog | ErrorLog>, args: Args) => {
-  const index = await findIndex(mType);
   const model = new mType().getModelForClass(mType);
-  const doc = new model({ ...args, index });
+  const doc = new model({ ...args });
   await doc.save();
 };
 
