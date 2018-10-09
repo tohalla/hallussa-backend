@@ -8,7 +8,7 @@ Model.knex(Knex(knex));
 
 export const query = async <T extends Model>(
   queryBuilder: QueryBuilder<T, T | T[], T | T[]> | QueryBuilderYieldingOneOrNone<T>
-) =>  {
+) => {
   try {
     if (!queryBuilder.isFind()) { // should append to audit log if inserting / updating values to the db
       await writeAuditLogEntry(queryBuilder.toSql());
