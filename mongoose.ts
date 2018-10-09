@@ -30,16 +30,3 @@ export const connectWithRetry = () => {
 };
 
 connectWithRetry();
-
-// Return next available index for document to be inserted
-export const findIndex = async (model: ModelType<AuditLog | ErrorLog>) => {
-  try {
-    const doc = await model.findOne({}, "index", { $orderby: { index: -1 } });
-    if (!doc || !doc.index) {
-      return 0;
-    }
-    return doc.index + 1;
-  } catch (e) {
-    throw e;
-  }
-};
