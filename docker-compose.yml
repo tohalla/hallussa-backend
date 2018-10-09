@@ -11,8 +11,6 @@ services:
     restart: always
     depends_on:
       - postgres
-    links:
-      - mongo:mongo
     env_file:
       - .env
   postgres:
@@ -22,11 +20,9 @@ services:
     env_file:
       - .env
   mongo:
-    image: mongo:3.6.1
+    image: mongo
     ports:
       - 27017:27017
-    volumes:
-      - ./data:/data/db
     restart: always
     env_file:
       - .env

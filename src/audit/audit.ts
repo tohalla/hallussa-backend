@@ -1,4 +1,4 @@
-import { pre, prop, Typegoose } from "Typegoose";
+import { pre, prop, Typegoose } from "typegoose";
 
 // On insert
 @pre<AuditLog>("save", function(next) {
@@ -12,11 +12,11 @@ import { pre, prop, Typegoose } from "Typegoose";
 // Schema
 export class AuditLog extends Typegoose {
   @prop({ required: true })
-    public index: number;
+  public index: number;
   @prop({ required: true })
-    public query: string;
+  public query: string;
   @prop({ required: true })
-    public timestamp: number;
+  public timestamp: number;
 }
 
 export const AuditModel = new AuditLog().getModelForClass(AuditLog);

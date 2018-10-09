@@ -12,21 +12,20 @@ if (!(
     process.env.MONGODB_PASS &&
     process.env.MONGODB_INITDB_ROOT_USERNAME &&
     process.env.MONGODB_INITDB_ROOT_PASSWORD &&
-    process.env.MONGODB_URL
+    process.env.MONGODB_HOST &&
+    process.env.MONGODB_PORT
   )) {
   throw new Error("define environment variables for mongodb.");
 }
 
+const mongoURL = `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}`;
+
 export const connectWithRetry = () => {
-  mongoose.connect(process.env.MONGODB_URL || "0.0.0:27017", { useNewUrlParser: true })
-    .then(() => {
-      // Connection successful.
-      console.log("MongoDB is connected");
-    })
+  mongoose.connect(mongoURL)
     .catch((err) => {
-      // console.log("MongoDB connection unsuccesful, retry after 5 seconds.");
       // Connection failed retry in 5 seconds.
       setTimeout(connectWithRetry, 5000);
+      throw err;
     });
 };
 

@@ -1,4 +1,4 @@
-import { pre, prop, Typegoose } from "Typegoose";
+import { pre, prop, Typegoose } from "typegoose";
 
 // On insert
 @pre<ErrorLog>("save", function(next) {
@@ -12,11 +12,11 @@ import { pre, prop, Typegoose } from "Typegoose";
 // Schema
 export class ErrorLog extends Typegoose {
   @prop({ required: true })
-    public index: number;
+  public index: number;
   @prop({ required: true })
-    public timestamp: number;
+  public timestamp: number;
   @prop({ required: true })
-    public reason: Error;
+  public reason: Error;
 }
 
 export const ErrorModel = new ErrorLog().getModelForClass(ErrorLog);
