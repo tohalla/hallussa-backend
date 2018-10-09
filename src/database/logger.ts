@@ -1,6 +1,5 @@
 import { Sql } from "knex";
 import { ModelType } from "typegoose";
-import { findIndex } from "../../mongoose";
 import { AuditLog, AuditModel } from "../audit/audit";
 import { ErrorLog, ErrorModel } from "../error/error";
 
