@@ -2,18 +2,25 @@ import { Model } from "objection";
 
 import Account from "../account/Account";
 
+// interface for objection relatedQueries
+export interface OrganisationAccountRelation extends Model {
+  id: number;
+  isAdmin: boolean;
+}
+
 export default class Organisation extends Model {
   public static tableName = "organisation";
 
   public static relationMappings = {
     accounts: {
       join: {
-        from: "organisation.id",
+        from: "account.id",
         through: {
-          from: "organisation_account.account",
-          to: "organisation_account.organisation",
+          extra: ["isAdmin"],
+          from: "organisation_account.organisation",
+          to: "organisation_account.account",
         },
-        to: "account.id",
+        to: "organisation.id",
       },
       modelClass: Account,
       relation: Model.ManyToManyRelation,
@@ -33,7 +40,6 @@ export default class Organisation extends Model {
   };
 
   public updatedAt?: string;
-  public createdAt?: Date;
 
   public async $beforeUpdate() {
     this.updatedAt = new Date().toISOString();
