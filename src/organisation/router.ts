@@ -2,19 +2,29 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 
 import { transaction } from "objection";
+import applianceRouter from "../appliance/router";
 import { secureRoute } from "../auth/jwt";
 import Organisation, { OrganisationAccountRelation } from "./Organisation";
 
-export default new Router({ prefix: "/organisations" })
-  .get("/", async (ctx) => {
-    // TODO: Should organisations be public? if so, limit public data
-    ctx.body = await Organisation.query().select();
-  })
+// create separate router for organisation level routes
+const organisationRouter = [
+  applianceRouter,
+]
+  .reduce((prev, r) =>
+    prev.use(r.routes(), r.allowedMethods()),
+    new Router({ prefix: "/:organisation" })
+  )
   .get("/:organisation", async (ctx) => {
     ctx.body = await Organisation.query()
       .select()
       .where("id", "=", ctx.params.organisation)
       .first();
+  });
+
+const router = new Router({ prefix: "/organisations" })
+  .get("/", async (ctx) => {
+    // TODO: Should organisations be public? if so, limit public data
+    ctx.body = await Organisation.query().select();
   })
   .post("/", secureRoute, bodyParser(), async (ctx) => {
     const trx = await transaction.start(Organisation);
@@ -36,4 +46,7 @@ export default new Router({ prefix: "/organisations" })
       trx.rollback();
       throw e;
     }
-  });
+  })
+  .use(organisationRouter.routes(), organisationRouter.allowedMethods());
+
+export default router;
