@@ -24,9 +24,13 @@ const router = new Router({ prefix: "/organisations" })
       await organisation
         .$relatedQuery("accounts", trx)
         .relate<OrganisationAccountRelation>({
-          id: 0,
+          id: ctx.state.claims.accountId,
           isAdmin: true,
         });
+
+      trx.commit();
+      ctx.body = organisation;
+      ctx.status = 201;
     } catch (e) {
       // should roll back organisation creation if couldn't link it to account
       trx.rollback();

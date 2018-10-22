@@ -13,6 +13,7 @@ export default new Router({prefix: "/accounts"})
   })
   .post("/", bodyParser(), async (ctx) => {
     ctx.body = await query(Account.query().insertAndFetch(ctx.request.body || {}));
+    ctx.status = 201;
   })
   .put("/", secureRoute, bodyParser(), async (ctx) => {
     ctx.body = await query(Account.query().patchAndFetchById(
