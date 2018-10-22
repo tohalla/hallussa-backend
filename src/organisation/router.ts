@@ -4,22 +4,8 @@ import Router from "koa-router";
 import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
 import { secureRoute } from "../auth/jwt";
+import { secureOrganisation } from "./middleware";
 import Organisation, { OrganisationAccountRelation } from "./Organisation";
-
-// create separate router for organisation level routes
-const organisationRouter = [
-  applianceRouter,
-]
-  .reduce((prev, r) =>
-    prev.use(r.routes(), r.allowedMethods()),
-    new Router({ prefix: "/:organisation" })
-  )
-  .get("/:organisation", async (ctx) => {
-    ctx.body = await Organisation.query()
-      .select()
-      .where("id", "=", ctx.params.organisation)
-      .first();
-  });
 
 const router = new Router({ prefix: "/organisations" })
   .get("/", async (ctx) => {
@@ -46,7 +32,23 @@ const router = new Router({ prefix: "/organisations" })
       trx.rollback();
       throw e;
     }
-  })
-  .use(organisationRouter.routes(), organisationRouter.allowedMethods());
+  });
+
+  // create separate router for organisation level routes
+const organisationRouter = [applianceRouter]
+  .reduce((prev, r) =>
+    prev.use(r.routes(), r.allowedMethods()),
+    new Router({ prefix: "/:organisation" })
+    // account must be a member of the organisation to access its routes
+      .use(secureRoute, secureOrganisation)
+  )
+  .get("/:organisation", async (ctx) => {
+    ctx.body = await Organisation.query()
+      .select()
+      .where("id", "=", ctx.params.organisation)
+      .first();
+  });
+
+router.use(organisationRouter.routes(), organisationRouter.allowedMethods());
 
 export default router;
