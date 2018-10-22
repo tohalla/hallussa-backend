@@ -42,17 +42,20 @@ const router = new Router({ prefix: "/organisations" })
 const organisationRouter = [applianceRouter]
   .reduce((prev, r) =>
     prev.use(r.routes(), r.allowedMethods()),
-    new Router({ prefix: "/:organisation" })
-    // account must be a member of the organisation to access its routes
-      .use(secureRoute, secureOrganisation)
-  )
-  .get("/:organisation", async (ctx) => {
-    ctx.body = await Organisation.query()
-      .select()
-      .where("id", "=", ctx.params.organisation)
-      .first();
-  });
+    new Router({prefix: "/:organisation"})
+      .get("/", async (ctx) => {
+        ctx.body = await Organisation.query()
+          .select()
+          .where("id", "=", ctx.params.organisation)
+          .first();
+      })
+      );
 
-router.use(organisationRouter.routes(), organisationRouter.allowedMethods());
+router
+  // account must be authenticated and a member of the organisation to access its routes
+  .use(secureRoute).param("organisation", secureOrganisation)
+  .use(
+    organisationRouter.routes(), organisationRouter.allowedMethods()
+  );
 
 export default router;
