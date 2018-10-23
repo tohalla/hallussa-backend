@@ -41,8 +41,12 @@ export default class Organisation extends Model {
 
   public id?: number;
   public updatedAt?: string;
+  public createdAt?: string;
 
   public async $beforeUpdate() {
+    delete this.id; // should not update id field
+    delete this.createdAt; // should not update createdAt field
+
     this.updatedAt = new Date().toISOString();
   }
 }

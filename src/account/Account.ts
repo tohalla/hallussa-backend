@@ -22,7 +22,7 @@ export default class Account extends Model {
   public password?: string;
   public email?: string;
   public updatedAt?: string;
-  public createdAt?: Date;
+  public createdAt?: string;
 
   public async $beforeInsert() {
     this.password = await hashPassword(this.password as string); // password required and validated by json schema
