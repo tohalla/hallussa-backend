@@ -39,6 +39,7 @@ export default class Organisation extends Model {
     required: ["name"],
   };
 
+  public id?: number;
   public updatedAt?: string;
 
   public async $beforeUpdate() {

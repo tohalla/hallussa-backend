@@ -5,7 +5,7 @@ export default class Appliance extends Model {
   public static tableName = "appliance";
 
   public static relationMappings = {
-    organisation: {
+    owner: {
       join: {
         from: "appliance.organisation",
         to: "organisation.id",
@@ -20,12 +20,14 @@ export default class Appliance extends Model {
 
     properties: {
       id: { type: "integer" },
+
       name: { type: "string", minLength: 1, maxLength: 64 },
     },
     required: ["name"],
   };
 
   public updatedAt?: string;
+  public organisation?: number;
 
   public async $beforeUpdate() {
     this.updatedAt = new Date().toISOString();
