@@ -2,6 +2,7 @@ import Koa from "koa";
 import helmet from "koa-helmet";
 
 import { jwtMiddleware } from "./auth/jwt";
+import "./database/db"; // initialize objection
 import router from "./router";
 
 const app = new Koa();

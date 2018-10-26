@@ -34,6 +34,7 @@ export default class Appliance extends Model {
   public async $beforeUpdate() {
     delete this.id; // should not update id field
     delete this.createdAt; // should not update createdAt field
+    delete this.organisation; // should not update organisation field
 
     this.updatedAt = new Date().toISOString();
   }

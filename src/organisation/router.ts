@@ -18,7 +18,7 @@ const router = new Router({ prefix: "/organisations" })
       // attempt to create a new organisation
       const organisation = await Organisation.query(trx).insert(
         ctx.request.body || {}
-      );
+      ).returning("*");
 
       // add current account to created organisation with admin rights
       await organisation

@@ -8,7 +8,6 @@ export const secureOrganisation: IParamMiddleware = async (
   next
 ) => {
   const accountId = path(["state", "claims", "accountId"], ctx);
-
   // check if accountId and organisation defined (koa route params are strings)
   if (typeof organisation === "string" && typeof accountId === "number") {
     const result = await Model.raw(
