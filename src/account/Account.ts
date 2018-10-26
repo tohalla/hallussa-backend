@@ -10,8 +10,8 @@ export default class Account extends Model {
     properties: {
       id: {type: "integer"},
 
-      firstName: {type: "string", minLength: 1, maxLength: 255},
-      lastName: {type: "string", minLength: 1, maxLength: 255},
+      firstName: {type: "string", minLength: 1, maxLength: 64},
+      lastName: {type: "string", minLength: 1, maxLength: 64},
       password: {type: "string", minLength: 6},
       // validation of the email address is done at the client side, after which the confirmation email is sent
     },
