@@ -14,13 +14,13 @@ export default class Organisation extends Model {
   public static relationMappings = {
     accounts: {
       join: {
-        from: "account.id",
+        from: "organisation.id",
         through: {
           extra: ["isAdmin"],
           from: "organisation_account.organisation",
           to: "organisation_account.account",
         },
-        to: "organisation.id",
+        to: "account.id",
       },
       modelClass: Account,
       relation: Model.ManyToManyRelation,
@@ -39,9 +39,14 @@ export default class Organisation extends Model {
     required: ["name"],
   };
 
+  public id?: number;
   public updatedAt?: string;
+  public createdAt?: string;
 
   public async $beforeUpdate() {
+    delete this.id; // should not update id field
+    delete this.createdAt; // should not update createdAt field
+
     this.updatedAt = new Date().toISOString();
   }
 }

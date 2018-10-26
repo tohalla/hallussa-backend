@@ -59,4 +59,5 @@ export const jwtMiddleware: Middleware = async (ctx, next) => {
  * jwtMiddleware should be used for this middleware to function properly
  */
 export const secureRoute: Middleware = (ctx, next) =>
-  typeof path(["state", "claims", "accountId"], ctx) === "number" ? next() : ctx.status = 401;
+  typeof path(["state", "claims", "accountId"], ctx) === "number" ?
+    next() : ctx.status = 401;
