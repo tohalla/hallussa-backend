@@ -4,6 +4,7 @@ import Router from "koa-router";
 import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
 import { secureRoute } from "../auth/jwt";
+import maintainerRouter from "../maintainer/router";
 import { secureOrganisation } from "./middleware";
 import Organisation, { OrganisationAccountRelation } from "./Organisation";
 
@@ -39,7 +40,7 @@ const router = new Router({ prefix: "/organisations" })
   });
 
   // create separate router for organisation level routes
-const organisationRouter = [applianceRouter]
+const organisationRouter = [applianceRouter, maintainerRouter]
   .reduce((prev, r) =>
     prev.use(r.routes(), r.allowedMethods()),
     new Router({prefix: "/:organisation"})
