@@ -5,6 +5,19 @@ export default class Appliance extends Model {
   public static tableName = "appliance";
 
   public static relationMappings = {
+    appliances: {
+      join: {
+        from: "appliance.id",
+        through: {
+          extra: ["isAdmin"],
+          from: "appliance_maintainer.appliance",
+          to: "appliance_maintainer.maintainer",
+        },
+        to: "maintainer.id",
+      },
+      modelClass: Appliance,
+      relation: Model.ManyToManyRelation,
+    },
     owner: {
       join: {
         from: "appliance.organisation",
