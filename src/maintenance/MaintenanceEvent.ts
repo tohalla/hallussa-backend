@@ -1,5 +1,6 @@
 import { Model } from "objection";
 import Appliance from "../appliance/Appliance";
+import MaintenanceTask from "./MaintenanceTask";
 
 export default class MaintenanceEvent extends Model {
   public static tableName = "maintenance_event";
@@ -12,6 +13,14 @@ export default class MaintenanceEvent extends Model {
       },
       modelClass: Appliance,
       relation: Model.BelongsToOneRelation,
+    },
+    tasks: {
+      join: {
+        from: "maintenance_event.id",
+        to: "maintenance_task.maintenance_event",
+      },
+      modelClass: MaintenanceTask,
+      relation: Model.HasManyRelation,
     },
   };
 
@@ -38,4 +47,5 @@ export default class MaintenanceEvent extends Model {
 
     this.updatedAt = new Date().toISOString();
   }
+
 }
