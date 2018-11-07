@@ -1,5 +1,5 @@
-import { Model } from "objection";
-import { map } from "ramda";
+import { Model, NotFoundError, transaction } from "objection";
+import { map, path } from "ramda";
 import MaintenanceTask from "./MaintenanceTask";
 
 export default class MaintenanceEvent extends Model {
@@ -22,6 +22,7 @@ export default class MaintenanceEvent extends Model {
   public createdAt?: string;
   public description?: string;
   public appliance?: number;
+  public assignedTo?: number;
 
   // should create maintenance task for each maintainer assigned to the appliance
   // when new maintenance event is created
@@ -56,4 +57,41 @@ export default class MaintenanceEvent extends Model {
     this.updatedAt = new Date().toISOString();
   }
 
+  public async assign(taskHash: string) {
+    // should not be able assign task if it's already assigned
+    if (this.assignedTo) { return false; }
+    const trx = await transaction.start(MaintenanceTask);
+    try {
+      // attempt to assign task
+      const maintainer = path(["maintainer"], await MaintenanceTask
+        .query(trx)
+        .select("maintainer")
+        .where("hash", "=", taskHash)
+        .andWhere("maintenance_event", "=", this.id)
+        .first()
+      ) as number | undefined;
+
+      if (!maintainer) {
+        throw new NotFoundError("Maintainer not found for given hash");
+      }
+
+      // delete tasks assigned to other maintainers
+      await MaintenanceTask
+        .query(trx)
+        .delete()
+        .where("hash", "!=", taskHash)
+        .andWhere("maintenance_event", "=", this.id);
+
+      // set selected maintainer responsible of the maintenance
+      await MaintenanceEvent.query(trx).patch({
+        assignedTo: maintainer,
+      });
+
+      this.assignedTo = maintainer;
+    } catch (e) {
+      // should roll back somethign failed
+      trx.rollback();
+      throw e;
+    }
+  }
 }
