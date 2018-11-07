@@ -22,5 +22,5 @@ export const secureOrganisation: IParamMiddleware = async (
   }
 
   // if next not returned before, account isn't allowed to access route
-  ctx.status = 401;
+  ctx.throw(401);
 };

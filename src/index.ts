@@ -4,6 +4,7 @@ import helmet from "koa-helmet";
 import { jwtMiddleware } from "./auth/jwt";
 import "./database/db"; // initialize objection
 import router from "./router";
+import { errorHandling } from "./util/error";
 
 const app = new Koa();
 
@@ -28,6 +29,7 @@ app
     );
     return next();
   })
+  .use(errorHandling)
   .use(jwtMiddleware)
   .use(router.routes())
   .use(router.allowedMethods())
