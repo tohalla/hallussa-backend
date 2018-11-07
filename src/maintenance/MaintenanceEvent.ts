@@ -58,18 +58,23 @@ export default class MaintenanceEvent extends Model {
     this.updatedAt = new Date().toISOString();
   }
 
-  public async assign(taskHash: string) {
+  public async assign(taskHash?: string) {
+    if (typeof taskHash !== "string") {
+      throw new Error("Task hash not provided");
+    }
     // should not be able assign task if it's already assigned
     if (this.assignedTo) { return false; }
     const trx = await transaction.start(MaintenanceTask);
     try {
       // attempt to assign task
-      const maintainer = path(["maintainer"], await MaintenanceTask
-        .query(trx)
-        .select("maintainer")
-        .where("hash", "=", taskHash)
-        .andWhere("maintenance_event", "=", this.id)
-        .first()
+      const maintainer = path(
+        ["maintainer"],
+        await MaintenanceTask
+          .query(trx)
+          .select("maintainer")
+          .where("hash", "=", taskHash)
+          .andWhere("maintenance_event", "=", this.id)
+          .first()
       ) as number | undefined;
 
       if (!maintainer) {
@@ -88,6 +93,7 @@ export default class MaintenanceEvent extends Model {
         assignedTo: maintainer,
       });
 
+      trx.commit(); // commit changes
       this.assignedTo = maintainer;
     } catch (e) {
       // should roll back somethign failed

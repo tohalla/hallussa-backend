@@ -3,13 +3,20 @@ import Router from "koa-router";
 
 import Appliance from "../appliance/Appliance";
 import MaintenanceEvent from "./MaintenanceEvent";
+import MaintenanceTask from "./MaintenanceTask";
 import { applianceFromHash, secureEvent } from "./middleware";
+
+interface MaintenanceState {
+  appliance: Appliance;
+  maintenanceEvent: MaintenanceEvent;
+  maintenanceTask: MaintenanceTask;
+}
 
 const taskRouter = new Router({ prefix: "/:taskHash" })
   .param("taskHash", secureEvent)
   .get("/", (ctx) => {
     // values set in secureEvent middleware
-    const {maintenanceEvent, maintenanceTask} = ctx.state;
+    const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
     if (maintenanceEvent.assignedTo === maintenanceTask.maintainer) {
       // TODO: return maintainer form
       ctx.body = "maintainer form";
@@ -19,7 +26,20 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     }
   })
   .post("/", bodyParser(), async (ctx) => {
+    const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
+    if (!maintenanceEvent.assignedTo) {
+      return ctx.throw(401, "Maintenance event has not been assigned to anyone.");
+    }
     // TODO: handle maintainer form
+  })
+  .post("/accept", async (ctx) => {
+    const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
+    if (maintenanceEvent.assignedTo) {
+      return ctx.throw(404, "Maintenance event has already been assigned.");
+    }
+    maintenanceEvent.assign(maintenanceTask.hash);
+    // TODO: maintenance task has been accepted page
+    ctx.status = 200;
   })
   .del("/", bodyParser(), async (ctx) => {
     // TODO: handle maintainer cancellation

@@ -20,7 +20,7 @@ export const secureEvent: IParamMiddleware = async (taskHash, ctx, next) => {
 
   const maintenanceEvent = await MaintenanceEvent
     .query()
-    .select("assignedTo", "resolvedAt")
+    .select()
     .where("id", "=", maintenanceTask.maintenanceEvent)
     .first();
   if (typeof maintenanceEvent === "undefined") {
