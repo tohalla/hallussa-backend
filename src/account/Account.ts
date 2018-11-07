@@ -45,7 +45,7 @@ export default class Account extends Model {
 }
 
 // hash and salt plain text password
-const hashPassword = async (password: string): Promise<string> => bcrypt.hash(
+export const hashPassword = async (password: string): Promise<string> => bcrypt.hash(
   password || "", // objection validates according to provided json schema
   await bcrypt.genSalt(10)
 );

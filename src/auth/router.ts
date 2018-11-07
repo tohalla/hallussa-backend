@@ -13,14 +13,14 @@ export default new Router({ prefix: "/auth" })
     if (typeof accountId === "number") {
       ctx.body = await signToken(accountId);
     } else {
-      ctx.status = 401;
+      return ctx.throw(401);
     }
   })
   .post("/", bodyParser(), async (ctx) => {
     const password = path(["request", "body", "password"], ctx);
     const email = path(["request", "body", "email"], ctx);
     if (typeof password !== "string" || typeof email !== "string") {
-      return (ctx.status = 401); // password and email not found in request
+      return ctx.throw(401, "Password and/or email not found in request");
     }
 
     const result = await Model.raw(
@@ -37,6 +37,6 @@ export default new Router({ prefix: "/auth" })
     ) {
       ctx.body = await signToken(accountId);
     } else {
-      ctx.status = 401; // account not found with provided credentials
+      ctx.throw(401, "Account not found with provided credentials");
     }
   });

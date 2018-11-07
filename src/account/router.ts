@@ -2,8 +2,8 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { path } from "ramda";
 
+import { ValidationError } from "objection";
 import { secureRoute } from "../auth/jwt";
-import { query } from "../database/db";
 import Account from "./Account";
 
 export default new Router({prefix: "/accounts"})
@@ -26,14 +26,13 @@ export default new Router({prefix: "/accounts"})
     } catch (e) {
       if (typeof e === "object") {
         if (e.constraint === "account_email_unique") {
-          ctx.body = `Account with email ${
-            path(["request", "body", "email"], ctx)
-          } already exists.`;
-          ctx.status = 409;
-        } else {
-          ctx.status = 400;
+          ctx.throw(
+            409,
+            `Account with email ${
+              path(["request", "body", "email"], ctx)
+            } already exists.`
+          );
         }
-        return;
       }
       throw e;
     }

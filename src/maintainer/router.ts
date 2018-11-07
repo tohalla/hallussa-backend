@@ -15,15 +15,11 @@ export default new Router({ prefix: "/maintainers" })
   .post("/", bodyParser(), async (ctx) => {
     // organisation param already set in parent router
     const { organisation } = ctx.params;
-    try {
-      ctx.body = await Maintainer.query().insert({
-        ...ctx.request.body,
-        ...{ organisation: Number(organisation) },
-      }).returning("*");
-      ctx.status = 201;
-    } catch (e) {
-      ctx.status = 400;
-    }
+    ctx.body = await Maintainer.query().insert({
+      ...ctx.request.body,
+      ...{ organisation: Number(organisation) },
+    }).returning("*");
+    ctx.status = 201;
   })
   .patch("/:maintainer", async (ctx) => {
     const { maintainer } = ctx.params;

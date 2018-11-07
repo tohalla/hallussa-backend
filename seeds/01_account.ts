@@ -9,7 +9,7 @@ exports.seed = async (knex: Knex) => {
       firstName: "test",
       id: 1,
       lastName: "user",
-      password: hashPassword("test"),
+      password: await hashPassword("test"),
     },
   ]);
 };

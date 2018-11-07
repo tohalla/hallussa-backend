@@ -5,7 +5,7 @@ export default class Appliance extends Model {
   public static tableName = "appliance";
 
   public static relationMappings = {
-    appliances: {
+    maintainers: {
       join: {
         from: "appliance.id",
         through: {
@@ -17,14 +17,6 @@ export default class Appliance extends Model {
       },
       modelClass: Appliance,
       relation: Model.ManyToManyRelation,
-    },
-    owner: {
-      join: {
-        from: "appliance.organisation",
-        to: "organisation.id",
-      },
-      modelClass: Organisation,
-      relation: Model.BelongsToOneRelation,
     },
   };
 
