@@ -15,15 +15,11 @@ export default new Router({ prefix: "/appliances" })
   .post("/", bodyParser(), async (ctx) => {
     // organisation param already set in parent router
     const { organisation } = ctx.params;
-    try {
-      ctx.body = await Appliance.query().insert({
-        ...ctx.request.body,
-        ...{ organisation: Number(organisation) },
-      }).returning("*");
-      ctx.status = 201;
-    } catch (e) {
-      ctx.status = 400;
-    }
+    ctx.body = await Appliance.query().insert({
+      ...ctx.request.body,
+      ...{ organisation: Number(organisation) },
+    }).returning("*");
+    ctx.status = 201;
   })
   .get("/:appliance", async (ctx) => {
     // organisation param already set in parent router

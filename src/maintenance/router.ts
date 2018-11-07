@@ -31,6 +31,7 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
     // TODO: return maintenance report form page
   })
   .post("/", bodyParser(), async (ctx) => {
+    // appliance is set at applianceFromHash middleware
     const appliance = ctx.state.appliance as Appliance;
     await MaintenanceEvent.query().insert({
       appliance: appliance.id,
