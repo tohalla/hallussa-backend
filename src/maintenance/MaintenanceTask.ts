@@ -5,25 +5,6 @@ import MaintenanceEvent from "./MaintenanceEvent";
 export default class MaintenanceTask extends Model {
   public static tableName = "maintenance_task";
 
-  public static relationMappings = {
-    maintainer: {
-      join: {
-        from: "maintenance_task.maintainer",
-        to: "maintainer.id",
-      },
-      modelClass: Maintainer,
-      relation: Model.BelongsToOneRelation,
-    },
-    maintenanceEvent: {
-      join: {
-        from: "maintenance_task.maintenance_event",
-        to: "maintenance_event.id",
-      },
-      modelClass: MaintenanceEvent,
-      relation: Model.BelongsToOneRelation,
-    },
-  };
-
   public static jsonSchema = {
     type: "object",
 
@@ -53,6 +34,10 @@ export default class MaintenanceTask extends Model {
     delete this.maintainer; // should not update maintainer field
 
     this.updatedAt = new Date().toISOString();
+  }
+
+  public async $afterInsert() {
+    // TODO: inform maintainer via email
   }
 
   public async acceptTask() {
