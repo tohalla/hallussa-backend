@@ -8,7 +8,15 @@ import { applianceFromHash, secureEvent } from "./middleware";
 const taskRouter = new Router({ prefix: "/:taskHash" })
   .param("taskHash", secureEvent)
   .get("/", (ctx) => {
-    // TODO: return maintainer form
+    // values set in secureEvent middleware
+    const {maintenanceEvent, maintenanceTask} = ctx.state;
+    if (maintenanceEvent.assignedTo === maintenanceTask.maintainer) {
+      // TODO: return maintainer form
+      ctx.body = "maintainer form";
+    } else if (!maintenanceEvent.assignedTo) {
+      // TODO: return accept maintenance page
+      ctx.body = "accept maintenance page";
+    }
   })
   .post("/", bodyParser(), async (ctx) => {
     // TODO: handle maintainer form

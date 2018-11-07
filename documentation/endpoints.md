@@ -34,7 +34,7 @@
 
 | method | route                                              | description                      | protection level |
 | ------ | -------------------------------------------------- | -------------------------------- | ---------------- |
-| POST   | /organisations/:organisation/appliances            | Add new maintainer               | organisation     |
+| POST   | /organisations/:organisation/appliances            | Add new appltiance               | organisation     |
 | GET    | /organisations/:organisation/appliances            | Get all organisations appliances | organisation     |
 | GET    | /organisations/:organisation/appliances/:appliance | Get single appliance             | organisation     |
 | PATCH  | /organisations/:organisation/appliances/:appliance | Patch single appliance           | organisation     |

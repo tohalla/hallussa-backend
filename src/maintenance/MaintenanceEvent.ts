@@ -20,6 +20,7 @@ export default class MaintenanceEvent extends Model {
   public id?: number;
   public updatedAt?: string;
   public createdAt?: string;
+  public resolvedAt?: string;
   public description?: string;
   public appliance?: number;
   public assignedTo?: number;
