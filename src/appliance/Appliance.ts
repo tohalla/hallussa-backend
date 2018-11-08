@@ -33,6 +33,7 @@ export default class Appliance extends Model {
 
   public id?: number;
   public updatedAt?: string;
+  public hash?: string;
   public createdAt?: string;
   public organisation?: number;
 
