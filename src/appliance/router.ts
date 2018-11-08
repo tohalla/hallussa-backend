@@ -4,6 +4,33 @@ import Router from "koa-router";
 import { getQRPage } from "../util/qr";
 import Appliance from "./Appliance";
 
+// separate router for single appliance
+const applianceRouter = new Router({ prefix: "/:appliance"})
+  .get("/", async (ctx) => {
+    // organisation param already set in parent router
+    const { organisation, appliance } = ctx.params;
+    ctx.body = await Appliance
+      .query()
+      .select()
+      .where("organisation", "=", organisation)
+      .andWhere("id", "=", appliance)
+      .first();
+  })
+  .patch("/", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await Appliance
+      .query()
+      .patch(ctx.request.body || {})
+      .where("id", "=", appliance)
+      .returning("*");
+  })
+  .del("/", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await Appliance
+      .query()
+      .deleteById(appliance);
+  });
+
 export default new Router({ prefix: "/appliances" })
   .get("/", async (ctx) => {
     // organisation param already set in parent router
@@ -37,27 +64,4 @@ export default new Router({ prefix: "/appliances" })
     }</body></html>`;
     ctx.type = "application/html";
   })
-  .get("/:appliance", async (ctx) => {
-    // organisation param already set in parent router
-    const { organisation, appliance } = ctx.params;
-    ctx.body = await Appliance
-      .query()
-      .select()
-      .where("organisation", "=", organisation)
-      .andWhere("id", "=", appliance)
-      .first();
-  })
-  .patch("/:appliance", async (ctx) => {
-    const { appliance } = ctx.params;
-    ctx.body = await Appliance
-      .query()
-      .patch(ctx.request.body || {})
-      .where("id", "=", appliance)
-      .returning("*");
-  })
-  .del("/:appliance", async (ctx) => {
-    const { appliance } = ctx.params;
-    ctx.body = await Appliance
-      .query()
-      .deleteById(appliance);
-  });
+  .use(applianceRouter.routes(), applianceRouter.allowedMethods());
