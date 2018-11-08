@@ -21,7 +21,7 @@ export const getQRPage = async (
   const qrCodes = await Promise.all(
     appliances.map(async (appliance) =>
       QRCode.toString(
-        `${protocol}://${host}/api/v1/maintenance/${appliance.hash}`,§
+        `${protocol}://${host}/api/v1/maintenance/${appliance.hash}`,
         {errorCorrectionLevel: "medium", type: "svg", scale: 2}
       ),
       appliances

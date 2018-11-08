@@ -1,6 +1,8 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 
+import { Model } from "objection";
+import Maintainer from "../maintainer/Maintainer";
 import { getQRPage } from "../util/qr";
 import Appliance from "./Appliance";
 
@@ -27,8 +29,30 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
   .del("/", async (ctx) => {
     const { appliance } = ctx.params;
     ctx.body = await Appliance
+    .query()
+    .deleteById(appliance);
+  })
+  .get("/maintainers", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await Maintainer
       .query()
-      .deleteById(appliance);
+      .select()
+      .joinRaw(
+        "JOIN appliance_maintainer ON appliance_maintainer.appliance=?::integer " +
+        "AND appliance_maintainer.maintainer=maintainer.id",
+        appliance
+      );
+  })
+  .del("/maintainers/:maintainer", async (ctx) => {
+    const { appliance, maintainer } = ctx.params;
+
+    await Model.raw(
+      "DELETE FROM appliance_maintainer WHERE appliance=?::integer AND maintainer=?::integer",
+      appliance,
+      maintainer
+    );
+
+    ctx.status = 200;
   });
 
 export default new Router({ prefix: "/appliances" })
