@@ -1,9 +1,59 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
-import QRCode from "qrcode";
-import { path, reduce } from "ramda";
 
+import { Model } from "objection";
+import Maintainer from "../maintainer/Maintainer";
+import { getQRPage } from "../util/qr";
 import Appliance from "./Appliance";
+
+// separate router for single appliance
+const applianceRouter = new Router({ prefix: "/:appliance"})
+  .get("/", async (ctx) => {
+    // organisation param already set in parent router
+    const { organisation, appliance } = ctx.params;
+    ctx.body = await Appliance
+      .query()
+      .select()
+      .where("organisation", "=", organisation)
+      .andWhere("id", "=", appliance)
+      .first();
+  })
+  .patch("/", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await Appliance
+      .query()
+      .patch(ctx.request.body || {})
+      .where("id", "=", appliance)
+      .returning("*");
+  })
+  .del("/", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await Appliance
+    .query()
+    .deleteById(appliance);
+  })
+  .get("/maintainers", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await Maintainer
+      .query()
+      .select()
+      .joinRaw(
+        "JOIN appliance_maintainer ON appliance_maintainer.appliance=?::integer " +
+        "AND appliance_maintainer.maintainer=maintainer.id",
+        appliance
+      );
+  })
+  .del("/maintainers/:maintainer", async (ctx) => {
+    const { appliance, maintainer } = ctx.params;
+
+    await Model.raw(
+      "DELETE FROM appliance_maintainer WHERE appliance=?::integer AND maintainer=?::integer",
+      appliance,
+      maintainer
+    );
+
+    ctx.status = 200;
+  });
 
 export default new Router({ prefix: "/appliances" })
   .get("/", async (ctx) => {
@@ -33,55 +83,9 @@ export default new Router({ prefix: "/appliances" })
       return ctx.throw(400, "Define requested appliance");
     }
 
-    // fetch specified appliances (only if listed under organisation)
-    const appliances = await Appliance
-      .query()
-      .select("hash")
-      .whereIn("id", applianceIDs)
-      .andWhere("organisation", "=", organisation);
-
-    if (appliances.length === 0) {
-      return ctx.throw(404);
-    }
-    const qrCodes = await Promise.all(
-      appliances.map(async (appliance) =>
-        QRCode.toString(
-          `http://${ctx.request.host}/api/v1/maintenance/${appliance.hash}`,
-          {errorCorrectionLevel: "medium", type: "svg", scale: 2}
-        ),
-        appliances
-      )
-    );
-
-    const qrElements = reduce(
-      (prev, curr) => prev + `<div style=\"width: 250px; height: auto;\">${
-        curr
-      }</div>`,
-      "",
-      qrCodes
-    );
-
     ctx.body = `<!doctype html><html><head></head><body>${
-      qrElements
+      await getQRPage(applianceIDs, organisation, ctx.request.host)
     }</body></html>`;
     ctx.type = "application/html";
   })
-  .get("/:appliance", async (ctx) => {
-    // organisation param already set in parent router
-    const { organisation, appliance } = ctx.params;
-    ctx.body = await Appliance
-      .query()
-      .select()
-      .where("organisation", "=", organisation)
-      .andWhere("id", "=", appliance)
-      .first();
-  })
-  .patch("/:appliance", async (ctx) => {
-    const { appliance } = ctx.params;
-    ctx.body = await Appliance
-      .query()
-      .patch(ctx.request.body || {})
-      .where("id", "=", appliance)
-      .returning("*");
-  });
-  // TODO: Route to delete appliance, should require admin rights?
+  .use(applianceRouter.routes(), applianceRouter.allowedMethods());
