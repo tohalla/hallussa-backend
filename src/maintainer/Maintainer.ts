@@ -6,7 +6,7 @@ export default class Maintainer extends Model {
   public static tableName = "maintainer";
 
   public static relationMappings = {
-    maintainers: {
+    appliances: {
       join: {
         from: "maintainer.id",
         through: {
