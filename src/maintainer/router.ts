@@ -28,5 +28,10 @@ export default new Router({ prefix: "/maintainers" })
       .patch(ctx.request.body || {})
       .where("id", "=", maintainer)
       .returning("*");
+  })
+  .del("/:maintainer", async (ctx) => {
+    const { maintainer } = ctx.params;
+    ctx.body = await Maintainer
+      .query()
+      .deleteById(maintainer);
   });
-  // TODO: Route to delete maintainer, should require admin rights?

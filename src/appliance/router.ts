@@ -54,5 +54,10 @@ export default new Router({ prefix: "/appliances" })
       .patch(ctx.request.body || {})
       .where("id", "=", appliance)
       .returning("*");
+  })
+  .del("/:appliance", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await Appliance
+      .query()
+      .deleteById(appliance);
   });
-  // TODO: Route to delete appliance, should require admin rights?
