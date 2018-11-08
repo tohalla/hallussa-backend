@@ -37,12 +37,13 @@
 
 #### Appliances
 
-| method | route                                              | description                      | protection level |
-| ------ | -------------------------------------------------- | -------------------------------- | ---------------- |
-| GET    | /organisations/:organisation/appliances            | Get all organisations appliances | organisation     |
-| POST   | /organisations/:organisation/appliances            | Add new appltiance               | organisation     |
-| GET    | /organisations/:organisation/appliances/:appliance | Get single appliance             | organisation     |
-| PATCH  | /organisations/:organisation/appliances/:appliance | Patch single appliance           | organisation     |
+| method | route                                                    | description                                     | protection level |
+| ------ | -------------------------------------------------------- | ----------------------------------------------- | ---------------- |
+| GET    | /organisations/:organisation/appliances                  | Get all organisations appliances                | organisation     |
+| POST   | /organisations/:organisation/appliances                  | Add new appltiance                              | organisation     |
+| GET    | /organisations/:organisation/appliances/qr?appliances=[] | Get QR -codes for appliances. Returns html page | organisation     |
+| GET    | /organisations/:organisation/appliances/:appliance       | Get single appliance                            | organisation     |
+| PATCH  | /organisations/:organisation/appliances/:appliance       | Patch single appliance                          | organisation     |
 
 #### Maintainers
 
