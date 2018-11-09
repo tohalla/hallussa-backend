@@ -28,9 +28,10 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
   })
   .del("/", async (ctx) => {
     const { appliance } = ctx.params;
-    ctx.body = await Appliance
-    .query()
-    .deleteById(appliance);
+    await Appliance
+      .query()
+      .deleteById(appliance);
+    ctx.status = 200;
   })
   .get("/maintainers", async (ctx) => {
     const { appliance } = ctx.params;
@@ -42,6 +43,17 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
         "AND appliance_maintainer.maintainer=maintainer.id",
         appliance
       );
+  })
+  .post("/maintainers/:maintainer", async (ctx) => {
+    const { appliance, maintainer } = ctx.params;
+
+    await Model.raw(
+      "INSERT INTO appliance_maintainer (appliance, maintainer) VALUES (?::integer, ?::integer)",
+      appliance,
+      maintainer
+    );
+
+    ctx.body = 201;
   })
   .del("/maintainers/:maintainer", async (ctx) => {
     const { appliance, maintainer } = ctx.params;
