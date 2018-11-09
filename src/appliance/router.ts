@@ -28,9 +28,10 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
   })
   .del("/", async (ctx) => {
     const { appliance } = ctx.params;
-    ctx.body = await Appliance
-    .query()
-    .deleteById(appliance);
+    await Appliance
+      .query()
+      .deleteById(appliance);
+    ctx.status = 200;
   })
   .get("/maintainers", async (ctx) => {
     const { appliance } = ctx.params;

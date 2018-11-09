@@ -40,9 +40,10 @@ export default new Router({ prefix: "/maintainers" })
   })
   .del("/:maintainer", async (ctx) => {
     const { maintainer } = ctx.params;
-    ctx.body = await Maintainer
+    await Maintainer
       .query()
       .deleteById(maintainer);
+    ctx.status = 200;
   })
   .get("/:maintainer/appliances", async (ctx) => {
     const { maintainer } = ctx.params;

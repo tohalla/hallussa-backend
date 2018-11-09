@@ -1,5 +1,6 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
+import { reduce } from "ramda";
 
 import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
@@ -39,24 +40,17 @@ const router = new Router({ prefix: "/organisations" })
     }
   });
 
-  // create separate router for organisation level routes
-const organisationRouter = [applianceRouter, maintainerRouter]
-  .reduce((prev, r) =>
-    prev.use(r.routes(), r.allowedMethods()),
-    new Router({prefix: "/:organisation"})
-      .get("/", async (ctx) => {
-        ctx.body = await Organisation.query()
-          .select()
-          .where("id", "=", ctx.params.organisation)
-          .first();
-      })
-      );
-
 router
   // account must be authenticated and a member of the organisation to access its routes
-  .use(secureRoute).param("organisation", secureOrganisation)
-  .use(
-    organisationRouter.routes(), organisationRouter.allowedMethods()
-  );
+  .use(secureRoute)
+  .param("organisation", secureOrganisation)
+  .get("/:organisation", async (ctx) => {
+    ctx.body = await Organisation.query()
+      .select()
+      .where("id", "=", ctx.params.organisation)
+      .first();
+  })
+  .use("/:organisation", applianceRouter.routes(), applianceRouter.allowedMethods())
+  .use("/:organisation", maintainerRouter.routes(), maintainerRouter.allowedMethods());
 
 export default router;

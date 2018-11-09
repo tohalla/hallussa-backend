@@ -20,7 +20,6 @@ export const secureOrganisation: IParamMiddleware = async (
       return next();
     }
   }
-
   // if next not returned before, account isn't allowed to access route
   ctx.throw(401);
 };
