@@ -43,6 +43,17 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
         appliance
       );
   })
+  .post("/maintainers/:maintainer", async (ctx) => {
+    const { appliance, maintainer } = ctx.params;
+
+    await Model.raw(
+      "INSERT INTO appliance_maintainer (appliance, maintainer) VALUES (?::integer, ?::integer)",
+      appliance,
+      maintainer
+    );
+
+    ctx.body = 201;
+  })
   .del("/maintainers/:maintainer", async (ctx) => {
     const { appliance, maintainer } = ctx.params;
 

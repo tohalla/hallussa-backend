@@ -1,6 +1,7 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 
+import Appliance from "../appliance/Appliance";
 import Maintainer from "./Maintainer";
 
 export default new Router({ prefix: "/maintainers" })
@@ -29,9 +30,28 @@ export default new Router({ prefix: "/maintainers" })
       .where("id", "=", maintainer)
       .returning("*");
   })
+  .get("/:maintainer", async (ctx) => {
+    const { maintainer } = ctx.params;
+    ctx.body = await Maintainer
+      .query()
+      .select()
+      .where("id", "=", maintainer)
+      .first();
+  })
   .del("/:maintainer", async (ctx) => {
     const { maintainer } = ctx.params;
     ctx.body = await Maintainer
       .query()
       .deleteById(maintainer);
+  })
+  .get("/:maintainer/appliances", async (ctx) => {
+    const { maintainer } = ctx.params;
+    ctx.body = await Appliance
+      .query()
+      .select()
+      .joinRaw(
+        "JOIN appliance_maintainer ON appliance_maintainer.maintainer=?::integer " +
+        "AND appliance_maintainer.appliance=appliance.id",
+        maintainer
+      );
   });
