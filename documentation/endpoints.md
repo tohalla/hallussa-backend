@@ -37,21 +37,29 @@
 
 #### Appliances
 
-| method | route                                                    | description                                     | protection level |
-| ------ | -------------------------------------------------------- | ----------------------------------------------- | ---------------- |
-| GET    | /organisations/:organisation/appliances                  | Get all organisations appliances                | organisation     |
-| POST   | /organisations/:organisation/appliances                  | Add new appltiance                              | organisation     |
-| GET    | /organisations/:organisation/appliances/qr?appliances=[] | Get QR -codes for appliances. Returns html page | organisation     |
-| GET    | /organisations/:organisation/appliances/:appliance       | Get single appliance                            | organisation     |
-| PATCH  | /organisations/:organisation/appliances/:appliance       | Patch single appliance                          | organisation     |
+| method | route                                                          | description                                     | protection level |
+| ------ | -------------------------------------------------------------- | ----------------------------------------------- | ---------------- |
+| GET    | /organisations/:organisation/appliances                        | Get all organisations appliances                | organisation     |
+| POST   | /organisations/:organisation/appliances                        | Add new appltiance                              | organisation     |
+| GET    | /organisations/:organisation/appliances/qr?appliances=[]       | Get QR -codes for appliances. Returns html page | organisation     |
+| GET    | /organisations/:organisation/appliances/:appliance             | Get single appliance                            | organisation     |
+| PATCH  | /organisations/:organisation/appliances/:appliance             | Patch single appliance                          | organisation     |
+| DEL    | /organisations/:organisation/appliances/:appliance             | Delete single appliance                         | organisation     |
+| GET    | /organisations/:organisation/appliances/:appliance/maintainers | Get maintainers for appliance                   | organisation     |
+| POST   | /organisations/:organisation/appliances/:appliance/maintainers | Add maintainer to appliance                     | organisation     |
+| DEL    | /organisations/:organisation/appliances/:appliance/maintainers | Remove maintainer from appliance                | organisation     |
 
 #### Maintainers
 
-| method | route                                                | description                        | protection level |
-| ------ | ---------------------------------------------------- | ---------------------------------- | ---------------- |
-| GET    | /organisations/:organisation/maintainers             | Gest all organisations maintainers | organisation     |
-| POST   | /organisations/:organisation/maintainers             | Add new maintainer                 | organisation     |
-| PATCH  | /organisations/:organisation/maintainers/:maintainer | Patch single maintainer            | organisation     |
+| method | route                                                           | description                          | protection level |
+| ------ | --------------------------------------------------------------- | ------------------------------------ | ---------------- |
+| GET    | /organisations/:organisation/maintainers                        | Gest all organisations maintainers   | organisation     |
+| POST   | /organisations/:organisation/maintainers                        | Add new maintainer                   | organisation     |
+| GET    | /organisations/:organisation/maintainers                        | Gets all organisations maintainers   | organisation     |
+| GET    | /organisations/:organisation/maintainers/:maintainer            | Get single maintainer                | organisation     |
+| DEL    | /organisations/:organisation/maintainers/:maintainer            | Delete single maintainer             | organisation     |
+| PATCH  | /organisations/:organisation/maintainers/:maintainer            | Patch single maintainer              | organisation     |
+| GET    | /organisations/:organisation/maintainers/:maintainer/appliances | Get appliances for single maintainer | organisation     |
 
 ### Maintenance
 
