@@ -29,11 +29,11 @@
 
 ### Organisation
 
-| method | route                        | description             | protection level |
-| ------ | ---------------------------- | ----------------------- | ---------------- |
-| GET    | /organisations/              | Get all organisations   | auth             |
-| POST   | /organisations/              | Add new organisation    | auth             |
-| GET    | /organisations/:organisation | Get single organisation | organisation     |
+| method | route                        | description                                       | protection level |
+| ------ | ---------------------------- | ------------------------------------------------- | ---------------- |
+| GET    | /organisations/              | Get all organisations listed under active account | auth             |
+| POST   | /organisations/              | Add new organisation                              | auth             |
+| GET    | /organisations/:organisation | Get single organisation                           | organisation     |
 
 #### Appliances
 

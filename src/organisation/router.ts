@@ -1,6 +1,6 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
-import { reduce } from "ramda";
+import { path } from "ramda";
 
 import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
@@ -10,9 +10,18 @@ import { secureOrganisation } from "./middleware";
 import Organisation, { OrganisationAccountRelation } from "./Organisation";
 
 const router = new Router({ prefix: "/organisations" })
+  .use(secureRoute)
   .get("/", async (ctx) => {
+    const accountID = path(["state", "claims", "accountId"], ctx);
     // TODO: Should organisations be public? if so, limit public data
-    ctx.body = await Organisation.query().select();
+    ctx.body = await Organisation
+      .query()
+      .select()
+      .joinRaw(
+        "JOIN organisation_account ON organisation_account.account=?::integer " +
+        "AND organisation_account.organisation=organisation.id",
+        accountID
+      );
   })
   .post("/", secureRoute, bodyParser(), async (ctx) => {
     const trx = await transaction.start(Organisation);
@@ -42,7 +51,6 @@ const router = new Router({ prefix: "/organisations" })
 
 router
   // account must be authenticated and a member of the organisation to access its routes
-  .use(secureRoute)
   .param("organisation", secureOrganisation)
   .get("/:organisation", async (ctx) => {
     ctx.body = await Organisation.query()
