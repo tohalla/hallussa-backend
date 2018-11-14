@@ -1,7 +1,6 @@
 import { Model } from "objection";
 import { evolve, map, prop } from "ramda";
 
-import Organisation from "../organisation/Organisation";
 import ApplianceMaintainer from "../relation-models/ApplianceMaintainer";
 
 export default class Maintainer extends Model {
@@ -15,14 +14,6 @@ export default class Maintainer extends Model {
       },
       modelClass: ApplianceMaintainer,
       relation: Model.HasManyRelation,
-    },
-    owner: {
-      join: {
-        from: "maintainer.organisation",
-        to: "organisation.id",
-      },
-      modelClass: Organisation,
-      relation: Model.BelongsToOneRelation,
     },
   };
 
