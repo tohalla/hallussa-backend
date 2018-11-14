@@ -1,7 +1,7 @@
 import { Model } from "objection";
 import { evolve, map, prop } from "ramda";
 
-import ApplianceMaintainer from "../account/relation-models/ApplianceMaintainer";
+import ApplianceMaintainer from "../relation-models/ApplianceMaintainer";
 
 export default class Appliance extends Model {
   public static tableName = "appliance";

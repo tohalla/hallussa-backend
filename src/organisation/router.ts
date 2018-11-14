@@ -6,8 +6,9 @@ import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
 import { secureRoute } from "../auth/jwt";
 import maintainerRouter from "../maintainer/router";
+import OrganisationAccount from "../relation-models/OrganisationAccount";
 import { secureOrganisation } from "./middleware";
-import Organisation, { OrganisationAccountRelation } from "./Organisation";
+import Organisation from "./Organisation";
 
 const router = new Router({ prefix: "/organisations" })
   .use(secureRoute)
@@ -34,7 +35,7 @@ const router = new Router({ prefix: "/organisations" })
       // add current account to created organisation with admin rights
       await organisation
         .$relatedQuery("accounts", trx)
-        .relate<OrganisationAccountRelation>({
+        .relate<any>({
           id: ctx.state.claims.accountId,
           isAdmin: true,
         });

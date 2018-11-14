@@ -2,12 +2,6 @@ import { Model } from "objection";
 
 import Account from "../account/Account";
 
-// interface for objection relatedQueries
-export interface OrganisationAccountRelation extends Model {
-  id: number;
-  isAdmin: boolean;
-}
-
 export default class Organisation extends Model {
   public static tableName = "organisation";
 
