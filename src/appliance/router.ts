@@ -1,22 +1,26 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
-
 import { Model } from "objection";
+import { map } from "ramda";
+
 import Maintainer from "../maintainer/Maintainer";
 import { getQRPage } from "../util/qr";
-import Appliance from "./Appliance";
+import Appliance, { normalizeAppliance } from "./Appliance";
 
 // separate router for single appliance
 const applianceRouter = new Router({ prefix: "/:appliance"})
   .get("/", async (ctx) => {
     // organisation param already set in parent router
     const { organisation, appliance } = ctx.params;
-    ctx.body = await Appliance
+    ctx.body = normalizeAppliance(await Appliance
       .query()
       .select()
       .where("organisation", "=", organisation)
       .andWhere("id", "=", appliance)
-      .first();
+      .first()
+      .eager(ctx.query.eager)
+      .modifyEager("maintainers", (builder) => builder.select("maintainer"))
+    );
   })
   .patch("/", async (ctx) => {
     const { appliance } = ctx.params;
@@ -28,9 +32,7 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
   })
   .del("/", async (ctx) => {
     const { appliance } = ctx.params;
-    await Appliance
-      .query()
-      .deleteById(appliance);
+    await Appliance.query().deleteById(appliance);
     ctx.status = 200;
   })
   .get("/maintainers", async (ctx) => {
@@ -71,10 +73,13 @@ export default new Router({ prefix: "/appliances" })
   .get("/", async (ctx) => {
     // organisation param already set in parent router
     const { organisation } = ctx.params;
-    ctx.body = await Appliance
+    ctx.body = map(normalizeAppliance, await Appliance
       .query()
       .select()
-      .where("organisation", "=", organisation);
+      .where("organisation", "=", organisation)
+      .eager(ctx.query.eager)
+      .modifyEager("maintainers", (builder) => builder.select("maintainer"))
+    );
   })
   .post("/", bodyParser(), async (ctx) => {
     // organisation param already set in parent router

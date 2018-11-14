@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { Model, ModelOptions } from "objection";
+import { Model } from "objection";
 
 export default class Account extends Model {
   public static tableName = "account";
