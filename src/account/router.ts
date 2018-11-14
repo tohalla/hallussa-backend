@@ -2,19 +2,21 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { path } from "ramda";
 
-import { ValidationError } from "objection";
 import { secureRoute } from "../auth/jwt";
-import Account from "./Account";
+import Account, { normalizeAccount } from "./Account";
 
 export default new Router({prefix: "/accounts"})
   .get("/", secureRoute, async (ctx) => {
     const accountId = path(["state", "claims", "accountId"], ctx);
-    ctx.body = await Account
+    ctx.body = normalizeAccount(await Account
       .query()
       .select()
       .where("id", "=", accountId)
       .omit(["password"])
-      .first();
+      .eager(ctx.query.eager)
+      .modifyEager("organisations", (builder) => builder.select("organisation", "isAdmin"))
+      .first()
+    );
   })
   .post("/", bodyParser(), async (ctx) => {
     try {
