@@ -1,8 +1,21 @@
 import bcrypt from "bcryptjs";
 import { Model } from "objection";
+import { evolve, map, prop } from "ramda";
+import OrganisationAccount from "../relation-models/OrganisationAccount";
 
 export default class Account extends Model {
   public static tableName = "account";
+
+  public static relationMappings = {
+    organisations: { // should never eagerly load organisations, only ID's
+      join: {
+        from: "account.id",
+        to: "organisation_account.account",
+      },
+      modelClass: OrganisationAccount,
+      relation: Model.HasManyRelation,
+    },
+  };
 
   public static jsonSchema = {
     type: "object",
@@ -49,3 +62,12 @@ export const hashPassword = async (password: string): Promise<string> => bcrypt.
   password || "", // objection validates according to provided json schema
   await bcrypt.genSalt(10)
 );
+
+// normalizes account
+export const normalizeAccount = (account: Account | undefined) =>
+ account && evolve({
+   organisations: map((organisation: OrganisationAccount) => ({
+     id: prop("organisation", organisation),
+     isAdmin: prop("isAdmin", organisation)}
+    )),
+ }, account as object);
