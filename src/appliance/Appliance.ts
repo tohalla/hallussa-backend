@@ -1,4 +1,6 @@
 import { Model } from "objection";
+import { evolve, map, prop } from "ramda";
+
 import ApplianceMaintainer from "../account/relation-models/ApplianceMaintainer";
 
 export default class Appliance extends Model {
@@ -40,3 +42,9 @@ export default class Appliance extends Model {
     this.updatedAt = new Date().toISOString();
   }
 }
+
+// normalizes maintainer
+export const normalizeAppliance = (appliance: Appliance | undefined) =>
+ appliance && evolve({
+   maintainers: map(prop("appliance")),
+ }, appliance as object);
