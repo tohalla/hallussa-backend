@@ -1,23 +1,18 @@
 import { Model } from "objection";
-import Appliance from "../appliance/Appliance";
+import ApplianceMaintainer from "../account/relation-models/ApplianceMaintainer";
 import Organisation from "../organisation/Organisation";
 
 export default class Maintainer extends Model {
   public static tableName = "maintainer";
 
   public static relationMappings = {
-    appliances: {
+    appliances: { // should never eagerly load appliances, only ID's
       join: {
         from: "maintainer.id",
-        through: {
-          extra: ["isAdmin"],
-          from: "appliance_maintainer.maintainer",
-          to: "appliance_maintainer.appliance",
-        },
-        to: "appliance.id",
+        to: "appliance_maintainer.maintainer",
       },
-      modelClass: Appliance,
-      relation: Model.ManyToManyRelation,
+      modelClass: ApplianceMaintainer,
+      relation: Model.HasManyRelation,
     },
     owner: {
       join: {
