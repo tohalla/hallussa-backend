@@ -1,27 +1,32 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
-import { path } from "ramda";
+import { map, path } from "ramda";
 
 import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
 import { secureRoute } from "../auth/jwt";
 import maintainerRouter from "../maintainer/router";
 import { secureOrganisation } from "./middleware";
-import Organisation, { OrganisationAccountRelation } from "./Organisation";
+import Organisation, { normalizeOrganisation } from "./Organisation";
 
 const router = new Router({ prefix: "/organisations" })
   .use(secureRoute)
   .get("/", async (ctx) => {
     const accountID = path(["state", "claims", "accountId"], ctx);
     // TODO: Should organisations be public? if so, limit public data
-    ctx.body = await Organisation
+    ctx.body = map(normalizeOrganisation, await Organisation
       .query()
       .select()
       .joinRaw(
         "JOIN organisation_account ON organisation_account.account=?::integer " +
         "AND organisation_account.organisation=organisation.id",
         accountID
-      );
+      )
+      .eager(ctx.query.eager)
+      .modifyEager("accounts", (builder) => builder.select("account", "isAdmin"))
+      .modifyEager("appliances", (builder) => builder.select("id"))
+      .modifyEager("maintainers", (builder) => builder.select("id"))
+    );
   })
   .post("/", secureRoute, bodyParser(), async (ctx) => {
     const trx = await transaction.start(Organisation);
@@ -34,7 +39,7 @@ const router = new Router({ prefix: "/organisations" })
       // add current account to created organisation with admin rights
       await organisation
         .$relatedQuery("accounts", trx)
-        .relate<OrganisationAccountRelation>({
+        .relate<any>({
           id: ctx.state.claims.accountId,
           isAdmin: true,
         });
@@ -53,10 +58,15 @@ router
   // account must be authenticated and a member of the organisation to access its routes
   .param("organisation", secureOrganisation)
   .get("/:organisation", async (ctx) => {
-    ctx.body = await Organisation.query()
+    ctx.body = normalizeOrganisation(await Organisation.query()
       .select()
       .where("id", "=", ctx.params.organisation)
-      .first();
+      .eager(ctx.query.eager)
+      .modifyEager("accounts", (builder) => builder.select("account", "isAdmin"))
+      .modifyEager("appliances", (builder) => builder.select("id"))
+      .modifyEager("maintainers", (builder) => builder.select("id"))
+      .first()
+    );
   })
   .use("/:organisation", applianceRouter.routes(), applianceRouter.allowedMethods())
   .use("/:organisation", maintainerRouter.routes(), maintainerRouter.allowedMethods());

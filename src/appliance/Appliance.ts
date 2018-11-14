@@ -1,22 +1,19 @@
 import { Model } from "objection";
-import Organisation from "../organisation/Organisation";
+import { evolve, map, prop } from "ramda";
+
+import ApplianceMaintainer from "../relation-models/ApplianceMaintainer";
 
 export default class Appliance extends Model {
   public static tableName = "appliance";
 
   public static relationMappings = {
-    maintainers: {
+    maintainers: { // should never eagerly load maintainers, only ID's
       join: {
         from: "appliance.id",
-        through: {
-          extra: ["isAdmin"],
-          from: "appliance_maintainer.appliance",
-          to: "appliance_maintainer.maintainer",
-        },
-        to: "maintainer.id",
+        to: "appliance_maintainer.appliance",
       },
-      modelClass: Appliance,
-      relation: Model.ManyToManyRelation,
+      modelClass: ApplianceMaintainer,
+      relation: Model.HasManyRelation,
     },
   };
 
@@ -45,3 +42,9 @@ export default class Appliance extends Model {
     this.updatedAt = new Date().toISOString();
   }
 }
+
+// normalizes maintainer
+export const normalizeAppliance = (appliance: Appliance | undefined) =>
+ appliance && evolve({
+   maintainers: map(prop("maintainer")),
+ }, appliance as object);

@@ -1,17 +1,21 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
+import { map } from "ramda";
 
 import Appliance from "../appliance/Appliance";
-import Maintainer from "./Maintainer";
+import Maintainer, { normalizeMaintainer } from "./Maintainer";
 
 export default new Router({ prefix: "/maintainers" })
   .get("/", async (ctx) => {
     // organisation param already set in parent router
     const { organisation } = ctx.params;
-    ctx.body = await Maintainer
+    ctx.body = map(normalizeMaintainer, await Maintainer
       .query()
       .select()
-      .where("organisation", "=", organisation);
+      .where("organisation", "=", organisation)
+      .eager(ctx.query.eager)
+      .modifyEager("appliances", (builder) => builder.select("appliance"))
+    );
   })
   .post("/", bodyParser(), async (ctx) => {
     // organisation param already set in parent router
@@ -32,17 +36,18 @@ export default new Router({ prefix: "/maintainers" })
   })
   .get("/:maintainer", async (ctx) => {
     const { maintainer } = ctx.params;
-    ctx.body = await Maintainer
+    ctx.body = normalizeMaintainer((await Maintainer
       .query()
       .select()
       .where("id", "=", maintainer)
-      .first();
+      .eager(ctx.query.eager)
+      .modifyEager("appliances", (builder) => builder.select("appliance"))
+      .first()
+    ));
   })
   .del("/:maintainer", async (ctx) => {
     const { maintainer } = ctx.params;
-    await Maintainer
-      .query()
-      .deleteById(maintainer);
+    await Maintainer.query().deleteById(maintainer);
     ctx.status = 200;
   })
   .get("/:maintainer/appliances", async (ctx) => {
