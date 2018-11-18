@@ -33,16 +33,19 @@ export default class Account extends Model {
 
   public id?: number;
   public password?: string;
+  public retypePassword?: string;
   public email?: string;
   public updatedAt?: string;
   public createdAt?: string;
 
   public async $beforeInsert() {
+    delete this.retypePassword; // column does not exists in database
     this.password = await hashPassword(this.password as string); // password required and validated by json schema
   }
 
   public async $beforeUpdate() {
     delete this.id; // should not update id field
+    delete this.retypePassword; // column does not exists in database
     delete this.createdAt; // should not update createdAt field
     delete this.email; // TODO: send email confirmation if email update was requested
 
