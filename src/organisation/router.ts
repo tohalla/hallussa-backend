@@ -2,7 +2,7 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { map, path } from "ramda";
 
-import { transaction } from "objection";
+import { Model, transaction } from "objection";
 import applianceRouter from "../appliance/router";
 import { secureRoute } from "../auth/jwt";
 import maintainerRouter from "../maintainer/router";
@@ -37,12 +37,11 @@ const router = new Router({ prefix: "/organisations" })
       ).returning("*");
 
       // add current account to created organisation with admin rights
-      await organisation
-        .$relatedQuery("accounts", trx)
-        .relate<any>({
-          id: ctx.state.claims.accountId,
-          isAdmin: true,
-        });
+      await trx.raw(
+        "INSERT INTO organisation_account (organisation, account, is_admin) " +
+        "VALUES (?::integer, ?::integer, ?::boolean)",
+        [organisation.id as number, ctx.state.claims.accountId, true]
+      );
 
       trx.commit();
       ctx.body = organisation;
