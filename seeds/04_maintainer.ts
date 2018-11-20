@@ -4,40 +4,40 @@ exports.seed = async (knex: Knex) => {
   await knex("maintainer").del();
   await knex("maintainer").insert([
     {
-      email: "main.tainer1@hallussa.fi",
-      firstName: "main",
+      email: "markku.alen@hallussa.fi",
+      firstName: "Markku",
       id: 1,
-      lastName: "tainer1",
-      organisation: 1,
+      lastName: "Alen",
+      organisation: 6,
     },
     {
-      email: "main.tainer2@hallussa.fi",
-      firstName: "main",
+      email: "nikke.nakuttaja@hallussa.fi",
+      firstName: "Nikke",
       id: 2,
-      lastName: "tainer2",
-      organisation: 1,
+      lastName: "Nakuttaja",
+      organisation: 5,
     },
     {
-      email: "main.tainer3@hallussa.fi",
-      firstName: "main",
+      email: "aku.hirvinen@hallussa.fi",
+      firstName: "Aku",
       id: 3,
-      lastName: "tainer3",
-      organisation: 1,
+      lastName: "Hirvonen",
+      organisation: 5,
     },
     {
-      email: "main.tainer4@hallussa.fi",
-      firstName: "main",
+      email: "peter.parker@hallussa.fi",
+      firstName: "Peter",
       id: 4,
-      lastName: "tainer4",
+      lastName: "Parker",
       organisation: 3,
     },
   ]);
   await knex("appliance_maintainer").insert([
-    {maintainer: 1, appliance: 1},
-    {maintainer: 2, appliance: 1},
-    {maintainer: 3, appliance: 1},
+    {maintainer: 1, appliance: 4},
+    {maintainer: 2, appliance: 2},
+    {maintainer: 2, appliance: 3},
     {maintainer: 3, appliance: 2},
-    {maintainer: 1, appliance: 2},
+    {maintainer: 3, appliance: 3},
   ]);
   await knex.raw(
     "SELECT pg_catalog.setval(pg_get_serial_sequence('maintainer', 'id'), (SELECT MAX(id) FROM maintainer)+1);"
