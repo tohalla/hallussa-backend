@@ -12,4 +12,7 @@ exports.seed = async (knex: Knex) => {
       password: await hashPassword("test"),
     },
   ]);
+  await knex.raw(
+    "SELECT pg_catalog.setval(pg_get_serial_sequence('account', 'id'), (SELECT MAX(id) FROM account)+1);"
+  );
 };
