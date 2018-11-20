@@ -39,4 +39,7 @@ exports.seed = async (knex: Knex) => {
     {maintainer: 3, appliance: 2},
     {maintainer: 1, appliance: 2},
   ]);
+  await knex.raw(
+    "SELECT pg_catalog.setval(pg_get_serial_sequence('maintainer', 'id'), (SELECT MAX(id) FROM maintainer)+1);"
+  );
 };

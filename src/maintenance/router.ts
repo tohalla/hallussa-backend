@@ -35,7 +35,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
   .post("/accept", async (ctx) => {
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
     if (maintenanceEvent.assignedTo) {
-      return ctx.throw(404, "Maintenance event has already been assigned.");
+      return ctx.throw(400, "Maintenance event has already been assigned.");
     }
     maintenanceEvent.assign(maintenanceTask.hash);
     // TODO: maintenance task has been accepted page
