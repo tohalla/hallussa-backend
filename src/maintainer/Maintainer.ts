@@ -35,6 +35,7 @@ export default class Maintainer extends Model {
   public updatedAt?: string;
   public createdAt?: string;
   public organisation?: number;
+  public appliances: ReadonlyArray<number> = [];
 
   public async $beforeUpdate() {
     delete this.id; // should not update id field

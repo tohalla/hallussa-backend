@@ -31,6 +31,7 @@ const router = new Router({ prefix: "/organisations" })
   .post("/", secureRoute, bodyParser(), async (ctx) => {
     const trx = await transaction.start(Organisation);
     try {
+      const accountId = ctx.state.claims.accountId;
       // attempt to create a new organisation
       const organisation = await Organisation.query(trx).insert(
         ctx.request.body || {}
@@ -40,11 +41,14 @@ const router = new Router({ prefix: "/organisations" })
       await trx.raw(
         "INSERT INTO organisation_account (organisation, account, is_admin) " +
         "VALUES (?::integer, ?::integer, ?::boolean)",
-        [organisation.id as number, ctx.state.claims.accountId, true]
+        [organisation.id as number, accountId, true]
       );
 
       trx.commit();
-      ctx.body = organisation;
+      ctx.body = {
+        ...organisation,
+        accounts: [{id: accountId, isAdmin: true}],
+      };
       ctx.status = 201;
     } catch (e) {
       // should roll back organisation creation if couldn't link it to account
