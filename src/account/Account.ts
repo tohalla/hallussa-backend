@@ -37,6 +37,7 @@ export default class Account extends Model {
   public email?: string;
   public updatedAt?: string;
   public createdAt?: string;
+  public organisations: ReadonlyArray<{id: number, isAdmin: boolean}> = [];
 
   public async $beforeInsert() {
     delete this.retypePassword; // column does not exists in database
