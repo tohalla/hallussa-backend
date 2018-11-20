@@ -2,6 +2,7 @@ import { Model } from "objection";
 import { evolve, map, prop } from "ramda";
 
 import ApplianceMaintainer from "../relation-models/ApplianceMaintainer";
+import { formatPhone } from "../util/format";
 
 export default class Maintainer extends Model {
   public static tableName = "maintainer";
@@ -26,7 +27,7 @@ export default class Maintainer extends Model {
       email: {type: "string", maxLength: 256},
       firstName: {type: "string", minLength: 1, maxLength: 64},
       lastName: {type: "string", minLength: 1, maxLength: 64},
-      phone: {type: "string", pattern: "^(\+)?\d{1,15}$", maxLength: 16},
+      phone: {type: "string", maxLength: 16},
     },
     required: ["firstName", "lastName", "email", "phone"],
   };
@@ -35,14 +36,20 @@ export default class Maintainer extends Model {
   public updatedAt?: string;
   public createdAt?: string;
   public organisation?: number;
+  public phone?: string;
   public appliances: ReadonlyArray<number> = [];
 
-  public async $beforeUpdate() {
+  public $beforeUpdate() {
     delete this.id; // should not update id field
     delete this.createdAt; // should not update createdAt field
     delete this.organisation; // should not update organisation field
 
+    this.phone = formatPhone(this.phone);
     this.updatedAt = new Date().toISOString();
+  }
+
+  public $beforeInsert() {
+    this.phone = formatPhone(this.phone);
   }
 }
 
