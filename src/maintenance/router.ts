@@ -48,6 +48,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
 export default new Router({ prefix: "/maintenance/:applianceHash" })
   .param("applianceHash", applianceFromHash)
   .get("/", (ctx) => {
+    console.log("foo bar");
     // TODO: return maintenance report form page
     const Request = require("../templates/maintenance/Request");
     ctx.body = Request(applianceFromHash);
