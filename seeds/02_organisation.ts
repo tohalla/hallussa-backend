@@ -15,7 +15,7 @@ exports.seed = async (knex: Knex) => {
     {organisation: 4, account: 2, isAdmin: true},
     {organisation: 5, account: 3, isAdmin: true},
     {organisation: 2, account: 4, isAdmin: true},
-    {organisation: 6, account: 5, isAdmin: false},
+    {organisation: 6, account: 3, isAdmin: false},
   ]);
   await knex.raw(
     "SELECT pg_catalog.setval(pg_get_serial_sequence('organisation', 'id'), (SELECT MAX(id) FROM organisation)+1);"
