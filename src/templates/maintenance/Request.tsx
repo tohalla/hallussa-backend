@@ -9,7 +9,6 @@ export default (hash: string) => renderStylesToString(renderToStaticMarkup(
   <body>
     <div>
       <p>This is the hash: {hash}</p>
-      Hello world! testaan maailmaa. Moi taas
       <button className={button}>Click me!</button>
       <form method="POST" className={form} action="#">
         <input type="text"></input>
