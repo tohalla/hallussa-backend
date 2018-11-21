@@ -21,7 +21,7 @@ interface Data {
   to: string | string[];
   "recipient-variables"?: {
     [key: string]: RecipientVar
-  }
+  };
 }
 
 interface Appliance {
@@ -49,7 +49,7 @@ const sendFailEmail = async (senderEmail: string, msg: string) => {
   } catch (e) {
     // TODO put to ErrorLog
   }
-}
+};
 
 export const sendRepairRequestEmail = async (
   senderEmail: string,
@@ -103,10 +103,10 @@ const findRecipientVars = (recipients: ReadonlyArray<Recipient>, subject: string
       name: `${firstName} ${lastName}`,
       subject,
       unsubscribeUrl: recipient.unsubscribeUrl || "",
-    }
+    };
   });
   return recipientVars;
-}
+};
 
 export const informSubscribers = async (
     applianceName: string,
@@ -129,7 +129,7 @@ export const informSubscribers = async (
   } catch (e) {
     // TODO put to ErrorLog
   }
-}
+};
 
 export const inviteEmail = async (
     inviterEmail: string,

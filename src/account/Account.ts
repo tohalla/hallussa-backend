@@ -1,8 +1,21 @@
 import bcrypt from "bcryptjs";
-import { Model, ModelOptions } from "objection";
+import { Model } from "objection";
+import { evolve, map, prop } from "ramda";
+import OrganisationAccount from "../relation-models/OrganisationAccount";
 
 export default class Account extends Model {
   public static tableName = "account";
+
+  public static relationMappings = {
+    organisations: { // should never eagerly load organisations, only ID's
+      join: {
+        from: "account.id",
+        to: "organisation_account.account",
+      },
+      modelClass: OrganisationAccount,
+      relation: Model.HasManyRelation,
+    },
+  };
 
   public static jsonSchema = {
     type: "object",
@@ -10,8 +23,8 @@ export default class Account extends Model {
     properties: {
       id: {type: "integer"},
 
-      firstName: {type: "string", minLength: 1, maxLength: 255},
-      lastName: {type: "string", minLength: 1, maxLength: 255},
+      firstName: {type: "string", minLength: 1, maxLength: 64},
+      lastName: {type: "string", minLength: 1, maxLength: 64},
       password: {type: "string", minLength: 6},
       // validation of the email address is done at the client side, after which the confirmation email is sent
     },
@@ -20,16 +33,20 @@ export default class Account extends Model {
 
   public id?: number;
   public password?: string;
+  public retypePassword?: string;
   public email?: string;
   public updatedAt?: string;
-  public createdAt?: Date;
+  public createdAt?: string;
+  public organisations: ReadonlyArray<{id: number, isAdmin: boolean}> = [];
 
   public async $beforeInsert() {
+    delete this.retypePassword; // column does not exists in database
     this.password = await hashPassword(this.password as string); // password required and validated by json schema
   }
 
   public async $beforeUpdate() {
     delete this.id; // should not update id field
+    delete this.retypePassword; // column does not exists in database
     delete this.createdAt; // should not update createdAt field
     delete this.email; // TODO: send email confirmation if email update was requested
 
@@ -45,7 +62,16 @@ export default class Account extends Model {
 }
 
 // hash and salt plain text password
-const hashPassword = async (password: string): Promise<string> => bcrypt.hash(
+export const hashPassword = async (password: string): Promise<string> => bcrypt.hash(
   password || "", // objection validates according to provided json schema
   await bcrypt.genSalt(10)
 );
+
+// normalizes account
+export const normalizeAccount = (account: Account | undefined) =>
+ account && evolve({
+   organisations: map((organisation: OrganisationAccount) => ({
+     id: prop("organisation", organisation),
+     isAdmin: prop("isAdmin", organisation)}
+    )),
+ }, account as object);
