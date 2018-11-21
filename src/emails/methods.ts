@@ -1,8 +1,8 @@
 import { getMailgun } from "./mailgun";
 
-import inform from "./templates/inform";
-import repairRequest from "./templates/repairRequest";
-import subscribe from "./templates/subscribe";
+import inform from "../templates/emails/inform";
+import repairRequest from "../templates/emails/repairRequest";
+import subscribe from "../templates/emails/subscribe";
 
 const from = "HALLUSSA <noreply@hallussa.com>";
 

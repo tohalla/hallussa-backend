@@ -1,8 +1,8 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import MaintenanceEvent from "./../../maintenance/MaintenanceEvent";
 import Footer from "./components/Footer";
 import Signature from "./components/Signature";
-import MaintenanceEvent from "./../../maintenance/MaintenanceEvent";
 
 interface Appliance {
   name: string;
@@ -19,7 +19,7 @@ export default (contents: {
   const {
     appliance: { name, model, manufacturer, description },
     maintenanceEvent: { description: maintenanceDescription },
-    request
+    request,
   } = contents;
   return renderToStaticMarkup(
     <div>

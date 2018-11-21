@@ -6,5 +6,5 @@ export default () => {
       <p>Best regards,</p>
       <p>Team Hallussa</p>
     </div>
-  )
-}
+  );
+};

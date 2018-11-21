@@ -52,7 +52,7 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
   .param("applianceHash", applianceFromHash)
   .get("/", async (ctx) => {
     // TODO: return maintenance report form page
-    console.log("foo")
+    console.log("foo");
     ctx.body = Request(ctx.params.applianceHash);
   })
   .post("/", bodyParser(), async (ctx) => {

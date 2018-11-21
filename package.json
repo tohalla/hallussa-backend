@@ -6,7 +6,8 @@
     "start": "./node_modules/ts-node/dist/bin.js src/index.ts",
     "watch": "./node_modules/nodemon/bin/nodemon.js --legacy-watch",
     "migrate": "knex migrate:latest --knexfile knex.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "tslint -c tslint.json './src/**/*.ts{,x}'"
   },
   "repository": {
     "type": "git",
