@@ -49,6 +49,8 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
   .param("applianceHash", applianceFromHash)
   .get("/", (ctx) => {
     // TODO: return maintenance report form page
+    const Request = require("../templates/maintenance/Request");
+    ctx.body = Request(applianceFromHash);
   })
   .post("/", bodyParser(), async (ctx) => {
     // appliance is set at applianceFromHash middleware
