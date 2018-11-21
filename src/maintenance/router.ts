@@ -6,6 +6,9 @@ import MaintenanceEvent from "./MaintenanceEvent";
 import MaintenanceTask from "./MaintenanceTask";
 import { applianceFromHash, secureEvent } from "./middleware";
 
+// Templates
+import Request from "../templates/maintenance/Request";
+
 interface MaintenanceState {
   appliance: Appliance;
   maintenanceEvent: MaintenanceEvent;
@@ -47,11 +50,10 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
 
 export default new Router({ prefix: "/maintenance/:applianceHash" })
   .param("applianceHash", applianceFromHash)
-  .get("/", (ctx) => {
-    console.log("foo bar");
+  .get("/", async (ctx) => {
     // TODO: return maintenance report form page
-    const Request = require("../templates/maintenance/Request");
-    ctx.body = Request(applianceFromHash);
+    console.log("foo")
+    ctx.body = Request(ctx.params.applianceHash);
   })
   .post("/", bodyParser(), async (ctx) => {
     // appliance is set at applianceFromHash middleware

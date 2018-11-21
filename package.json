@@ -3,7 +3,8 @@
   "description": "",
   "scripts": {
     "postinstall": "tsc",
-    "watch": "tsc -w",
+    "start": "./node_modules/ts-node/dist/bin.js src/index.ts",
+    "watch": "./node_modules/nodemon/bin/nodemon.js --legacy-watch",
     "migrate": "knex migrate:latest --knexfile knex.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -35,6 +36,8 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^6.0.0",
+    "emotion": "^9.2.12",
+    "emotion-server": "^9.2.12",
     "jsonwebtoken": "^8.3.0",
     "knex": "^0.15.2",
     "koa": "^2.5.3",
