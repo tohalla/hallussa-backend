@@ -12,6 +12,12 @@ exports.seed = async (knex: Knex) => {
     {id: 6, name: "Print-IT Oy", organisationIdentifier: "656"},
   ]);
   await knex("organisation_account").insert([
+    {organisation: 1, account: 1, isAdmin: true},
+    {organisation: 2, account: 1, isAdmin: true},
+    {organisation: 3, account: 1, isAdmin: true},
+    {organisation: 4, account: 1, isAdmin: true},
+    {organisation: 5, account: 1, isAdmin: true},
+    {organisation: 6, account: 1, isAdmin: true},
     {organisation: 4, account: 2, isAdmin: true},
     {organisation: 5, account: 3, isAdmin: true},
     {organisation: 2, account: 4, isAdmin: true},
