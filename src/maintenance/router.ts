@@ -8,7 +8,10 @@ import MaintenanceTask from "./MaintenanceTask";
 import { applianceFromHash, secureEvent } from "./middleware";
 
 // Templates
-import ExistingRequest from "../templates/maintenance/request/ExistingRequest";
+import ExistingDescription from "../templates/maintenance/request/ExistingDescription";
+import ExistingRequestForm from "../templates/maintenance/request/ExistingRequestForm";
+import NewDescription from "../templates/maintenance/request/NewDescription";
+import NewRequestForm from "../templates/maintenance/request/NewRequestForm";
 import Request from "../templates/maintenance/request/Request";
 
 interface MaintenanceState {
@@ -62,21 +65,38 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
       .first();
 
     ctx.body = event ?
-      ExistingRequest(ctx.params.applianceHash)
-    : Request(
-      ctx.params.applianceHash,
-      ctx.state.appliance.name,
-      ctx.state.organisation.name
+      Request(
+        ctx.params.applianceHash,
+        ctx.state.appliance.name,
+        ctx.state.organisation.name,
+        ExistingDescription,
+        ExistingRequestForm
+      ) : Request(
+        ctx.params.applianceHash,
+        ctx.state.appliance.name,
+        ctx.state.organisation.name,
+        NewDescription,
+        NewRequestForm
     );
   })
   .post("/", bodyParser(), async (ctx) => {
     // appliance is set at applianceFromHash middleware
     const appliance = ctx.state.appliance as Appliance;
-    const description = path(["request", "body", "description"], ctx) as string;
-    await MaintenanceEvent.query().insert({
-      appliance: appliance.id,
-      description,
-    });
+    const description = path(["request", "body", "description"], ctx) as string | undefined;
+    const subscribe = path(["request", "body", "subscribe"], ctx) as string | undefined;
+
+    if (description) {
+      await MaintenanceEvent.query().insert({
+        appliance: appliance.id,
+        description,
+      });
+    }
+
+    if (subscribe) {
+      // TODO: Subscription
+    }
+
     ctx.status = 201;
+    ctx.redirect("https://google.com");
   })
   .use(taskRouter.routes(), taskRouter.allowedMethods());
