@@ -5,6 +5,7 @@ import { merge } from "ramda";
 import Appliance from "../appliance/Appliance";
 import MaintenanceEvent from "./MaintenanceEvent";
 import MaintenanceTask from "./MaintenanceTask";
+import Organisation from "../organisation/Organisation";
 
 export const secureEvent: IParamMiddleware = async (taskHash, ctx, next) => {
   const maintenanceTask = await MaintenanceTask
@@ -41,16 +42,26 @@ export const secureEvent: IParamMiddleware = async (taskHash, ctx, next) => {
   }
 };
 
-export const applianceFromHash: IParamMiddleware = async (
+export const applianceFromHash = (
+  options: { fetchOrganisation: boolean }
+): IParamMiddleware => async (
   applianceHash,
   ctx,
   next
 ) => {
   ctx.state.appliance = await Appliance
     .query()
-    .select("id")
+    .select("id", "name", "organisation")
     .where("hash", "=", applianceHash)
     .first();
+
+  if (options.fetchOrganisation) {
+    ctx.state.organisation = await Organisation
+      .query()
+      .select("name")
+      .where("id", "=", ctx.state.appliance.organisation)
+      .first();
+  }
 
   if (typeof ctx.state.appliance === "undefined") {
     throw new NotFoundError("appliance not found with given hash");
