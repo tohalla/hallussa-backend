@@ -32,7 +32,6 @@ export const verify = (token: string) => new Promise<JWTPayload>((resolve, rejec
   if (!process.env.JWT_SECRET) {
     return reject(new Error("define JWT_SECRET environment variable"));
   }
-   // TODO: also issuer and subject should be verified here
   jwt.verify(token, process.env.JWT_SECRET, (err, payload) =>
     err ? reject(err) : resolve(payload as JWTPayload)
   );
