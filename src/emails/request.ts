@@ -1,4 +1,3 @@
-import { sendFailEmail } from "./fail";
 import { send, sender } from "./methods";
 
 import html from "../templates/emails/repairRequest";
@@ -10,22 +9,28 @@ interface Appliance {
   description: string;
 }
 
-export const sendRepairRequestEmail = async (
-  senderEmail: string,
-  recipient: string,
-  contents: {
-    appliance: Appliance,
-    request: string
-  }) => {
-  const data = {
+export interface RequestParams {
+  orgId: number;
+  orgName: string;
+  appName: string;
+  appDescription: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  createdAt: number;
+  eventDescription: string;
+}
+
+export const sendRepairRequestEmail = async (data: RequestParams) => {
+  const email = {
     from: sender,
-    html: html(contents),
-    subject: "An appliance needs maintanance.",
-    to: recipient,
-  };
+    html: html(data),
+    subject: "An appliance needs maintenance.",
+    to: data.email || "error@hallussa.fi",
+  }
   try {
-    await send(data);
+    await send(email);
   } catch (e) {
-    await sendFailEmail(senderEmail, contents.request);
+    // await sendFailEmail("foo", "bar");
   }
 };

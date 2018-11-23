@@ -1,8 +1,11 @@
+import format from "date-fns/format";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import MaintenanceEvent from "./../../maintenance/MaintenanceEvent";
+
 import Footer from "./components/Footer";
 import Signature from "./components/Signature";
+
+import { RequestParams } from "../../emails/request";
 
 interface Appliance {
   name: string;
@@ -11,29 +14,28 @@ interface Appliance {
   description: string;
 }
 
-export default (contents: {
-  appliance: Appliance;
-  maintenanceEvent: MaintenanceEvent;
-  request: string;
-}) => {
+export default (data: RequestParams) => {
   const {
-    appliance: { name, model, manufacturer, description },
-    maintenanceEvent: { description: maintenanceDescription },
-    request,
-  } = contents;
+    orgName,
+    appName,
+    appDescription,
+    firstName,
+    lastName,
+    createdAt,
+    eventDescription,
+  } = data;
   return renderToStaticMarkup(
     <div>
+      <h1>Hello, {firstName} {lastName}.</h1>
       <h2>An appliance has been reported malfunctioning.</h2>
       <p>Details of the appliance:</p>
       <ul>
-        <li>Name: {name}</li>
-        <li>Model: {model}</li>
-        <li>Manufacturer: {manufacturer}</li>
-        <li>Description: {description}</li>
-        <li>Short description of the problem: {maintenanceDescription}</li>
+        <li>Organisation: {orgName}</li>
+        <li>Name: {appName}</li>
+        <li>Description: {appDescription}</li>
+        <li>Reported: {format(createdAt, "YYYY-MM-DD")}</li>
+        <li>Short description of the problem: {eventDescription}</li>
       </ul>
-      <p>Accept repair request:</p>
-      <p>{request}</p>
       <Signature />
       <Footer />
     </div>
