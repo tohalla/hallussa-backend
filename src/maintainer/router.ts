@@ -26,7 +26,7 @@ export default new Router({ prefix: "/maintainers" })
     }).returning("*");
     ctx.status = 201;
   })
-  .patch("/:maintainer", async (ctx) => {
+  .patch("/:maintainer", bodyParser(), async (ctx) => {
     const { maintainer } = ctx.params;
     ctx.body = await Maintainer
       .query()
