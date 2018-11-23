@@ -37,7 +37,7 @@ export default class MaintenanceTask extends Model {
     const data = path<RequestParams>(["rows", 0], await Model.raw(`
       SELECT
         organisation.id as org_id, organisation.name as org_name,
-        appliance.name as app_name, appliance.description as app_description,
+        appliance.name as app_name, appliance.description as app_description, appliance.hash as app_hash,
         maintainer.email as email, maintainer.first_name as first_name, maintainer.last_name as last_name,
         maintenance_event.description as event_description, maintenance_event.created_at as created_at
       FROM maintenance_task
@@ -48,7 +48,10 @@ export default class MaintenanceTask extends Model {
       WHERE maintenance_task.hash=?::uuid`, this.hash as string));
 
     if (data) {
-      sendRepairRequestEmail(data);
+      sendRepairRequestEmail({
+        ...data,
+        ["task_hash"]: this.hash as string,
+      });
     }
   }
 }
