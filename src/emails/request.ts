@@ -10,15 +10,15 @@ interface Appliance {
 }
 
 export interface RequestParams {
-  orgId: number;
-  orgName: string;
-  appName: string;
-  appDescription: string;
+  org_id: number;
+  org_name: string;
+  app_name: string;
+  app_description: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  createdAt: number;
-  eventDescription: string;
+  first_name: string;
+  last_name: string;
+  created_at: number;
+  event_description: string;
 }
 
 export const sendRepairRequestEmail = async (data: RequestParams) => {
@@ -27,10 +27,11 @@ export const sendRepairRequestEmail = async (data: RequestParams) => {
     html: html(data),
     subject: "An appliance needs maintenance.",
     to: data.email || "error@hallussa.fi",
-  }
+  };
   try {
     await send(email);
   } catch (e) {
+    // TODO send fail email.
     // await sendFailEmail("foo", "bar");
   }
 };

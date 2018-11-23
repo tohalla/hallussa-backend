@@ -34,18 +34,18 @@ export default class MaintenanceTask extends Model {
   }
 
   public async $afterInsert() {
-    const data = path<RequestParams>(["rows", 0], Model.raw(`
+    const data = path<RequestParams>(["rows", 0], await Model.raw(`
       SELECT
-        organisation.id as orgId, organisation.name as orgName,
-        appliance.name as appName, appliance.description as appDescription,
-        maintainer.email as email, maintainer.first_name as firstName, maintainer.last_name as lastName,
-        maintenance_event.description as eventDescription, maintenance_event.created_at as createdAt
+        organisation.id as org_id, organisation.name as org_name,
+        appliance.name as app_name, appliance.description as app_description,
+        maintainer.email as email, maintainer.first_name as first_name, maintainer.last_name as last_name,
+        maintenance_event.description as event_description, maintenance_event.created_at as created_at
       FROM maintenance_task
         JOIN maintainer ON maintainer.id = maintenance_task.maintainer
         JOIN maintenance_event ON maintenance_event.id = maintenance_task.maintenance_event
         JOIN appliance ON appliance.id = maintenance_event.appliance
         JOIN organisation ON organisation.id = appliance.organisation
-      WHERE hash=?::string`));
+      WHERE maintenance_task.hash=?::uuid`, this.hash as string));
 
     if (data) {
       sendRepairRequestEmail(data);

@@ -16,25 +16,25 @@ interface Appliance {
 
 export default (data: RequestParams) => {
   const {
-    orgName,
-    appName,
-    appDescription,
-    firstName,
-    lastName,
-    createdAt,
-    eventDescription,
+    org_name,
+    app_name,
+    app_description,
+    first_name,
+    last_name,
+    created_at,
+    event_description,
   } = data;
   return renderToStaticMarkup(
     <div>
-      <h1>Hello, {firstName} {lastName}.</h1>
+      <h1>Hello, {first_name} {last_name}.</h1>
       <h2>An appliance has been reported malfunctioning.</h2>
       <p>Details of the appliance:</p>
       <ul>
-        <li>Organisation: {orgName}</li>
-        <li>Name: {appName}</li>
-        <li>Description: {appDescription}</li>
-        <li>Reported: {format(createdAt, "YYYY-MM-DD")}</li>
-        <li>Short description of the problem: {eventDescription}</li>
+        <li>Organisation: {org_name}</li>
+        <li>Name: {app_name}</li>
+        <li>Description: {app_description}</li>
+        <li>Reported: {format(created_at, "YYYY-MM-DD")}</li>
+        <li>Short description of the problem: {event_description}</li>
       </ul>
       <Signature />
       <Footer />
