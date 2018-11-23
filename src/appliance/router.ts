@@ -55,7 +55,7 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
       maintainer
     );
 
-    ctx.body = 201;
+    ctx.status = 201;
   })
   .del("/maintainers/:maintainer", async (ctx) => {
     const { appliance, maintainer } = ctx.params;

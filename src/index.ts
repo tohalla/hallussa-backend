@@ -21,11 +21,15 @@ app
     ctx.response.set("Access-Control-Allow-Credentials", "true");
     ctx.response.set(
       "Access-Control-Request-Method",
-      "GET, POST, PUT, OPTIONS"
+      "GET, PATCH, POST, DELETE, OPTIONS"
     );
     ctx.response.set(
       "Access-Control-Allow-Headers",
       "Content-Type, Authorization"
+    );
+    ctx.response.set(
+      "Access-Control-Allow-Methods",
+      "GET, PATCH, POST, DELETE, OPTIONS"
     );
     return next();
   })
