@@ -3,6 +3,7 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import container, { body } from "../../../emotion-styles/src/container";
+import logo from "../../../emotion-styles/src/logo";
 import { logoContainer, uppercaseTitle } from "../../../emotion-styles/src/topbar";
 import Footer from "../../shared/Footer";
 import Root from "../../shared/Root";
@@ -19,9 +20,9 @@ export default (
   <Root>
     <ViewContainer>
       <TopBar>
-        <div style={{ display: "flex" }}>
-          <div className={logoContainer} style={{ position: "absolute" }}>
-            logo
+        <div style={{ display: "flex", flexGrow: 1 }}>
+          <div className={logoContainer} style={{ position: "absolute", margin: "11px" }}>
+            <img src="../../../assets/img/hallussa-qr.png" className={logo} />
           </div>
           <div className={uppercaseTitle} style={{ flexGrow: 1 }}>
             Maintenance Report
