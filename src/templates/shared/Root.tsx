@@ -1,6 +1,7 @@
 import { css } from "emotion";
 import React, { ReactFragment } from "react";
 
+import "../../emotion-styles/src"; // Inject globalStyles
 import { body } from "../../emotion-styles/src/container";
 
 const root = css`
