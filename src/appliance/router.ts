@@ -28,7 +28,8 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
       .query()
       .patch(ctx.request.body || {})
       .where("id", "=", appliance)
-      .returning("*");
+      .returning("*")
+      .first();
   })
   .del("/", async (ctx) => {
     const { appliance } = ctx.params;

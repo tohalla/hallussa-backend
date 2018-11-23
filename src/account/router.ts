@@ -49,5 +49,5 @@ export default new Router({prefix: "/accounts"})
   .patch("/", secureRoute, bodyParser(), async (ctx) => {
     ctx.body = await Account.query().patch(
       ctx.request.body || {}
-    ).returning("*");
+    ).returning("*").first();
   });

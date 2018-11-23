@@ -1,4 +1,5 @@
 import { Model } from "objection";
+import { path } from "ramda";
 
 export default class MaintenanceTask extends Model {
   public static tableName = "maintenance_task";

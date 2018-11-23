@@ -32,7 +32,8 @@ export default new Router({ prefix: "/maintainers" })
       .query()
       .patch(ctx.request.body || {})
       .where("id", "=", maintainer)
-      .returning("*");
+      .returning("*")
+      .first();
   })
   .get("/:maintainer", async (ctx) => {
     const { maintainer } = ctx.params;

@@ -19,18 +19,9 @@ app
   .use(helmet()) // security headers
   .use((ctx, next) => {
     ctx.response.set("Access-Control-Allow-Credentials", "true");
-    ctx.response.set(
-      "Access-Control-Request-Method",
-      "GET, PATCH, POST, DELETE, OPTIONS"
-    );
-    ctx.response.set(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
-    ctx.response.set(
-      "Access-Control-Allow-Methods",
-      "GET, PATCH, POST, DELETE, OPTIONS"
-    );
+    ctx.response.set("Access-Control-Request-Method", "GET, PATCH, POST, DELETE, OPTIONS");
+    ctx.response.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    ctx.response.set("Access-Control-Allow-Methods", "GET, PATCH, POST, DELETE, OPTIONS");
     return next();
   })
   .use(errorHandling)
