@@ -1,6 +1,5 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import Footer from "./components/Footer";
 import Signature from "./components/Signature";
 
 export default (applianceName: string, type: "broken" | "repaired") => {
@@ -21,7 +20,6 @@ export default (applianceName: string, type: "broken" | "repaired") => {
         Hope we can be of service to you.
       </p>
       <Signature />
-      <Footer />
     </div>
   );
 };

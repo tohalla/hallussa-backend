@@ -2,7 +2,8 @@ import format from "date-fns/format";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import Footer from "./components/Footer";
+import "../../emotion-styles/src";
+
 import Signature from "./components/Signature";
 
 import { RequestParams } from "../../emails/request";
@@ -35,7 +36,6 @@ export default (data: RequestParams) => {
       </ul>
       <a href={maintenancePageURI}>maintenancePageURI</a>.
       <Signature />
-      <Footer />
     </div>
   );
 };
