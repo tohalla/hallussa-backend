@@ -22,13 +22,14 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
       .modifyEager("maintainers", (builder) => builder.select("maintainer"))
     );
   })
-  .patch("/", async (ctx) => {
+  .patch("/", bodyParser(), async (ctx) => {
     const { appliance } = ctx.params;
     ctx.body = await Appliance
       .query()
       .patch(ctx.request.body || {})
       .where("id", "=", appliance)
-      .returning("*");
+      .returning("*")
+      .first();
   })
   .del("/", async (ctx) => {
     const { appliance } = ctx.params;

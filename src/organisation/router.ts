@@ -71,6 +71,14 @@ router
       .first()
     );
   })
+  .patch("/:organisation", bodyParser(), async (ctx) => {
+    ctx.body = await Organisation
+      .query()
+      .patch(ctx.request.body || {})
+      .where("id", "=", ctx.params.organisation)
+      .returning("*")
+      .first();
+  })
   .use("/:organisation", applianceRouter.routes(), applianceRouter.allowedMethods())
   .use("/:organisation", maintainerRouter.routes(), maintainerRouter.allowedMethods());
 
