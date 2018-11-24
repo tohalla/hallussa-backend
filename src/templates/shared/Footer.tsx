@@ -1,4 +1,4 @@
-import React, { ReactFragment } from "react";
+import React from "react";
 
 export default () => (
   <footer>

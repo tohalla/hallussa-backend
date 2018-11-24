@@ -6,6 +6,7 @@ import { body } from "../../emotion-styles/src/container";
 
 const root = css`
   ${body};
+  min-height: 100vh;
 
   h1, h2, h3, h4, h5 {
     margin: 0;
