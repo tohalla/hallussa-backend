@@ -34,7 +34,7 @@ export default (data: RequestParams) => {
         <li>Reported: {format(created_at, "YYYY-MM-DD")}</li>
         <li>Short description of the problem: {event_description}</li>
       </ul>
-      <a href={maintenancePageURI}>maintenancePageURI</a>.
+      <a href={maintenancePageURI}>{maintenancePageURI}</a>.
       <Signature />
     </div>
   );
