@@ -79,6 +79,10 @@ router
       .returning("*")
       .first();
   })
+  .del("/:organisation", async (ctx) => {
+    await Organisation.query().deleteById(ctx.params.organisation);
+    ctx.status = 200;
+  })
   .use("/:organisation", applianceRouter.routes(), applianceRouter.allowedMethods())
   .use("/:organisation", maintainerRouter.routes(), maintainerRouter.allowedMethods());
 
