@@ -14,6 +14,11 @@ import NewDescription from "../templates/maintenance/request/NewDescription";
 import NewRequestForm from "../templates/maintenance/request/NewRequestForm";
 import Request from "../templates/maintenance/request/Request";
 
+import AcceptForm from "../templates/maintenance/resolve/AcceptForm";
+import Done from "../templates/maintenance/resolve/Done";
+import MaintenanceForm from "../templates/maintenance/resolve/MaintenanceForm";
+import Resolve from "../templates/maintenance/resolve/Resolve";
+
 interface MaintenanceState {
   appliance: Appliance;
   maintenanceEvent: MaintenanceEvent;
@@ -25,20 +30,49 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
   .get("/", (ctx) => {
     // values set in secureEvent middleware
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
+    const data = {
+      appliance: ctx.state.appliance,
+      event: maintenanceEvent,
+      organisation: ctx.state.organisation.name,
+      task: maintenanceTask,
+    };
+
     if (maintenanceEvent.assignedTo === maintenanceTask.maintainer) {
-      // TODO: return maintainer form
-      ctx.body = "maintainer form";
+      ctx.body = Resolve(
+        data,
+        MaintenanceForm
+      );
     } else if (!maintenanceEvent.assignedTo) {
-      // TODO: return accept maintenance page
-      ctx.body = "accept maintenance page";
+      ctx.body = Resolve(
+        data,
+        AcceptForm
+      );
     }
   })
   .post("/", bodyParser(), async (ctx) => {
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
+
     if (!maintenanceEvent.assignedTo) {
       return ctx.throw(401, "Maintenance event has not been assigned to anyone.");
     }
-    // TODO: handle maintainer form
+    const description = path(["request", "body", "description"], ctx) as string | undefined;
+    if (description) {
+      await MaintenanceEvent.query().update({
+        appliance: maintenanceEvent.appliance,
+        description,
+        resolvedAt: new Date().toISOString(),
+      });
+    }
+    // TODO infopage
+    ctx.body = Resolve(
+      {
+        appliance: ctx.state.appliance,
+        event: maintenanceEvent,
+        organisation: ctx.state.organisation.name,
+        task: maintenanceTask,
+      },
+      Done,
+    );
   })
   .post("/accept", async (ctx) => {
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
@@ -46,8 +80,8 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
       return ctx.throw(400, "Maintenance event has already been assigned.");
     }
     maintenanceEvent.assign(maintenanceTask.hash);
-    // TODO: maintenance task has been accepted page
     ctx.status = 200;
+    ctx.redirect(`${process.env.API_PREFIX}/maintenance/${ctx.params.appHash}/${ctx.params.taskHash}`);
   })
   .del("/", bodyParser(), async (ctx) => {
     // TODO: handle maintainer cancellation
@@ -56,7 +90,6 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
 export default new Router({ prefix: "/maintenance/:applianceHash" })
   .param("applianceHash", applianceFromHash({ fetchOrganisation: true }))
   .get("/", async (ctx) => {
-    // If resolvedAt is null or undefined
     const event = await MaintenanceEvent
       .query()
       .select()
