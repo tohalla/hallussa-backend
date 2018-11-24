@@ -33,6 +33,7 @@ export default class Appliance extends Model {
   public hash?: string;
   public createdAt?: string;
   public organisation?: number;
+  public maintainers: ReadonlyArray<number> = [];
 
   public async $beforeUpdate() {
     delete this.id; // should not update id field
