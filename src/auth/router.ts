@@ -13,7 +13,7 @@ export default new Router({ prefix: "/auth" })
     if (typeof accountId === "number") {
       ctx.body = await signToken(accountId);
     } else {
-      return ctx.throw(401);
+      return ctx.throw(401, "Invalid credentials");
     }
   })
   .post("/", bodyParser(), async (ctx) => {
