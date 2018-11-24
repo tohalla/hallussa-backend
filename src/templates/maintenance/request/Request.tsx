@@ -2,7 +2,7 @@ import { renderStylesToString } from "emotion-server";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import container, { body } from "../../../emotion-styles/src/container";
+import { growContainer } from "../../../emotion-styles/src/container";
 import logo from "../../../emotion-styles/src/logo";
 import { logoContainer, uppercaseTitle } from "../../../emotion-styles/src/topbar";
 import Footer from "../../shared/Footer";
@@ -29,7 +29,7 @@ export default (
           </div>
         </div>
       </TopBar>
-      <div className={container}>
+      <div className={growContainer}>
         <div style={{ width: "90vw", margin: "0 auto" }}>
           <h1>{name}</h1>
           <h5>{organisation}</h5>
