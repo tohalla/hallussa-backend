@@ -96,7 +96,7 @@ export default class MaintenanceEvent extends Model {
       trx.commit(); // commit changes
       this.assignedTo = maintainer;
     } catch (e) {
-      // should roll back somethign failed
+      // should roll back if something failed
       trx.rollback();
       throw e;
     }

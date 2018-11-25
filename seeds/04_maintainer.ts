@@ -31,6 +31,13 @@ exports.seed = async (knex: Knex) => {
       lastName: "Parker",
       organisation: 3,
     },
+    {
+      email: "juho.i.jokela@gmail.com",
+      firstName: "Juho",
+      id: 5,
+      lastName: "Jokela",
+      organisation: 3,
+    },
   ]);
   await knex("appliance_maintainer").insert([
     {maintainer: 1, appliance: 4},
@@ -38,6 +45,7 @@ exports.seed = async (knex: Knex) => {
     {maintainer: 2, appliance: 3},
     {maintainer: 3, appliance: 2},
     {maintainer: 3, appliance: 3},
+    {maintainer: 5, appliance: 2},
   ]);
   await knex.raw(
     "SELECT pg_catalog.setval(pg_get_serial_sequence('maintainer', 'id'), (SELECT MAX(id) FROM maintainer)+1);"

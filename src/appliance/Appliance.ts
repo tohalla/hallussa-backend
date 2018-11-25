@@ -29,7 +29,9 @@ export default class Appliance extends Model {
   };
 
   public id?: number;
+  public name?: string;
   public updatedAt?: string;
+  public description?: string;
   public hash?: string;
   public createdAt?: string;
   public organisation?: number;
