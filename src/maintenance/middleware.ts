@@ -3,9 +3,9 @@ import { NotFoundError } from "objection";
 import { merge } from "ramda";
 
 import Appliance from "../appliance/Appliance";
+import Organisation from "../organisation/Organisation";
 import MaintenanceEvent from "./MaintenanceEvent";
 import MaintenanceTask from "./MaintenanceTask";
-import Organisation from "../organisation/Organisation";
 
 export const secureEvent: IParamMiddleware = async (taskHash, ctx, next) => {
   const maintenanceTask = await MaintenanceTask
@@ -51,7 +51,7 @@ export const applianceFromHash = (
 ) => {
   ctx.state.appliance = await Appliance
     .query()
-    .select("id", "name", "organisation")
+    .select("id", "name", "organisation", "description")
     .where("hash", "=", applianceHash)
     .first();
 

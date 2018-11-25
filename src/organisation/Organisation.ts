@@ -48,6 +48,7 @@ export default class Organisation extends Model {
   };
 
   public id?: number;
+  public name?: string;
   public updatedAt?: string;
   public createdAt?: string;
   public accounts: ReadonlyArray<{id: number, isAdmin: boolean}> = [];
