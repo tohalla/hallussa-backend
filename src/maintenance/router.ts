@@ -71,7 +71,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
         organisation: ctx.state.organisation.name,
         task: maintenanceTask,
       },
-      Done,
+      Done
     );
   })
   .post("/accept", async (ctx) => {

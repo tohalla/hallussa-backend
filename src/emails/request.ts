@@ -1,4 +1,4 @@
-import { logo, send, sender } from "./methods";
+import { send, sender } from "./methods";
 
 import html from "../templates/emails/repairRequest";
 
@@ -20,7 +20,6 @@ export const sendRepairRequestEmail = async (data: RequestParams) => {
   const email = {
     from: sender,
     html: html(data),
-    inline: logo,
     subject: "An appliance needs maintenance.",
     to: data.email || "error@hallussa.fi",
   };

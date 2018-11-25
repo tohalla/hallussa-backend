@@ -45,7 +45,8 @@ export default class MaintenanceTask extends Model {
         JOIN maintenance_event ON maintenance_event.id = maintenance_task.maintenance_event
         JOIN appliance ON appliance.id = maintenance_event.appliance
         JOIN organisation ON organisation.id = appliance.organisation
-      WHERE maintenance_task.hash=?::uuid`, this.hash as string));
+      WHERE maintenance_task.hash=?::uuid`, this.hash as string)
+    );
 
     if (data) {
       sendRepairRequestEmail({

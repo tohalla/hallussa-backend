@@ -13,7 +13,7 @@ const router = new Router({ prefix: "/api/v1" });
 );
 
 if (process.env.NODE_ENV === "development") {
-  router.use(test.routes(), test.allowedMethods())
+  router.use(test.routes(), test.allowedMethods());
 }
 
 export default router;
