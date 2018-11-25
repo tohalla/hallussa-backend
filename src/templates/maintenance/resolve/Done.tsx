@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 export default () => {
   return (
@@ -7,5 +7,5 @@ export default () => {
         Task successfully resolved!
       </h4>
     </div>
-  )
-}
+  );
+};

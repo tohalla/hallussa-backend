@@ -22,6 +22,7 @@ export default class MaintenanceTask extends Model {
   public createdAt?: string;
   public hash?: string;
   public maintenanceEvent?: number;
+  public description?: string;
   public maintainer?: number;
 
   public async $beforeUpdate() {

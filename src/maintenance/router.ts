@@ -57,11 +57,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     }
     const description = path(["request", "body", "description"], ctx) as string | undefined;
     if (description) {
-      await MaintenanceEvent.query().update({
-        appliance: maintenanceEvent.appliance,
-        description,
-        resolvedAt: new Date().toISOString(),
-      });
+      await MaintenanceTask.query().patch({description}).where("hash", maintenanceTask.hash);
     }
     // TODO infopage
     ctx.body = Resolve(
@@ -97,19 +93,14 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
       .whereNull("resolvedAt")
       .first();
 
-    ctx.body = event ?
-      Request(
-        ctx.params.applianceHash,
-        ctx.state.appliance.name,
-        ctx.state.organisation.name,
-        ExistingDescription,
-        ExistingRequestForm
-      ) : Request(
-        ctx.params.applianceHash,
-        ctx.state.appliance.name,
-        ctx.state.organisation.name,
-        NewDescription,
-        NewRequestForm
+    const [description, form] = event ? [ExistingDescription, ExistingRequestForm] : [NewDescription, NewRequestForm];
+
+    ctx.body = Request(
+      ctx.params.applianceHash,
+      ctx.state.appliance.name,
+      ctx.state.organisation.name,
+      description,
+      form
     );
   })
   .post("/", bodyParser(), async (ctx) => {

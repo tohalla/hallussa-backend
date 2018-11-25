@@ -5,11 +5,7 @@ import { actionsRow, form, inputRow } from "../../../emotion-styles/src/form";
 import { label } from "../../../emotion-styles/src/inline";
 import input from "../../../emotion-styles/src/input";
 
-export default ({
-  taskHash,
-}: {
-  taskHash: string;
-}) => (
+export default ({taskHash}: {taskHash: string;}) => (
   <form method="POST" className={form} action={`./${taskHash}`}>
     <label className={label} htmlFor="description">
       Reason for malfunction:
