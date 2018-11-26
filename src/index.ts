@@ -12,16 +12,13 @@ import { errorHandling } from "./util/error";
 
 const app = new Koa();
 
-if (process.env.NODE_ENV === "development") {
-  app.use((ctx, next) => {
-    ctx.response.set("Access-Control-Allow-Origin", "*");
-    return next();
-  });
-}
-
 app
   .use(helmet()) // security headers
   .use((ctx, next) => {
+    ctx.response.set(
+      "Access-Control-Allow-Origin",
+      process.env.NODE_ENV === "development" ? "*" : "http://159.65.126.10"
+    );
     ctx.response.set("Access-Control-Allow-Credentials", "true");
     ctx.response.set("Access-Control-Request-Method", "GET, PATCH, POST, DELETE, OPTIONS");
     ctx.response.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
