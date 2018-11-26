@@ -9,6 +9,7 @@ exports.seed = async (knex: Knex) => {
       id: 1,
       lastName: "Alen",
       organisation: 6,
+      phone: "+358401234567",
     },
     {
       email: "nikke.nakuttaja@hallussa.fi",
@@ -16,6 +17,7 @@ exports.seed = async (knex: Knex) => {
       id: 2,
       lastName: "Nakuttaja",
       organisation: 5,
+      phone: "+358401234567",
     },
     {
       email: "aku.hirvinen@hallussa.fi",
@@ -23,6 +25,7 @@ exports.seed = async (knex: Knex) => {
       id: 3,
       lastName: "Hirvonen",
       organisation: 5,
+      phone: "+358401234567",
     },
     {
       email: "peter.parker@hallussa.fi",
@@ -30,6 +33,7 @@ exports.seed = async (knex: Knex) => {
       id: 4,
       lastName: "Parker",
       organisation: 3,
+      phone: "+358401234567",
     },
     {
       email: "juho.i.jokela@gmail.com",
@@ -37,6 +41,7 @@ exports.seed = async (knex: Knex) => {
       id: 5,
       lastName: "Jokela",
       organisation: 3,
+      phone: "+358401234567",
     },
     {
       email: "helena.saarinen@aalto.fi",
@@ -44,6 +49,7 @@ exports.seed = async (knex: Knex) => {
       id: 6,
       lastName: "Saarinen",
       organisation: 3,
+      phone: "+358401234567",
     },
   ]);
   await knex("appliance_maintainer").insert([
