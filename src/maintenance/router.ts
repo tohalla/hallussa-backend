@@ -81,7 +81,8 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     }
     maintenanceEvent.assign(maintenanceTask.hash);
     ctx.status = 200;
-    ctx.redirect(`${process.env.API_PREFIX}/maintenance/${ctx.params.appHash}/${ctx.params.taskHash}`);
+    const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
+    ctx.redirect(`${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${ctx.params.appHash}/${ctx.params.taskHash}`);
   })
   .del("/", bodyParser(), async (ctx) => {
     // TODO: handle maintainer cancellation

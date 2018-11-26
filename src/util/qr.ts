@@ -6,9 +6,7 @@ import Appliance from "../appliance/Appliance";
 
 export const getQRPage = async (
   applianceIDs: number[],
-  organisation: number,
-  host: string,
-  protocol: string = "http"
+  organisation: number
 ) => {
   // get specified appliances (only if listed under organisation)
   const appliances = await Appliance
@@ -17,11 +15,12 @@ export const getQRPage = async (
     .whereIn("id", applianceIDs)
     .andWhere("organisation", "=", organisation);
 
+  const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
   // generate svg qr codes for appliances
   const qrCodes = await Promise.all(
     appliances.map(async (appliance) =>
       QRCode.toString(
-        `${protocol}://${host}/api/v1/maintenance/${appliance.hash}`,
+        `${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${appliance.hash}`,
         {errorCorrectionLevel: "medium", type: "svg", scale: 2}
       ),
       appliances
