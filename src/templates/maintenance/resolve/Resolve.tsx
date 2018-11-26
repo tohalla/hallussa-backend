@@ -42,7 +42,7 @@ export default ({ event, task, organisation, appliance, }: Resolve, Content: any
         <TopBar>
           <div style={{ display: "flex", flexGrow: 1 }}>
             <div className={logoContainer} style={{ position: "absolute", margin: "11px" }}>
-              <img src="../../../../assets/img/hallussa-qr.png" className={logo} />
+              <img src="/assets/img/hallussa-qr.png" className={logo} />
             </div>
             <div className={uppercaseTitle} style={{ flexGrow: 1 }}>
               Maintenance
