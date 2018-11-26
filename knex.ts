@@ -1,9 +1,10 @@
 import { config } from "dotenv";
 import { ConnectionConfig } from "knex";
 import { knexSnakeCaseMappers } from "objection";
+import path from "path";
 import { assocPath } from "ramda";
 
-config({path: ".env"});
+config({path: path.join("..", ".env")});
 
 if (!(
   process.env.POSTGRES_DB &&
@@ -11,7 +12,7 @@ if (!(
   process.env.POSTGRES_PASSWORD &&
   process.env.POSTGRES_USER
 )) {
-  throw new Error("define environment variables for postgres");
+  throw new Error("Define environment variables for postgres. Make sure to run migrations using compiled knex file.");
 }
 const connection: ConnectionConfig = {
   database: process.env.POSTGRES_DB,
