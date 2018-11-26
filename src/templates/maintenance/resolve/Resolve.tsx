@@ -68,7 +68,7 @@ export default ({ event, task, organisation, appliance, }: Resolve, Content: any
           </div>
           {Content &&
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <Content taskHash={task.hash} />
+              <Content taskHash={task.hash} applianceHash={appliance.hash} />
             </div>
           }
         </div>

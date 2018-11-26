@@ -4,8 +4,10 @@ import button from "../../../emotion-styles/src/button";
 import { actionsRow, form, inputRow } from "../../../emotion-styles/src/form";
 import Subscribe from "./Subscribe";
 
+const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
+
 export default ({hash}: { hash: string }) => (
-  <form method="POST" className={form} action={`./${hash}`}>
+  <form method="POST" className={form} action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/${hash}`}>
     <Subscribe />
     <div className={actionsRow}>
       <span></span>

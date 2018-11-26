@@ -5,8 +5,10 @@ import { actionsRow, form, inputRow } from "../../../emotion-styles/src/form";
 import { label } from "../../../emotion-styles/src/inline";
 import input from "../../../emotion-styles/src/input";
 
-export default ({taskHash}: {taskHash: string;}) => (
-  <form method="POST" className={form} action={`./${taskHash}`}>
+const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
+
+export default ({taskHash, applianceHash}: {taskHash: string; applianceHash: string}) => (
+  <form method="POST" className={form} action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/${applianceHash}/${taskHash}`}>
     <label className={label} htmlFor="description">
       Reason for malfunction:
     </label>

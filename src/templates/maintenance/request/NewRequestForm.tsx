@@ -6,8 +6,10 @@ import { label } from "../../../emotion-styles/src/inline";
 import input from "../../../emotion-styles/src/input";
 import Subscribe from "./Subscribe";
 
+const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
+
 export default ({hash}: { hash: string }) => (
-  <form method="POST" className={form} action={`./${hash}`}>
+  <form method="POST" className={form} action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/${hash}`}>
     <label className={label} htmlFor="description">
       Description
     </label>
