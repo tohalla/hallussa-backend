@@ -24,7 +24,7 @@ export default new Router({ prefix: "/auth" })
     }
 
     const result = await Model.raw(
-      "SELECT id, password FROM account WHERE email=?::text",
+      "SELECT id, password FROM account WHERE LOWER(email)=LOWER(?::text)",
       email
     );
     const hashed = path(["rows", 0, "password"], result);
