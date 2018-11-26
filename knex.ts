@@ -11,7 +11,7 @@ if (!(
   process.env.POSTGRES_PASSWORD &&
   process.env.POSTGRES_USER
 )) {
-  throw new Error("define environment variables for psotgres");
+  throw new Error("define environment variables for postgres");
 }
 const connection: ConnectionConfig = {
   database: process.env.POSTGRES_DB,
