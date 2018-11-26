@@ -51,7 +51,7 @@ export const applianceFromHash = (
 ) => {
   ctx.state.appliance = await Appliance
     .query()
-    .select("id", "name", "organisation", "description")
+    .select("id", "name", "organisation", "description", "hash")
     .where("hash", "=", applianceHash)
     .first();
 
