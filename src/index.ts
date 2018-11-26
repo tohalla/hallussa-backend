@@ -32,7 +32,10 @@ app
   .use(
     mount(
       "/assets",
-      serve(path.join(__dirname, "..", "assets"))
-    )
+      new Koa()
+        .use(
+          serve(path.join(__dirname, "..", "assets"))
+        )
+      )
   )
   .listen(8080);
