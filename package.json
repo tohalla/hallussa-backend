@@ -2,7 +2,7 @@
   "name": "hallussa-webapp",
   "description": "",
   "scripts": {
-    "postinstall": "tsc",
+    "build": "tsc",
     "start": "./node_modules/ts-node/dist/bin.js src/index.ts",
     "watch": "./node_modules/nodemon/bin/nodemon.js --legacy-watch",
     "migrate": "knex migrate:latest --knexfile knex.ts",
