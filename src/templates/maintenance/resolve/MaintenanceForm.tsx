@@ -8,7 +8,11 @@ import input from "../../../emotion-styles/src/input";
 const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
 
 export default ({taskHash, applianceHash}: {taskHash: string; applianceHash: string}) => (
-  <form method="POST" className={form} action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/${applianceHash}/${taskHash}`}>
+  <form
+    method="POST"
+    className={form}
+    action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${applianceHash}/${taskHash}`}
+  >
     <label className={label} htmlFor="description">
       Reason for malfunction:
     </label>

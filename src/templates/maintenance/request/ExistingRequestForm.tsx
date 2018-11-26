@@ -7,7 +7,7 @@ import Subscribe from "./Subscribe";
 const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
 
 export default ({hash}: { hash: string }) => (
-  <form method="POST" className={form} action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/${hash}`}>
+  <form method="POST" className={form} action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${hash}`}>
     <Subscribe />
     <div className={actionsRow}>
       <span></span>

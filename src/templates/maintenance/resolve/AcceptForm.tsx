@@ -9,7 +9,7 @@ export default ({taskHash, applianceHash}: {taskHash: string; applianceHash: str
   <form
     method="POST"
     className={form}
-    action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/${applianceHash}/${taskHash}/accept`}
+    action={`${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${applianceHash}/${taskHash}/accept`}
   >
     <div className={actionsRow}>
       <span></span>
