@@ -1,6 +1,7 @@
 import { Model } from "objection";
 import { dissoc, evolve, map, prop } from "ramda";
 
+import MaintenanceEvent from "../maintenance/MaintenanceEvent";
 import ApplianceMaintainer from "../relation-models/ApplianceMaintainer";
 import ApplianceStatus from "./ApplianceStatus";
 
@@ -16,7 +17,15 @@ export default class Appliance extends Model {
       modelClass: ApplianceMaintainer,
       relation: Model.HasManyRelation,
     },
-    status: { // should never eagerly load maintainers, only ID's
+    maintenanceEvents: {
+      join: {
+        from: "appliance.id",
+        to: "maintenance_event.appliance",
+      },
+      modelClass: MaintenanceEvent,
+      relation: Model.HasManyRelation,
+    },
+    status: {
       join: {
         from: "appliance.id",
         to: "appliance_status.appliance",
