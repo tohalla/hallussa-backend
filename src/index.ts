@@ -1,9 +1,5 @@
-import path from "path";
-
 import Koa from "koa";
 import helmet from "koa-helmet";
-import mount from "koa-mount";
-import serve from "koa-static";
 
 import { jwtMiddleware } from "./auth/jwt";
 import "./database/db"; // initialize objection
@@ -29,13 +25,4 @@ app
   .use(jwtMiddleware)
   .use(router.routes())
   .use(router.allowedMethods())
-  .use(
-    mount(
-      "/assets",
-      new Koa()
-        .use(
-          serve(path.join(__dirname, "..", "assets"))
-        )
-      )
-  )
   .listen(8080);
