@@ -19,3 +19,5 @@ Thumbs.db
 .tern-port
 
 *.env
+
+package-lock.json

@@ -58,6 +58,10 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     const description = path(["request", "body", "description"], ctx) as string | undefined;
     if (description) {
       await MaintenanceTask.query().patch({description}).where("hash", maintenanceTask.hash);
+      await MaintenanceEvent
+        .query()
+        .patch({ resolvedAt: new Date().toISOString() })
+        .where("id", maintenanceTask.maintenanceEvent);
     }
     // TODO infopage
     ctx.body = Resolve(
