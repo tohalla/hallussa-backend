@@ -19,7 +19,7 @@ export default ({taskHash, applianceHash}: {taskHash: string; applianceHash: str
     <div className={inputRow}>
       <textarea
         className={input}
-        style={{ height: "200px" }}
+        rows={3}
         name="description"
         id="description"
         placeholder="Short description of why the problem occurred."

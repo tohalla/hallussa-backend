@@ -16,9 +16,9 @@ export default ({hash}: { hash: string }) => (
     <div className={inputRow}>
       <textarea
         className={input}
-        style={{ height: "200px" }}
         name="description"
         id="description"
+        rows={3}
         placeholder="Short description of the problem"
       />
     </div>
