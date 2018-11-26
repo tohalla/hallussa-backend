@@ -10,7 +10,7 @@ import Root from "../../shared/Root";
 import TopBar from "../../shared/TopBar";
 import ViewContainer from "../../shared/ViewContainer";
 
-const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
+const {PROTOCOL, BASE_URL} = process.env;
 
 export default (
   hash: string,

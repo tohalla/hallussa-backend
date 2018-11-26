@@ -35,7 +35,7 @@ const Assigned = (props: { assignedTo: number | undefined; maintainer: number | 
   );
 };
 
-const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
+const {PROTOCOL, BASE_URL} = process.env;
 
 export default ({ event, task, organisation, appliance, }: Resolve, Content: any) =>
   renderStylesToString(renderToStaticMarkup(
