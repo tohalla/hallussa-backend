@@ -1,7 +1,8 @@
 import { Model } from "objection";
-import { evolve, map, prop } from "ramda";
+import { dissoc, evolve, map, prop } from "ramda";
 
 import ApplianceMaintainer from "../relation-models/ApplianceMaintainer";
+import ApplianceStatus from "./ApplianceStatus";
 
 export default class Appliance extends Model {
   public static tableName = "appliance";
@@ -14,6 +15,14 @@ export default class Appliance extends Model {
       },
       modelClass: ApplianceMaintainer,
       relation: Model.HasManyRelation,
+    },
+    status: { // should never eagerly load maintainers, only ID's
+      join: {
+        from: "appliance.id",
+        to: "appliance_status.appliance",
+      },
+      modelClass: ApplianceStatus,
+      relation: Model.HasOneRelation,
     },
   };
 
@@ -50,4 +59,5 @@ export default class Appliance extends Model {
 export const normalizeAppliance = (appliance: Appliance | undefined) =>
  appliance && evolve({
    maintainers: map(prop("maintainer")),
+   status: dissoc("appliance"),
  }, appliance as object);
