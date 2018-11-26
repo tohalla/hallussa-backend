@@ -2,6 +2,8 @@ import Knex from "knex";
 import { hashPassword } from "../src/account/Account";
 
 exports.seed = async (knex: Knex) => {
+  await knex("maintenance_task").del();
+  await knex("maintenance_event").del();
   await knex("account").del();
   await knex("account").insert([
     {
