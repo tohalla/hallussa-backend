@@ -102,7 +102,7 @@ export default new Router({ prefix: "/appliances" })
     }
 
     ctx.body = `<!doctype html><html><head></head><body>${
-      await getQRPage(applianceIDs, organisation, ctx.request.host)
+      await getQRPage(applianceIDs, organisation)
     }</body></html>`;
     ctx.type = "application/html";
   })

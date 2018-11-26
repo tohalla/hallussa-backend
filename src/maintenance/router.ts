@@ -25,6 +25,8 @@ interface MaintenanceState {
   maintenanceTask: MaintenanceTask;
 }
 
+const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
+
 const taskRouter = new Router({ prefix: "/:taskHash" })
   .param("taskHash", secureEvent)
   .get("/", (ctx) => {
@@ -81,7 +83,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     }
     maintenanceEvent.assign(maintenanceTask.hash);
     ctx.status = 200;
-    ctx.redirect(`${process.env.API_PREFIX}/maintenance/${ctx.params.appHash}/${ctx.params.taskHash}`);
+    ctx.redirect(`${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${ctx.params.appHash}/${ctx.params.taskHash}`);
   })
   .del("/", bodyParser(), async (ctx) => {
     // TODO: handle maintainer cancellation
@@ -125,6 +127,8 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
     }
 
     ctx.status = 201;
-    ctx.redirect(`/response.html?org=${ctx.state.organisation.name}&app=${ctx.state.appliance.name}`);
+    ctx.redirect(
+      `${PROTOCOL}://${BASE_URL}/response.html?org=${ctx.state.organisation.name}&app=${ctx.state.appliance.name}`
+    );
   })
   .use(taskRouter.routes(), taskRouter.allowedMethods());
