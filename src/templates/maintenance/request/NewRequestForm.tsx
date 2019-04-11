@@ -1,9 +1,9 @@
 import React from "react";
 
-import button from "../../../emotion-styles/src/button";
-import { actionsRow, form, inputRow } from "../../../emotion-styles/src/form";
-import { label } from "../../../emotion-styles/src/inline";
-import input from "../../../emotion-styles/src/input";
+import button from "../../../styles/button";
+import { actionsRow, form, inputRow } from "../../../styles/form";
+import { label } from "../../../styles/inline";
+import input from "../../../styles/input";
 import Subscribe from "./Subscribe";
 
 const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;

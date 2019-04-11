@@ -1,7 +1,7 @@
 import React from "react";
 
-import button from "../../../emotion-styles/src/button";
-import { actionsRow, form } from "../../../emotion-styles/src/form";
+import button from "../../../styles/button";
+import { actionsRow, form } from "../../../styles/form";
 
 const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
 

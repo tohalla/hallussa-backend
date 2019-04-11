@@ -7,9 +7,9 @@ import Appliance from "../../../appliance/Appliance";
 import MaintenanceEvent from "../../../maintenance/MaintenanceEvent";
 import MaintenanceTask from "../../../maintenance/MaintenanceTask";
 
-import { growContainer } from "../../../emotion-styles/src/container";
-import logo from "../../../emotion-styles/src/logo";
-import { logoContainer, uppercaseTitle } from "../../../emotion-styles/src/topbar";
+import { growContainer } from "../../../styles/container";
+import logo from "../../../styles/logo";
+import { logoContainer, uppercaseTitle } from "../../../styles/topbar";
 
 import Footer from "../../shared/Footer";
 import Root from "../../shared/Root";

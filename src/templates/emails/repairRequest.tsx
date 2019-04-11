@@ -2,7 +2,7 @@ import format from "date-fns/format";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import "../../emotion-styles/src";
+import "../../styles/";
 
 import Signature from "./components/Signature";
 

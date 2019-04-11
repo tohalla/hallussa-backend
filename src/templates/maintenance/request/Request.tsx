@@ -2,9 +2,9 @@ import { renderStylesToString } from "emotion-server";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { growContainer } from "../../../emotion-styles/src/container";
-import logo from "../../../emotion-styles/src/logo";
-import { logoContainer, uppercaseTitle } from "../../../emotion-styles/src/topbar";
+import { growContainer } from "../../../styles/container";
+import logo from "../../../styles/logo";
+import { logoContainer, uppercaseTitle } from "../../../styles/topbar";
 import Footer from "../../shared/Footer";
 import Root from "../../shared/Root";
 import TopBar from "../../shared/TopBar";

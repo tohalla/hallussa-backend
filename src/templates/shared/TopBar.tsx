@@ -1,6 +1,6 @@
 import React, { ReactFragment } from "react";
 
-import { topbar } from "../../emotion-styles/src/topbar";
+import { topbar } from "../../styles/topbar";
 
 export default ({children}: { children: ReactFragment }) => (
   <div className={topbar}>

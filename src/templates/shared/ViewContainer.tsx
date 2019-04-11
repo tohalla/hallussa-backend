@@ -1,6 +1,6 @@
 import React, { ReactFragment } from "react";
 
-import { appContainer } from "../../emotion-styles/src/container";
+import { appContainer } from "../../styles/container";
 
 export default ({children}: { children: ReactFragment }) => (
   <div className={appContainer}>

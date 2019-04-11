@@ -1,6 +1,6 @@
 import React from "react";
 
-import { link } from "../../emotion-styles/src/inline";
+import { link } from "../../styles/inline";
 
 export default () => (
   <footer>

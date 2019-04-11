@@ -1,13 +1,15 @@
 {
   "name": "hallussa-backend",
   "description": "",
+  "license": "GPL-3.0-only",
+  "version": "0.0.0",
   "scripts": {
-    "build": "tsc",
-    "start": "./node_modules/nodemon/bin/nodemon.js ./dist/src/index.js",
-    "watch": "tsc --watch",
+    "build": "./node_modules/typescript/bin/tsc",
+    "start": "node ./dist/src/index.js",
+    "watch": "./node_modules/typescript/bin/tsc --watch",
     "migrate": "knex migrate:latest --knexfile ./dist/knex.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tslint -c tslint.json './src/**/*.ts{,x}'"
+    "lint": "./node_modules/tslint/bin/tslint -c tslint.json './src/**/*.ts{,x}'"
   },
   "repository": {
     "type": "git",
@@ -54,5 +56,8 @@
     "ramda": "^0.25.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3"
+  },
+  "engines": {
+    "node": "11.x"
   }
 }

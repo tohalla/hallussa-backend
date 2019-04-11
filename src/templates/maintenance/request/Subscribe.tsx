@@ -1,8 +1,8 @@
 import React from "react";
 
-import { inputRow } from "../../../emotion-styles/src/form";
-import { label } from "../../../emotion-styles/src/inline";
-import input from "../../../emotion-styles/src/input";
+import { inputRow } from "../../../styles/form";
+import { label } from "../../../styles/inline";
+import input from "../../../styles/input";
 
 export default () => (
   <>
