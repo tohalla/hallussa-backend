@@ -13,7 +13,7 @@ app
   .use((ctx, next) => {
     ctx.response.set(
       "Access-Control-Allow-Origin",
-      process.env.NODE_ENV === "development" ? "*" : "http://159.65.126.10"
+      process.env.NODE_ENV === "development" ? "*" : process.env.WEBAPP_URL || ""
     );
     ctx.response.set("Access-Control-Allow-Credentials", "true");
     ctx.response.set("Access-Control-Request-Method", "GET, PATCH, POST, DELETE, OPTIONS");
