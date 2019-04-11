@@ -2,7 +2,7 @@
   "name": "hallussa-backend",
   "description": "",
   "license": "GPL-3.0-only",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "build": "./node_modules/typescript/bin/tsc",
     "start": "node ./dist/src/index.js",
