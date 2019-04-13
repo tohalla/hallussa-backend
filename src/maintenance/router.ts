@@ -129,8 +129,9 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
     }
 
     ctx.status = 201;
-    ctx.redirect(
-      `${PROTOCOL}://${BASE_URL}/response.html?org=${ctx.state.organisation.name}&app=${ctx.state.appliance.name}`
-    );
+    // TODO: Serve response page here
+    // ctx.redirect(
+    //   `${PROTOCOL}://${BASE_URL}/response.html?org=${ctx.state.organisation.name}&app=${ctx.state.appliance.name}`
+    // );
   })
   .use(taskRouter.routes(), taskRouter.allowedMethods());
