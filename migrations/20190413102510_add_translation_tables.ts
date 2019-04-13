@@ -12,7 +12,8 @@ exports.up = async (knex: Knex) => {
     table.text("translation").comment("Translation");
     table
       .string("language", 5)
-      .references("locale").inTable("translation.language")
+      .references("locale").inTable("language")
+      .onDelete("CASCADE")
       .index();
     table.primary(["key", "language"]);
   });

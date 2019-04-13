@@ -5,9 +5,10 @@
   "version": "1.0.0",
   "scripts": {
     "build": "./node_modules/typescript/bin/tsc",
-    "start": "node ./dist/src/index.js",
+    "start": "./node_modules/nodemon/bin/nodemon.js ./dist/src/index.js",
     "watch": "./node_modules/typescript/bin/tsc --watch",
-    "migrate": "knex migrate:latest --knexfile ./dist/knex.js",
+    "migrate": "knex migrate:latest --knexfile knex.ts",
+    "seed": "knex seed:run --knexfile knex.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json './src/**/*.ts{,x}'"
   },
@@ -32,8 +33,9 @@
     "@types/ramda": "^0.26.6",
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
+    "knex-seed-file": "^1.0.2",
     "nodemon": "^1.18.4",
-    "ts-node": "^8.0.3",
+    "ts-node": "^8.1.0",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.1.6"
