@@ -4,7 +4,7 @@ import { knexSnakeCaseMappers } from "objection";
 import path from "path";
 import { assocPath } from "ramda";
 
-config({path: path.join("..", ".env")});
+config({path: path.resolve(__dirname, ".env")});
 
 if (!(
   process.env.POSTGRES_DB &&
