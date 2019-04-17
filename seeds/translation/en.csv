@@ -1,0 +1,33 @@
+language;key;translation
+en;appliance.action.deleteAppliance;Delete appliance
+en;appliance.action.downloadQR;Download QR code
+en;appliance.action.editAppliance;Edit appliance
+en;appliance.assignment.addMaintainer;Assign maintainer
+en;appliance.assignment.noMaintainers;No maintainers to assign
+en;appliance.assignment.selectMaintainer;Select maintainer to assign
+en;appliance.create.form.submit;Create appliance
+en;appliance.create.title;New appliance
+en;appliance.createdAt;Created at {{createdAt}}
+en;appliance.drawers.maintainers.title;Maintainers
+en;appliance.drawers.overview.numberOfAppliances;Number of appliances
+en;appliance.drawers.overview.operativeAppliances;Operative appliances
+en;appliance.drawers.overview.title;Overview
+en;appliance.edit.form.submit;Update appliance
+en;appliance.edit.title;Edit appliance – {{appliance}}
+en;appliance.field.description;Description
+en;appliance.field.id;Id
+en;appliance.field.location;Location
+en;appliance.field.name;Name
+en;appliance.field.status;Status
+en;appliance.listing.noAppliances;No appliances found
+en;appliance.status.malfunctioning;Malfunctioning
+en;appliance.status.ok;OK
+en;appliance.updatedAt;Updated at {{updatedAt}}
+en;cancel;Cancel
+en;general.misc.id;Identifier
+en;maintenanceEvent.field.assignedTo;Assigned to
+en;maintenanceEvent.field.description;Description
+en;maintenanceEvent.field.reportedAt;Reported at
+en;maintenanceEvent.field.resolvedAt;Resolved at
+en;maintenanceEvent.listing.noEvents;No maintenance events found
+en;submit;Submit
