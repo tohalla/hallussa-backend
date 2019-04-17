@@ -1,10 +1,19 @@
 language;key;translation
-en;appliance.action.deleteAppliance;Delete appliance
+en;account.authentication.createNewAccount;Create a new account
+en;account.authentication.form.submit;Authenticate
+en;account.field.email;Email address
+en;account.field.firstName;First name
+en;account.field.lastName;Last name
+en;account.field.password;Password
+en;account.field.retypePassword;Retype password
+en;account.registration.authenticate;I already have an account
+en;account.registration.form.error.invalidEmail;Invalid email address.
+en;account.registration.form.error.passwordsDontMatch;Passwords do not match.
+en;account.registration.form.submit;Register
+en;account.registration.form.tosLabel;I have read and accepted <1>terms of service</1>.
+en;appliance.action.delete;Delete appliance
 en;appliance.action.downloadQR;Download QR code
-en;appliance.action.editAppliance;Edit appliance
-en;appliance.assignment.addMaintainer;Assign maintainer
-en;appliance.assignment.noMaintainers;No maintainers to assign
-en;appliance.assignment.selectMaintainer;Select maintainer to assign
+en;appliance.action.edit;Edit appliance
 en;appliance.create.form.submit;Create appliance
 en;appliance.create.title;New appliance
 en;appliance.createdAt;Created at {{createdAt}}
@@ -14,20 +23,65 @@ en;appliance.drawers.overview.operativeAppliances;Operative appliances
 en;appliance.drawers.overview.title;Overview
 en;appliance.edit.form.submit;Update appliance
 en;appliance.edit.title;Edit appliance – {{appliance}}
+en;appliance.event.list.title;Maintenance events
 en;appliance.field.description;Description
 en;appliance.field.id;Id
 en;appliance.field.location;Location
 en;appliance.field.name;Name
 en;appliance.field.status;Status
 en;appliance.listing.noAppliances;No appliances found
+en;appliance.maintainer.addMaintainer;Assign maintainer
+en;appliance.maintainer.noMaintainers;No maintainers to assign
+en;appliance.maintainer.selectMaintainer;Select maintainer to assign
 en;appliance.status.malfunctioning;Malfunctioning
 en;appliance.status.ok;OK
 en;appliance.updatedAt;Updated at {{updatedAt}}
 en;cancel;Cancel
+en;createdAt;Created at
+en;general.misc.confirmTimed;Click again to confirm ({{time}})
 en;general.misc.id;Identifier
+en;maintainer.action.delete;Delete maintainer
+en;maintainer.action.edit;Edit maintainer
+en;maintainer.appliance.list.title;Appliances assigned to maintainer
+en;maintainer.create.form.submit;Create maintainer
+en;maintainer.create.title;New maintainer
+en;maintainer.createdAt;Created at {{createdAt}}
+en;maintainer.edit.form.submit;Update maintainer
+en;maintainer.edit.title;Edit maintainer – {{maintainer}}
+en;maintainer.field.email;Email
+en;maintainer.field.firstName;First name
+en;maintainer.field.id;Id
+en;maintainer.field.lastName;Last name
+en;maintainer.field.name;Name
+en;maintainer.field.phone;Phone number
+en;maintainer.form.error.invalidEmail;Invalid email address.
+en;maintainer.form.error.invalidPhone;Ivanlid phone number. Phone numbers may only contain numbers and specific characters (-+()).
+en;maintainer.listing.noMaintainers;No maintainers found
+en;maintainer.updatedAt;Updated at {{updatedAt}}
 en;maintenanceEvent.field.assignedTo;Assigned to
 en;maintenanceEvent.field.description;Description
 en;maintenanceEvent.field.reportedAt;Reported at
 en;maintenanceEvent.field.resolvedAt;Resolved at
 en;maintenanceEvent.listing.noEvents;No maintenance events found
+en;navigation.item.appliances;Appliances
+en;navigation.item.maintainers;Maintainers
+en;navigation.item.organisations;Organisations
+en;navigation.user.greeting;Hello, <1>{{name}}</1>
+en;navigation.user.signOut;Log out
+en;organisation.action.activate;Set as active
+en;organisation.action.create;Create a new organisation
+en;organisation.action.delete;Delete organisation
+en;organisation.action.edit;Edit organisation
+en;organisation.create.form.submit;Create organisation
+en;organisation.create.title;New organisation
+en;organisation.edit.form.submit;Update organisation
+en;organisation.edit.title;Edit organisation – {{organisation}}
+en;organisation.field.name;Name
+en;organisation.field.organisationIdentifier;Organisation identifier
+en;organisation.noOrganisations;No organisations created
 en;submit;Submit
+en;tab.appliance.appliances;Appliances
+en;tab.appliance.new;New appliance
+en;tab.maintainer.maintainers;Maintainers
+en;tab.maintainer.new;New maintainer
+en;updatedAt;Updated at
