@@ -1,8 +1,21 @@
 import { Model } from "objection";
+import UserRole from "../auth/role/UserRole";
 
 export default class OrganisationAccount extends Model {
   public static tableName = "organisation_account";
-  public isAdmin?: boolean;
+
+  public static relationMappings = {
+    userRole: {
+      join: {
+        from: "organisation_account.user_role",
+        to: "user_role.id",
+      },
+      modelClass: UserRole,
+      relation: Model.HasOneRelation,
+    },
+  };
+
   public organisation?: number;
   public account?: number;
+  public userRole: number;
 }

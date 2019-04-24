@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
-import { Model } from "objection";
-import { evolve, map, prop } from "ramda";
-import OrganisationAccount from "../relation-models/OrganisationAccount";
+import { Model, Pojo } from "objection";
+import { evolve, map, omit } from "ramda";
+import OrganisationAccount from "../../relation-models/OrganisationAccount";
 
 export default class Account extends Model {
   public static tableName = "account";
@@ -37,7 +37,11 @@ export default class Account extends Model {
   public email?: string;
   public updatedAt?: string;
   public createdAt?: string;
-  public organisations: ReadonlyArray<{id: number, isAdmin: boolean}> = [];
+  public organisations: ReadonlyArray<{id: number, userRole: number}> = [];
+
+  public $formatJson(json: Pojo) {
+    return omit(["password"], super.$formatJson(json));
+  }
 
   public async $beforeInsert() {
     delete this.retypePassword; // column does not exists in database
@@ -71,7 +75,7 @@ export const hashPassword = async (password: string): Promise<string> => bcrypt.
 export const normalizeAccount = (account: Account | undefined) =>
  account && evolve({
    organisations: map((organisation: OrganisationAccount) => ({
-     id: prop("organisation", organisation),
-     isAdmin: prop("isAdmin", organisation)}
-    )),
- }, account as object);
+     id: organisation.organisation,
+     userRole: organisation.userRole,
+   })),
+ }, account.toJSON());

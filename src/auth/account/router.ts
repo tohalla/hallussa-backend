@@ -2,7 +2,7 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { path } from "ramda";
 
-import { secureRoute } from "../auth/jwt";
+import { secureRoute } from "../jwt";
 import Account, { normalizeAccount } from "./Account";
 
 export default new Router({prefix: "/accounts"})
@@ -12,9 +12,8 @@ export default new Router({prefix: "/accounts"})
       .query()
       .select()
       .where("id", "=", accountId)
-      .omit(["password"])
       .eager(ctx.query.eager)
-      .modifyEager("organisations", (builder) => builder.select("organisation", "isAdmin"))
+      .modifyEager("organisations", (builder) => builder.select("organisation", "userRole"))
       .first()
     );
   })

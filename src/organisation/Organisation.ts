@@ -51,7 +51,7 @@ export default class Organisation extends Model {
   public name?: string;
   public updatedAt?: string;
   public createdAt?: string;
-  public accounts: ReadonlyArray<{id: number, isAdmin: boolean}> = [];
+  public accounts: ReadonlyArray<{id: number, userRole: number}> = [];
   public maintainers: ReadonlyArray<number> = [];
   public appliances: ReadonlyArray<number> = [];
 
@@ -67,9 +67,9 @@ export default class Organisation extends Model {
 export const normalizeOrganisation = (organisation: Organisation | undefined) =>
  organisation && evolve({
    accounts: map((account: OrganisationAccount) => ({
-     id: prop("account", account),
-     isAdmin: prop("isAdmin", account)}
-    )),
+     id: account.account,
+     userRole: account.userRole,
+   })),
    appliances: map(prop("id")),
    maintainers: map(prop("id")),
  }, organisation as object);

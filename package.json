@@ -10,7 +10,8 @@
     "migrate": "knex migrate:latest --knexfile knex.ts",
     "seed": "knex seed:run --knexfile knex.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/tslint/bin/tslint -c tslint.json './src/**/*.ts{,x}'"
+    "lint": "tslint -c tslint.json -p tsconfig.json './src/**/*.ts{,x}'",
+    "prelint": "tsc -p tsconfig.json --noEmit"
   },
   "repository": {
     "type": "git",

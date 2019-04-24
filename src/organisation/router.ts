@@ -2,11 +2,12 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { map, path } from "ramda";
 
-import { Model, transaction } from "objection";
+import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
 import { secureRoute } from "../auth/jwt";
+import roleRouter from "../auth/role/router";
 import maintainerRouter from "../maintainer/router";
-import { secureOrganisation } from "./middleware";
+import { mapRoleRights } from "./middleware";
 import Organisation, { normalizeOrganisation } from "./Organisation";
 
 const router = new Router({ prefix: "/organisations" })
@@ -23,7 +24,7 @@ const router = new Router({ prefix: "/organisations" })
         accountID
       )
       .eager(ctx.query.eager)
-      .modifyEager("accounts", (builder) => builder.select("account", "isAdmin"))
+      .modifyEager("accounts", (builder) => builder.select("account", "userRole"))
       .modifyEager("appliances", (builder) => builder.select("id"))
       .modifyEager("maintainers", (builder) => builder.select("id"))
     );
@@ -39,15 +40,14 @@ const router = new Router({ prefix: "/organisations" })
 
       // add current account to created organisation with admin rights
       await trx.raw(
-        "INSERT INTO organisation_account (organisation, account, is_admin) " +
-        "VALUES (?::integer, ?::integer, ?::boolean)",
-        [organisation.id as number, accountId, true]
+        "INSERT INTO organisation_account (organisation, account, user_role) " +
+        "VALUES (?::integer, ?::integer, ?::integer)",
+        [organisation.id as number, accountId, 1]
       );
-
-      trx.commit();
+      await trx.commit();
       ctx.body = {
         ...organisation,
-        accounts: [{id: accountId, isAdmin: true}],
+        accounts: [{id: accountId, userRole: 1}],
       };
       ctx.status = 201;
     } catch (e) {
@@ -59,13 +59,13 @@ const router = new Router({ prefix: "/organisations" })
 
 router
   // account must be authenticated and a member of the organisation to access its routes
-  .param("organisation", secureOrganisation)
+  .param("organisation", mapRoleRights)
   .get("/:organisation", async (ctx) => {
     ctx.body = normalizeOrganisation(await Organisation.query()
       .select()
       .where("id", "=", ctx.params.organisation)
       .eager(ctx.query.eager)
-      .modifyEager("accounts", (builder) => builder.select("account", "isAdmin"))
+      .modifyEager("accounts", (builder) => builder.select("account", "userRole"))
       .modifyEager("appliances", (builder) => builder.select("id"))
       .modifyEager("maintainers", (builder) => builder.select("id"))
       .first()
@@ -84,6 +84,7 @@ router
     ctx.status = 200;
   })
   .use("/:organisation", applianceRouter.routes(), applianceRouter.allowedMethods())
-  .use("/:organisation", maintainerRouter.routes(), maintainerRouter.allowedMethods());
+  .use("/:organisation", maintainerRouter.routes(), maintainerRouter.allowedMethods())
+  .use("/:organisation", roleRouter.routes(), roleRouter.allowedMethods());
 
 export default router;

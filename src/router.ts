@@ -1,6 +1,6 @@
 import Router from "koa-router";
 
-import accounts from "./account/router";
+import accounts from "./auth/account/router";
 import auth from "./auth/router";
 import test from "./dev/router";
 import i18n from "./i18n/router";
