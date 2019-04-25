@@ -4,11 +4,12 @@ import { Model } from "objection";
 import { map } from "ramda";
 
 import Maintainer from "../maintainer/Maintainer";
+import { RouterStateContext } from "../organisation/router";
 import { getQRPage } from "../util/qr";
 import Appliance, { normalizeAppliance } from "./Appliance";
 
 // separate router for single appliance
-const applianceRouter = new Router({ prefix: "/:appliance"})
+const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   .get("/", async (ctx) => {
     // organisation param already set in parent router
     const { organisation, appliance } = ctx.params;
@@ -24,6 +25,9 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
   })
   .patch("/", bodyParser(), async (ctx) => {
     const { appliance } = ctx.params;
+    if (!ctx.state.rights.allowUpdateAppliance) {
+      return ctx.throw(401);
+    }
     ctx.body = await Appliance
       .query()
       .patch(ctx.request.body || {})
@@ -32,6 +36,9 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
       .first();
   })
   .del("/", async (ctx) => {
+    if (!ctx.state.rights.allowDeleteAppliance) {
+      return ctx.throw(401);
+    }
     const { appliance } = ctx.params;
     await Appliance.query().deleteById(appliance);
     ctx.status = 200;
@@ -48,6 +55,9 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
       );
   })
   .post("/maintainers/:maintainer", async (ctx) => {
+    if (!ctx.state.rights.allowUpdateAppliance) {
+      return ctx.throw(401);
+    }
     const { appliance, maintainer } = ctx.params;
 
     await Model.raw(
@@ -59,6 +69,9 @@ const applianceRouter = new Router({ prefix: "/:appliance"})
     ctx.status = 201;
   })
   .del("/maintainers/:maintainer", async (ctx) => {
+    if (!ctx.state.rights.allowUpdateAppliance) {
+      return ctx.throw(401);
+    }
     const { appliance, maintainer } = ctx.params;
 
     await Model.raw(
@@ -83,6 +96,9 @@ export default new Router({ prefix: "/appliances" })
     );
   })
   .post("/", bodyParser(), async (ctx) => {
+    if (!ctx.state.rights.allowCreateAppliance) {
+      return ctx.throw(401);
+    }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
     ctx.body = await Appliance.query().insert({
