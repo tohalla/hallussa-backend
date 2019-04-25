@@ -3,9 +3,10 @@ import Router from "koa-router";
 import { map } from "ramda";
 
 import Appliance from "../appliance/Appliance";
+import { RouterStateContext } from "../organisation/router";
 import Maintainer, { normalizeMaintainer } from "./Maintainer";
 
-export default new Router({ prefix: "/maintainers" })
+export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   .get("/", async (ctx) => {
     // organisation param already set in parent router
     const { organisation } = ctx.params;
@@ -18,6 +19,9 @@ export default new Router({ prefix: "/maintainers" })
     );
   })
   .post("/", bodyParser(), async (ctx) => {
+    if (!ctx.state.rights.allowCreateMaintainer) {
+      return ctx.throw(401);
+    }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
     ctx.body = await Maintainer.query().insert({
@@ -27,6 +31,9 @@ export default new Router({ prefix: "/maintainers" })
     ctx.status = 201;
   })
   .patch("/:maintainer", bodyParser(), async (ctx) => {
+    if (!ctx.state.rights.allowUpdateMaintainer) {
+      return ctx.throw(401);
+    }
     const { maintainer } = ctx.params;
     ctx.body = await Maintainer
       .query()
@@ -47,6 +54,9 @@ export default new Router({ prefix: "/maintainers" })
     ));
   })
   .del("/:maintainer", async (ctx) => {
+    if (!ctx.state.rights.allowDeleteMaintainer) {
+      return ctx.throw(401);
+    }
     const { maintainer } = ctx.params;
     await Maintainer.query().deleteById(maintainer);
     ctx.status = 200;
