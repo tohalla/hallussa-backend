@@ -17,4 +17,11 @@ export default class UserRole extends Model {
   public allowUpdateAppliance = false;
   public allowUpdateMaintainer = false;
   public allowUpdateOrganisation = false;
+
+  public $beforeUpdate(opt, queryContext) {
+    delete this.id; // should not update id field
+    delete this.organisation; // should not update organisation field
+  }
 }
+
+export type RoleRights = Omit<Omit<UserRole, Model>, "id" | "organisation" | "name">;
