@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "change-case": "^3.1.0",
     "date-fns": "^1.29.0",
     "dotenv": "^7.0.0",
     "emotion": "^10.0.9",

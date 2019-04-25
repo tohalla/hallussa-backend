@@ -12,6 +12,8 @@ export interface JWTPayload {
   accountId: number;
 }
 
+export type Claims = JWTPayload;
+
 export const signToken = (accountId: number) => new Promise((resolve, reject) => {
   if (!process.env.JWT_SECRET) {
     return reject(new Error("define JWT_SECRET environment variable"));

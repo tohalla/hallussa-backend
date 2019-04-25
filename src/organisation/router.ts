@@ -1,16 +1,22 @@
 import bodyParser from "koa-bodyparser";
-import Router from "koa-router";
+import Router, { RouterContext } from "koa-router";
 import { map, path } from "ramda";
 
 import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
-import { secureRoute } from "../auth/jwt";
+import { Claims, secureRoute } from "../auth/jwt";
 import roleRouter from "../auth/role/router";
+import { RoleRights } from "../auth/role/UserRole";
 import maintainerRouter from "../maintainer/router";
-import { mapRoleRights } from "./middleware";
+import { secureOrganisation } from "./middleware";
 import Organisation, { normalizeOrganisation } from "./Organisation";
 
-const router = new Router({ prefix: "/organisations" })
+export type RouterStateContext = RouterContext<{}, {
+  rights: RoleRights | {[key: string]: never}
+  claims: Claims;
+}>;
+
+const router = new Router<RouterStateContext>({ prefix: "/organisations" })
   .use(secureRoute)
   .get("/", async (ctx) => {
     const accountID = path(["state", "claims", "accountId"], ctx);
@@ -24,7 +30,7 @@ const router = new Router({ prefix: "/organisations" })
         accountID
       )
       .eager(ctx.query.eager)
-      .modifyEager("accounts", (builder) => builder.select("account", "userRole"))
+      .modifyEager("accounts", (builder) => builder.select("account", "user_role"))
       .modifyEager("appliances", (builder) => builder.select("id"))
       .modifyEager("maintainers", (builder) => builder.select("id"))
     );
@@ -59,19 +65,22 @@ const router = new Router({ prefix: "/organisations" })
 
 router
   // account must be authenticated and a member of the organisation to access its routes
-  .param("organisation", mapRoleRights)
+  .param("organisation", secureOrganisation)
   .get("/:organisation", async (ctx) => {
     ctx.body = normalizeOrganisation(await Organisation.query()
       .select()
       .where("id", "=", ctx.params.organisation)
       .eager(ctx.query.eager)
-      .modifyEager("accounts", (builder) => builder.select("account", "userRole"))
+      .modifyEager("accounts", (builder) => builder.select("account", "user_role"))
       .modifyEager("appliances", (builder) => builder.select("id"))
       .modifyEager("maintainers", (builder) => builder.select("id"))
       .first()
     );
   })
   .patch("/:organisation", bodyParser(), async (ctx) => {
+    if (!ctx.state.rights.allowUpdateOrganisation) {
+      return ctx.throw(401);
+    }
     ctx.body = await Organisation
       .query()
       .patch(ctx.request.body || {})
@@ -80,6 +89,9 @@ router
       .first();
   })
   .del("/:organisation", async (ctx) => {
+    if (!ctx.state.rights.allowDeleteOrganisation) {
+      return ctx.throw(401);
+    }
     await Organisation.query().deleteById(ctx.params.organisation);
     ctx.status = 200;
   })

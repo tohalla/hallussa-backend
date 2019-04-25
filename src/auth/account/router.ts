@@ -13,7 +13,7 @@ export default new Router({prefix: "/accounts"})
       .select()
       .where("id", "=", accountId)
       .eager(ctx.query.eager)
-      .modifyEager("organisations", (builder) => builder.select("organisation", "userRole"))
+      .modifyEager("organisations", (builder) => builder.select("organisation", "user_role"))
       .first()
     );
   })

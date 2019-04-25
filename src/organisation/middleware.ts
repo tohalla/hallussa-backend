@@ -1,12 +1,14 @@
 import { IParamMiddleware } from "koa-router";
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { path } from "ramda";
+import { formatObjectKeys } from "../util/format";
 
-export const mapRoleRights: IParamMiddleware = async (
+export const secureOrganisation: IParamMiddleware = async (
   organisation,
   ctx,
   next
 ) => {
+  ctx.state.rights = {};
   const accountId = path(["state", "claims", "accountId"], ctx);
   // check if accountId and organisation defined (koa route params are strings)
   if (typeof organisation === "string" && typeof accountId === "number") {
@@ -34,7 +36,7 @@ export const mapRoleRights: IParamMiddleware = async (
       }
     );
     if (result.rows.length > 0) {
-      ctx.state.rights = path(["rows", 0], result);
+      ctx.state.rights = formatObjectKeys(path(["rows", 0], result));
       return next();
     }
   }
