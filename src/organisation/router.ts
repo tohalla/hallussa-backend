@@ -5,8 +5,8 @@ import { map, path } from "ramda";
 import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
 import { Claims, secureRoute } from "../auth/jwt";
-import roleRouter from "../auth/role/router";
-import { RoleRights } from "../auth/role/UserRole";
+import userRoleRouter from "../auth/user-role/router";
+import { RoleRights } from "../auth/user-role/UserRole";
 import maintainerRouter from "../maintainer/router";
 import { secureOrganisation } from "./middleware";
 import Organisation, { normalizeOrganisation } from "./Organisation";
@@ -21,7 +21,7 @@ const router = new Router<RouterStateContext>({ prefix: "/organisations" })
   .get("/", async (ctx) => {
     const accountID = path(["state", "claims", "accountId"], ctx);
     // TODO: Should organisations be public? if so, limit public data
-    ctx.body = map(normalizeOrganisation, await Organisation
+    const organisations = await Organisation
       .query()
       .select()
       .joinRaw(
@@ -33,7 +33,8 @@ const router = new Router<RouterStateContext>({ prefix: "/organisations" })
       .modifyEager("accounts", (builder) => builder.select("account", "user_role"))
       .modifyEager("appliances", (builder) => builder.select("id"))
       .modifyEager("maintainers", (builder) => builder.select("id"))
-    );
+      .modifyEager("userRoles", (builder) => builder.select("id"));
+    ctx.body = map(normalizeOrganisation, organisations);
   })
   .post("/", secureRoute, bodyParser(), async (ctx) => {
     const trx = await transaction.start(Organisation);
@@ -94,9 +95,10 @@ router
     }
     await Organisation.query().deleteById(ctx.params.organisation);
     ctx.status = 200;
-  })
-  .use("/:organisation", applianceRouter.routes(), applianceRouter.allowedMethods())
-  .use("/:organisation", maintainerRouter.routes(), maintainerRouter.allowedMethods())
-  .use("/:organisation", roleRouter.routes(), roleRouter.allowedMethods());
+  });
+
+[applianceRouter, maintainerRouter, userRoleRouter()].forEach((r) =>
+  router.use("/:organisation", r.routes(), r.allowedMethods())
+);
 
 export default router;

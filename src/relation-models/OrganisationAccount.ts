@@ -1,5 +1,5 @@
 import { Model } from "objection";
-import UserRole from "../auth/role/UserRole";
+import UserRole from "../auth/user-role/UserRole";
 
 export default class OrganisationAccount extends Model {
   public static tableName = "organisation_account";

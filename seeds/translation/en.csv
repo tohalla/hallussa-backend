@@ -66,6 +66,7 @@ en;maintenanceEvent.listing.noEvents;No maintenance events found
 en;navigation.item.appliances;Appliances
 en;navigation.item.maintainers;Maintainers
 en;navigation.item.organisations;Organisations
+en;navigation.item.profile;Profile
 en;navigation.user.greeting;Hello, <1>{{name}}</1>
 en;navigation.user.signOut;Log out
 en;organisation.action.activate;Set as active
@@ -82,6 +83,8 @@ en;organisation.noOrganisations;No organisations created
 en;submit;Submit
 en;tab.appliance.appliances;Appliances
 en;tab.appliance.new;New appliance
+en;tab.organisation.users;Users
+en;tab.organisation.details;Details
 en;tab.maintainer.maintainers;Maintainers
 en;tab.maintainer.new;New maintainer
 en;updatedAt;Updated at

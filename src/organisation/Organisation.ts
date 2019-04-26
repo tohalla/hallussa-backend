@@ -1,4 +1,4 @@
-import { Model } from "objection";
+import { Model, RelationMappings } from "objection";
 import { evolve, map, prop } from "ramda";
 
 import OrganisationAccount from "../relation-models/OrganisationAccount";
@@ -6,7 +6,7 @@ import OrganisationAccount from "../relation-models/OrganisationAccount";
 export default class Organisation extends Model {
   public static tableName = "organisation";
 
-  public static relationMappings = {
+  public static relationMappings: RelationMappings = {
     accounts: { // should never eagerly load accounts, only ID's
       join: {
         from: "organisation.id",
@@ -33,6 +33,15 @@ export default class Organisation extends Model {
       modelClass: require("../maintainer/Maintainer").default,
       relation: Model.HasManyRelation,
     },
+    userRoles: { // should never eagerly load roles, only ID's
+      join: {
+        from: "organisation.id",
+        to: "user_role.organisation",
+      },
+      // imported here to prevent errors due to future circular dependencies
+      modelClass: require("../auth/user-role/UserRole").default,
+      relation: Model.HasManyRelation,
+    },
   };
 
   public static jsonSchema = {
@@ -55,6 +64,7 @@ export default class Organisation extends Model {
   public accounts: ReadonlyArray<{id: number, userRole: number}> = [];
   public maintainers: ReadonlyArray<number> = [];
   public appliances: ReadonlyArray<number> = [];
+  public userRoles: ReadonlyArray<number> = [];
 
   public async $beforeUpdate() {
     delete this.id; // should not update id field
@@ -73,4 +83,5 @@ export const normalizeOrganisation = (organisation: Organisation | undefined) =>
    })),
    appliances: map(prop("id")),
    maintainers: map(prop("id")),
+   userRoles: map(prop("id")),
  }, organisation as object);
