@@ -37,10 +37,10 @@ export default class Account extends Model {
   public email?: string;
   public updatedAt?: string;
   public createdAt?: string;
-  public organisations: ReadonlyArray<{id: number, userRole: number}> = [];
+  public organisations?: ReadonlyArray<{id: number, userRole: number}>;
 
   public $formatJson(json: Pojo) {
-    return omit(["password"], super.$formatJson(json));
+    return omit(["password", "updatedAt", "createdAt"], super.$formatJson(json));
   }
 
   public async $beforeInsert() {

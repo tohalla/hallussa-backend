@@ -7,6 +7,7 @@ import applianceRouter from "../appliance/router";
 import { Claims, secureRoute } from "../auth/jwt";
 import userRoleRouter from "../auth/user-role/router";
 import { RoleRights } from "../auth/user-role/UserRole";
+import userRouter from "../auth/user/router";
 import maintainerRouter from "../maintainer/router";
 import { secureOrganisation } from "./middleware";
 import Organisation, { normalizeOrganisation } from "./Organisation";
@@ -97,7 +98,7 @@ router
     ctx.status = 200;
   });
 
-[applianceRouter, maintainerRouter, userRoleRouter()].forEach((r) =>
+[applianceRouter, maintainerRouter, userRoleRouter(), userRouter].forEach((r) =>
   router.use("/:organisation", r.routes(), r.allowedMethods())
 );
 
