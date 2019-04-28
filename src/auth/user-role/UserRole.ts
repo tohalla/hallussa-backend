@@ -3,6 +3,10 @@ import { Model } from "objection";
 export default class UserRole extends Model {
   public static tableName = "user_role";
 
+  public static get virtualAttributes() {
+    return ["isShared"];
+  }
+
   public id: number;
   public organisation?: number;
   public name: string;
@@ -17,6 +21,10 @@ export default class UserRole extends Model {
   public allowUpdateAppliance = false;
   public allowUpdateMaintainer = false;
   public allowUpdateOrganisation = false;
+
+  public get isShared() {
+    return !this.organisation;
+  }
 
   public $beforeUpdate(opt, queryContext) {
     delete this.id; // should not update id field
