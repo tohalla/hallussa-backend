@@ -3,9 +3,12 @@ en;account.authentication.createNewAccount;Create a new account
 en;account.authentication.form.submit;Authenticate
 en;account.field.email;Email address
 en;account.field.firstName;First name
+en;account.field.id;Id
 en;account.field.lastName;Last name
+en;account.field.name;Name
 en;account.field.password;Password
 en;account.field.retypePassword;Retype password
+en;account.field.role;Role
 en;account.registration.authenticate;I already have an account
 en;account.registration.form.error.invalidEmail;Invalid email address.
 en;account.registration.form.error.passwordsDontMatch;Passwords do not match.
@@ -17,10 +20,10 @@ en;appliance.action.edit;Edit appliance
 en;appliance.create.form.submit;Create appliance
 en;appliance.create.title;New appliance
 en;appliance.createdAt;Created at {{createdAt}}
-en;appliance.drawers.maintainers.title;Maintainers
-en;appliance.drawers.overview.numberOfAppliances;Number of appliances
-en;appliance.drawers.overview.operativeAppliances;Operative appliances
-en;appliance.drawers.overview.title;Overview
+en;appliance.drawer.maintainers.title;Maintainers
+en;appliance.drawer.overview.numberOfAppliances;Number of appliances
+en;appliance.drawer.overview.operativeAppliances;Operative appliances
+en;appliance.drawer.overview.title;Overview
 en;appliance.edit.form.submit;Update appliance
 en;appliance.edit.title;Edit appliance – {{appliance}}
 en;appliance.event.list.title;Maintenance events
@@ -79,12 +82,17 @@ en;organisation.edit.form.submit;Update organisation
 en;organisation.edit.title;Edit organisation – {{organisation}}
 en;organisation.field.name;Name
 en;organisation.field.organisationIdentifier;Organisation identifier
+en;organisation.logins.title;Logins
 en;organisation.noOrganisations;No organisations created
+en;organisation.users.title;Users
+en;role.administrator;Administrator
+en;role.maintainer;Maintainer
+en;role.moderator;Moderator
 en;submit;Submit
 en;tab.appliance.appliances;Appliances
 en;tab.appliance.new;New appliance
-en;tab.organisation.users;Users
-en;tab.organisation.details;Details
 en;tab.maintainer.maintainers;Maintainers
 en;tab.maintainer.new;New maintainer
+en;tab.organisation.details;Details
+en;tab.organisation.users;Users
 en;updatedAt;Updated at
