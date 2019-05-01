@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
+import { lowerCase, titleCase } from "change-case";
 import { Model, Pojo } from "objection";
 import { evolve, map, omit } from "ramda";
+
 import OrganisationAccount from "../../relation-models/OrganisationAccount";
 
 export default class Account extends Model {
@@ -32,6 +34,8 @@ export default class Account extends Model {
   };
 
   public id?: number;
+  public firstName?: string;
+  public lastName?: string;
   public password?: string;
   public retypePassword?: string;
   public email?: string;
@@ -46,6 +50,9 @@ export default class Account extends Model {
   public async $beforeInsert() {
     delete this.retypePassword; // column does not exists in database
     this.password = await hashPassword(this.password as string); // password required and validated by json schema
+    this.firstName = titleCase(this.firstName);
+    this.lastName = titleCase(this.lastName);
+    this.email = lowerCase(this.email);
   }
 
   public async $beforeUpdate() {
@@ -58,6 +65,8 @@ export default class Account extends Model {
       this.password = await hashPassword(this.password);
     }
     this.updatedAt = new Date().toISOString();
+    this.firstName = titleCase(this.firstName);
+    this.lastName = titleCase(this.lastName);
   }
 
   public async $afterInsert() {

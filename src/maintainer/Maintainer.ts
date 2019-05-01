@@ -1,3 +1,4 @@
+import { lowerCase, titleCase } from "change-case";
 import { Model } from "objection";
 import { evolve, map, prop } from "ramda";
 
@@ -33,6 +34,9 @@ export default class Maintainer extends Model {
   };
 
   public id?: number;
+  public firstName?: string;
+  public lastName?: string;
+  public email?: string;
   public updatedAt?: string;
   public createdAt?: string;
   public organisation?: number;
@@ -46,10 +50,16 @@ export default class Maintainer extends Model {
 
     this.phone = formatPhone(this.phone);
     this.updatedAt = new Date().toISOString();
+    this.firstName = titleCase(this.firstName);
+    this.lastName = titleCase(this.lastName);
+    this.email = lowerCase(this.email);
   }
 
   public $beforeInsert() {
     this.phone = formatPhone(this.phone);
+    this.firstName = titleCase(this.firstName);
+    this.lastName = titleCase(this.lastName);
+    this.email = lowerCase(this.email);
   }
 }
 
