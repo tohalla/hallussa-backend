@@ -63,7 +63,7 @@ en;maintainer.listing.noMaintainers;No maintainers found
 en;maintainer.updatedAt;Updated at {{updatedAt}}
 en;maintenanceEvent.field.assignedTo;Assigned to
 en;maintenanceEvent.field.description;Description
-en;maintenanceEvent.field.reportedAt;Reported at
+en;maintenanceEvent.field.createdAt;Created at
 en;maintenanceEvent.field.resolvedAt;Resolved at
 en;maintenanceEvent.listing.noEvents;No maintenance events found
 en;navigation.item.appliances;Appliances
