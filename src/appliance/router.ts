@@ -103,7 +103,7 @@ export default new Router({ prefix: "/appliances" })
     const { organisation } = ctx.params;
     ctx.body = await Appliance.query().insert({
       ...ctx.request.body,
-      ...{ organisation: Number(organisation) },
+      organisation: Number(organisation),
     }).returning("*");
     ctx.status = 201;
   })

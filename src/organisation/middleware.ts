@@ -1,5 +1,5 @@
 import { IParamMiddleware } from "koa-router";
-import { Model, snakeCaseMappers } from "objection";
+import { Model } from "objection";
 import { path } from "ramda";
 import { formatObjectKeys } from "../util/format";
 
