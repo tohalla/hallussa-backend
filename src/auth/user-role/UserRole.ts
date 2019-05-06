@@ -1,6 +1,10 @@
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 
 export default class UserRole extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "user_role";
 
   public static get virtualAttributes() {

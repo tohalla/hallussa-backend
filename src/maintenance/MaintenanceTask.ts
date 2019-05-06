@@ -1,9 +1,13 @@
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { path } from "ramda";
 
 import { RequestParams, sendRepairRequestEmail } from "../emails/request";
 
 export default class MaintenanceTask extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "maintenance_task";
 
   public static jsonSchema = {
@@ -15,7 +19,7 @@ export default class MaintenanceTask extends Model {
       maintainer: {type: "integer"},
       maintenanceEvent: {type: "integer"},
     },
-    required: ["maintenanceEvent", "maintainer"],
+    required: ["maintenance_event", "maintainer"],
   };
 
   public updatedAt?: string;

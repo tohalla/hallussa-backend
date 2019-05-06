@@ -1,11 +1,15 @@
 import bcrypt from "bcryptjs";
 import { lowerCase, titleCase } from "change-case";
-import { Model, Pojo } from "objection";
+import { Model, Pojo, snakeCaseMappers } from "objection";
 import { evolve, map, omit } from "ramda";
 
 import OrganisationAccount from "../../relation-models/OrganisationAccount";
 
 export default class Account extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "account";
 
   public static relationMappings = {
@@ -30,7 +34,7 @@ export default class Account extends Model {
       password: {type: "string", minLength: 6},
       // validation of the email address is done at the client side, after which the confirmation email is sent
     },
-    required: ["firstName", "lastName", "password", "email"],
+    required: ["first_name", "last_name", "password", "email"],
   };
 
   public id?: number;

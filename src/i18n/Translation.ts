@@ -1,7 +1,11 @@
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { assocPath, reduce } from "ramda";
 
 export default class Translation extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "translation";
 
   public static jsonSchema = {

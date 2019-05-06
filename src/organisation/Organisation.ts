@@ -1,9 +1,13 @@
-import { Model, RelationMappings } from "objection";
+import { Model, RelationMappings, snakeCaseMappers } from "objection";
 import { evolve, map, prop } from "ramda";
 
 import OrganisationAccount from "../relation-models/OrganisationAccount";
 
 export default class Organisation extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "organisation";
 
   public static relationMappings: RelationMappings = {

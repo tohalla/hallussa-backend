@@ -1,7 +1,11 @@
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import Translation from "./Translation";
 
 export default class Language extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "language";
 
   public static relationMappings = {

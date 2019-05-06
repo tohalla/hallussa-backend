@@ -1,4 +1,4 @@
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { dissoc, evolve, map, prop } from "ramda";
 
 import MaintenanceEvent from "../maintenance/MaintenanceEvent";
@@ -6,6 +6,10 @@ import ApplianceMaintainer from "../relation-models/ApplianceMaintainer";
 import ApplianceStatus from "./ApplianceStatus";
 
 export default class Appliance extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "appliance";
 
   public static relationMappings = {

@@ -1,11 +1,15 @@
 import { lowerCase, titleCase } from "change-case";
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { evolve, map, prop } from "ramda";
 
 import ApplianceMaintainer from "../relation-models/ApplianceMaintainer";
 import { formatPhone } from "../util/format";
 
 export default class Maintainer extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "maintainer";
 
   public static relationMappings = {
@@ -30,7 +34,7 @@ export default class Maintainer extends Model {
       lastName: {type: "string", minLength: 1, maxLength: 64},
       phone: {type: "string", maxLength: 16},
     },
-    required: ["firstName", "lastName", "email", "phone"],
+    required: ["first_name", "last_name", "email", "phone"],
   };
 
   public id?: number;

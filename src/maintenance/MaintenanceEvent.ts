@@ -1,8 +1,12 @@
-import { Model, NotFoundError, transaction } from "objection";
+import { Model, NotFoundError, snakeCaseMappers, transaction } from "objection";
 import { map, path } from "ramda";
 import MaintenanceTask from "./MaintenanceTask";
 
 export default class MaintenanceEvent extends Model {
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
+
   public static tableName = "maintenance_event";
 
   public static jsonSchema = {

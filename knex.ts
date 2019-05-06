@@ -1,6 +1,5 @@
 import { config } from "dotenv";
 import { ConnectionConfig } from "knex";
-import { knexSnakeCaseMappers } from "objection";
 import path from "path";
 import { assocPath } from "ramda";
 
@@ -28,7 +27,6 @@ export const knex = {
     stub: "migrationTemplate.ts",
     tableName: "migration",
   },
-  ...knexSnakeCaseMappers(), // map camelCase to snake_case. eg. firstName -> first_name
 };
 
 // migrations are currently not run from container on development
