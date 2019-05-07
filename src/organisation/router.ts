@@ -1,6 +1,6 @@
 import bodyParser from "koa-bodyparser";
 import Router, { RouterContext } from "koa-router";
-import { map, path } from "ramda";
+import { concat, map, path, reduce } from "ramda";
 
 import { transaction } from "objection";
 import applianceRouter from "../appliance/router";
@@ -17,7 +17,45 @@ export type RouterStateContext = RouterContext<{}, {
   claims: Claims;
 }>;
 
-const router = new Router<RouterStateContext>({ prefix: "/organisations" })
+const organisationRouter = new Router({prefix: "/:organisation"})
+  .get("/", async (ctx) => {
+    ctx.body = normalizeOrganisation(await Organisation.query()
+      .select()
+      .where("id", "=", ctx.params.organisation)
+      .eager(ctx.query.eager)
+      .modifyEager("accounts", (builder) => builder.select("account", "user_role"))
+      .modifyEager("appliances", (builder) => builder.select("id"))
+      .modifyEager("maintainers", (builder) => builder.select("id"))
+      .first()
+    );
+  })
+  .patch("/", bodyParser(), async (ctx) => {
+    if (!ctx.state.rights.allowUpdateOrganisation) {
+      return ctx.throw(401);
+    }
+    ctx.body = await Organisation
+      .query()
+      .patch(ctx.request.body || {})
+      .where("id", "=", ctx.params.organisation)
+      .returning("*")
+      .first();
+  })
+  .del("/", async (ctx) => {
+    if (!ctx.state.rights.allowDeleteOrganisation) {
+      return ctx.throw(401);
+    }
+    await Organisation.query().deleteById(ctx.params.organisation);
+    ctx.status = 200;
+  })
+  .use(
+    ...reduce(
+      (prev, curr) => concat(prev, [curr.routes(), curr.allowedMethods()]),
+      [],
+      [applianceRouter, maintainerRouter, userRoleRouter(), userRouter]
+    )
+  );
+
+export default new Router<RouterStateContext>({ prefix: "/organisations" })
   .use(secureRoute)
   .get("/", async (ctx) => {
     const accountID = path(["state", "claims", "accountId"], ctx);
@@ -37,7 +75,7 @@ const router = new Router<RouterStateContext>({ prefix: "/organisations" })
       .modifyEager("userRoles", (builder) => builder.select("id"));
     ctx.body = map(normalizeOrganisation, organisations);
   })
-  .post("/", secureRoute, bodyParser(), async (ctx) => {
+  .post("/", bodyParser(), async (ctx) => {
     const trx = await transaction.start(Organisation);
     try {
       const accountId = ctx.state.claims.accountId;
@@ -63,43 +101,7 @@ const router = new Router<RouterStateContext>({ prefix: "/organisations" })
       trx.rollback();
       throw e;
     }
-  });
-
-router
+  })
   // account must be authenticated and a member of the organisation to access its routes
-  .param("organisation", secureOrganisation)
-  .get("/:organisation", async (ctx) => {
-    ctx.body = normalizeOrganisation(await Organisation.query()
-      .select()
-      .where("id", "=", ctx.params.organisation)
-      .eager(ctx.query.eager)
-      .modifyEager("accounts", (builder) => builder.select("account", "user_role"))
-      .modifyEager("appliances", (builder) => builder.select("id"))
-      .modifyEager("maintainers", (builder) => builder.select("id"))
-      .first()
-    );
-  })
-  .patch("/:organisation", bodyParser(), async (ctx) => {
-    if (!ctx.state.rights.allowUpdateOrganisation) {
-      return ctx.throw(401);
-    }
-    ctx.body = await Organisation
-      .query()
-      .patch(ctx.request.body || {})
-      .where("id", "=", ctx.params.organisation)
-      .returning("*")
-      .first();
-  })
-  .del("/:organisation", async (ctx) => {
-    if (!ctx.state.rights.allowDeleteOrganisation) {
-      return ctx.throw(401);
-    }
-    await Organisation.query().deleteById(ctx.params.organisation);
-    ctx.status = 200;
-  });
-
-[applianceRouter, maintainerRouter, userRoleRouter(), userRouter].forEach((r) =>
-  router.use("/:organisation", r.routes(), r.allowedMethods())
-);
-
-export default router;
+  .use("/:organisation", secureOrganisation)
+  .use(organisationRouter.routes(), organisationRouter.allowedMethods());

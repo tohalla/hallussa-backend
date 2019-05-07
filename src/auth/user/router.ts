@@ -25,10 +25,13 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       )
       .select();
   })
-  .post("/accounts", bodyParser(), async (ctx) => {
-    if (!ctx.state.rights.allowManageRoles) {
-      return ctx.throw(401);
+  .use((ctx, next) => {
+    if (ctx.state.rights.allowManageRoles) {
+      return next();
     }
+    return ctx.throw(401);
+  })
+  .post("/accounts", bodyParser(), async (ctx) => {
     // organisation param set in parent router
     const { organisation } = ctx.params;
     const {email, userRole} = (ctx.request.body || {}) as InvitationPayload;
@@ -50,10 +53,16 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       }).returning("*");
     }
   })
+  .put("/accounts/:account", bodyParser(), async (ctx) => {
+    const { organisation, account } = ctx.params;
+    const { userRole } = (ctx.request.body || {}) as InvitationPayload;
+    ctx.body = await OrganisationAccount.query()
+      .update({userRole})
+      .where("organisation", "=", organisation)
+      .andWhere("account", "=", account)
+      .returning("*").first();
+  })
   .del("/accounts/:account", async (ctx) => {
-    if (!ctx.state.rights.allowManageRoles) {
-      return ctx.throw(401);
-    }
     const { organisation, account } = ctx.params;
     await OrganisationAccount.query().delete() // remove pre-existing roles from account in the organisation
       .where("organisation", "=", organisation)

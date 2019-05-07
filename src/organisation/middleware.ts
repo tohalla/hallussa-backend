@@ -1,17 +1,17 @@
-import { IParamMiddleware } from "koa-router";
+import { Middleware } from "koa";
 import { Model } from "objection";
 import { path } from "ramda";
 import { formatObjectKeys } from "../util/format";
 
-export const secureOrganisation: IParamMiddleware = async (
-  organisation,
+export const secureOrganisation: Middleware = async (
   ctx,
   next
 ) => {
   ctx.state.rights = {};
   const accountId = path(["state", "claims", "accountId"], ctx);
-  // check if accountId and organisation defined (koa route params are strings)
-  if (typeof organisation === "string" && typeof accountId === "number") {
+  const {organisation} = ctx.params;
+
+  if (typeof organisation !== "undefined" && typeof accountId === "number") {
     const result = await Model.raw(`
       SELECT
         user_role.allow_create_appliance,
@@ -41,5 +41,5 @@ export const secureOrganisation: IParamMiddleware = async (
     }
   }
   // if next not returned before, account isn't allowed to access route
-  ctx.throw(401);
+  return ctx.throw(401);
 };
