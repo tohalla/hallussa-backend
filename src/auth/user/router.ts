@@ -43,14 +43,17 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       if (!account) {
         return ctx.throw(400, `Account not found with email ${email}`);
       }
-      await OrganisationAccount.query().delete() // remove pre-existing roles from account in the organisation
-        .where("organisation", "=", organisation)
-        .andWhere("account", "=", account.id);
-      ctx.body = await OrganisationAccount.query().insert({
-        account: account.id,
-        organisation: Number(organisation),
-        userRole,
-      }).returning("*");
+      try {
+        ctx.body = await OrganisationAccount.query().insert({
+          account: account.id,
+          organisation: Number(organisation),
+          userRole,
+        }).returning("*");
+      } catch (e) {
+        if (typeof e === "object" && e.constraint === "organisation_account_account_organisation_unique") {
+          ctx.throw(409, "Account already added to the organisation");
+        }
+      }
     }
   })
   .put("/accounts/:account", bodyParser(), async (ctx) => {
