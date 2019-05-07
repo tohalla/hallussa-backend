@@ -1,4 +1,7 @@
+import { snakeCase } from "change-case";
 import Knex from "knex";
+
+import { formatObjectKeys } from "../src/util/format";
 
 exports.up = async (knex: Knex) => {
   await knex.schema.createTable("user_role", (table) => {
@@ -63,7 +66,7 @@ exports.up = async (knex: Knex) => {
       allowManageMaintenanceTask: true,
       name: "maintainer",
     },
-  ]);
+  ].map((obj) => formatObjectKeys(obj, snakeCase)));
 };
 
 exports.down = async (knex: Knex) => {
