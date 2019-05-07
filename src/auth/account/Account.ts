@@ -34,7 +34,7 @@ export default class Account extends Model {
       password: {type: "string", minLength: 6},
       // validation of the email address is done at the client side, after which the confirmation email is sent
     },
-    required: ["first_name", "last_name", "password", "email"],
+    required: ["firstName", "lastName", "password", "email"],
   };
 
   public id?: number;

@@ -19,7 +19,7 @@ export default class MaintenanceTask extends Model {
       maintainer: {type: "integer"},
       maintenanceEvent: {type: "integer"},
     },
-    required: ["maintenance_event", "maintainer"],
+    required: ["maintenanceEvent", "maintainer"],
   };
 
   public updatedAt?: string;

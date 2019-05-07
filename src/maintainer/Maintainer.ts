@@ -34,7 +34,7 @@ export default class Maintainer extends Model {
       lastName: {type: "string", minLength: 1, maxLength: 64},
       phone: {type: "string", maxLength: 16},
     },
-    required: ["first_name", "last_name", "email", "phone"],
+    required: ["firstName", "lastName", "email", "phone"],
   };
 
   public id?: number;
