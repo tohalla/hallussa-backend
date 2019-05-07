@@ -30,9 +30,6 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
     // organisation param set in parent router
     const { organisation } = ctx.params;
     const {email, userRole} = (ctx.request.body || {}) as InvitationPayload;
-    if (typeof userRole !== "number") {
-      return ctx.throw(400, "values for account and userRole required");
-    }
     if (typeof email === "string") {
       const account = await Account.query().select("id").where("email", "=", email).first();
       if (!account) {
