@@ -21,6 +21,7 @@ export const secureOrganisation: Middleware = async (
         user_role.allow_delete_organisation,
         user_role.allow_manage_maintenance_task,
         user_role.allow_manage_roles,
+        user_role.allow_manage_users,
         user_role.allow_update_appliance,
         user_role.allow_update_maintainer,
         user_role.allow_update_organisation

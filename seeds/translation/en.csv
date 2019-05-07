@@ -82,6 +82,8 @@ en;organisation.edit.form.submit;Update organisation
 en;organisation.edit.title;Edit organisation – {{organisation}}
 en;organisation.field.name;Name
 en;organisation.field.organisationIdentifier;Organisation identifier
+en;organisation.account.addAccount;Add account
+en;organisation.account.field.email;Email address
 en;organisation.logins.title;Logins
 en;organisation.noOrganisations;No organisations created
 en;organisation.users.title;Users

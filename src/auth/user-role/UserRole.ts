@@ -22,6 +22,7 @@ export default class UserRole extends Model {
   public allowDeleteOrganisation = false;
   public allowManageMaintenanceTask = false;
   public allowManageRoles = false;
+  public allowManageUsers = false;
   public allowUpdateAppliance = false;
   public allowUpdateMaintainer = false;
   public allowUpdateOrganisation = false;

@@ -25,12 +25,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       )
       .select();
   })
-  .use((ctx, next) => {
-    if (ctx.state.rights.allowManageRoles) {
-      return next();
-    }
-    return ctx.throw(401);
-  })
+  .use((ctx, next) => ctx.state.rights.allowManageUsers ? next() : ctx.throw(401))
   .post("/accounts", bodyParser(), async (ctx) => {
     // organisation param set in parent router
     const { organisation } = ctx.params;
