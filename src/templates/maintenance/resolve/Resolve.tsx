@@ -11,6 +11,7 @@ import { growContainer } from "../../../styles/container";
 import logo from "../../../styles/logo";
 import { logoContainer, uppercaseTitle } from "../../../styles/topbar";
 
+import { apiURL } from "../../../config";
 import Footer from "../../shared/Footer";
 import Root from "../../shared/Root";
 import TopBar from "../../shared/TopBar";
@@ -35,8 +36,6 @@ const Assigned = (props: { assignedTo: number | undefined; maintainer: number | 
   );
 };
 
-const {PROTOCOL, BASE_URL} = process.env;
-
 export default ({ event, task, organisation, appliance, }: Resolve, Content: any) =>
   renderStylesToString(renderToStaticMarkup(
     <Root>
@@ -44,7 +43,7 @@ export default ({ event, task, organisation, appliance, }: Resolve, Content: any
         <TopBar>
           <div style={{ display: "flex", flexGrow: 1 }}>
             <div className={logoContainer} style={{ position: "absolute", margin: "11px" }}>
-              <img src={`${PROTOCOL}://${BASE_URL}/assets/img/hallussa-qr.png`} className={logo} />
+              <img src={`${apiURL}/img/hallussa-qr.png`} className={logo} />
             </div>
             <div className={uppercaseTitle} style={{ flexGrow: 1 }}>
               Maintenance

@@ -6,6 +6,7 @@ import "../../styles/";
 
 import Signature from "./components/Signature";
 
+import { apiURL } from "../../config";
 import { RequestParams } from "../../emails/request";
 
 export default (data: RequestParams) => {
@@ -20,8 +21,7 @@ export default (data: RequestParams) => {
     event_description,
     task_hash,
   } = data;
-  const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
-  const maintenancePageURI = `${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${app_hash}/${task_hash}`;
+  const maintenancePageURI = `${apiURL}/maintenance/${app_hash}/${task_hash}`;
   return renderToStaticMarkup(
     <div>
       <h1>Hello, {first_name} {last_name}.</h1>

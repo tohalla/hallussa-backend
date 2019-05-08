@@ -1,8 +1,8 @@
-import { Context } from "koa";
 import QRCode from "qrcode";
-import { path, reduce } from "ramda";
+import { reduce } from "ramda";
 
 import Appliance from "../appliance/Appliance";
+import { apiURL } from "../config";
 
 export const getQRPage = async (
   applianceIDs: number[],
@@ -15,12 +15,11 @@ export const getQRPage = async (
     .whereIn("id", applianceIDs)
     .andWhere("organisation", "=", organisation);
 
-  const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
   // generate svg qr codes for appliances
   const qrCodes = await Promise.all(
     appliances.map(async (appliance) =>
       QRCode.toString(
-        `${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${appliance.hash}`,
+        `${apiURL}/maintenance/${appliance.hash}`,
         {errorCorrectionLevel: "medium", type: "svg", scale: 2}
       ),
       appliances

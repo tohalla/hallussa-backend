@@ -2,6 +2,7 @@ import { renderStylesToString } from "emotion-server";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
+import { cdnURL } from "../../../config";
 import { growContainer } from "../../../styles/container";
 import logo from "../../../styles/logo";
 import { logoContainer, uppercaseTitle } from "../../../styles/topbar";
@@ -9,8 +10,6 @@ import Footer from "../../shared/Footer";
 import Root from "../../shared/Root";
 import TopBar from "../../shared/TopBar";
 import ViewContainer from "../../shared/ViewContainer";
-
-const {PROTOCOL, BASE_URL} = process.env;
 
 export default (
   hash: string,
@@ -24,7 +23,7 @@ export default (
       <TopBar>
         <div style={{ display: "flex", flexGrow: 1 }}>
           <div className={logoContainer} style={{ position: "absolute", margin: "11px" }}>
-            <img src={`${PROTOCOL}://${BASE_URL}/assets/img/hallussa-qr.png`} className={logo} />
+            <img src={`${cdnURL}/img/hallussa-qr.png`} className={logo} />
           </div>
           <div className={uppercaseTitle} style={{ flexGrow: 1 }}>
             Maintenance Report

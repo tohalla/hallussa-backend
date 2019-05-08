@@ -8,6 +8,8 @@ import { errorHandling } from "./util/error";
 
 const app = new Koa();
 
+const {API_PORT} = process.env;
+
 app
   .use(helmet()) // security headers
   .use((ctx, next) => {
@@ -25,4 +27,4 @@ app
   .use(jwtMiddleware)
   .use(router.routes())
   .use(router.allowedMethods())
-  .listen(8080);
+  .listen(API_PORT);

@@ -14,6 +14,7 @@ import NewDescription from "../templates/maintenance/request/NewDescription";
 import NewRequestForm from "../templates/maintenance/request/NewRequestForm";
 import Request from "../templates/maintenance/request/Request";
 
+import { apiURL } from "../config";
 import AcceptForm from "../templates/maintenance/resolve/AcceptForm";
 import Done from "../templates/maintenance/resolve/Done";
 import MaintenanceForm from "../templates/maintenance/resolve/MaintenanceForm";
@@ -24,8 +25,6 @@ interface MaintenanceState {
   maintenanceEvent: MaintenanceEvent;
   maintenanceTask: MaintenanceTask;
 }
-
-const {PROTOCOL, API_PREFIX, BASE_URL} = process.env;
 
 const taskRouter = new Router({ prefix: "/:taskHash" })
   .param("taskHash", secureEvent)
@@ -84,7 +83,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     maintenanceEvent.assign(maintenanceTask.hash);
     ctx.status = 200;
     ctx.redirect(
-      `${PROTOCOL}://${BASE_URL}${API_PREFIX}/maintenance/${ctx.params.applianceHash}/${ctx.params.taskHash}`
+      `${apiURL}/maintenance/${ctx.params.applianceHash}/${ctx.params.taskHash}`
     );
   })
   .del("/", bodyParser(), async (ctx) => {
@@ -98,7 +97,7 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
       .query()
       .select()
       .where("appliance", ctx.state.appliance.id)
-      .whereNull("resolvedAt")
+      .whereNull("resolved_at")
       .first();
 
     const [description, form] = event ? [ExistingDescription, ExistingRequestForm] : [NewDescription, NewRequestForm];
@@ -131,7 +130,7 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
     ctx.status = 201;
     // TODO: Serve response page here
     // ctx.redirect(
-    //   `${PROTOCOL}://${BASE_URL}/response.html?org=${ctx.state.organisation.name}&app=${ctx.state.appliance.name}`
+    //   `${apiUrl}/response.html?org=${ctx.state.organisation.name}&app=${ctx.state.appliance.name}`
     // );
   })
   .use(taskRouter.routes(), taskRouter.allowedMethods());
