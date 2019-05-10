@@ -1,7 +1,9 @@
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
-import { raw } from "objection";
+import { Model } from "objection";
+import { path } from "ramda";
 
+import { Middleware } from "koa";
 import { RouterStateContext } from "../../organisation/router";
 import OrganisationAccount from "../../relation-models/OrganisationAccount";
 import Account from "../account/Account";
@@ -10,6 +12,21 @@ interface InvitationPayload {
   email: string;
   userRole: number;
 }
+
+const administratorExists: Middleware = async (ctx, next) => {
+  const { organisation, account } = ctx.params;
+  const exists = path(["rows", 0, "exists"], await Model.raw(
+    `SELECT EXISTS(SELECT 1 FROM organisation_account WHERE organisation = organisation::integer AND (
+      (account = account::integer AND user_role != 1) OR
+      (account != account::integer AND user_role = 1)
+    ))`,
+    {account, organisation}
+  ));
+  if (exists) {
+    return next();
+  }
+  return ctx.throw(409, "Organisation must have at least one administrator");
+};
 
 export default new Router<RouterStateContext>({ prefix: "/users" })
   .get("/accounts", async (ctx) => {
@@ -20,7 +37,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       .join(
         "organisation_account",
         (builder) => builder
-          .on(raw("organisation_account.organisation = ?::integer", organisation))
+          .on(Model.raw("organisation_account.organisation = ?::integer", organisation))
           .andOn("organisation_account.account", "account.id")
       )
       .select();
@@ -43,12 +60,12 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
         }).returning("*");
       } catch (e) {
         if (typeof e === "object" && e.constraint === "organisation_account_account_organisation_unique") {
-          ctx.throw(409, "Account already added to the organisation");
+          return ctx.throw(409, "Account already added to the organisation");
         }
       }
     }
   })
-  .put("/accounts/:account", bodyParser(), async (ctx) => {
+  .put("/accounts/:account", administratorExists, bodyParser(), async (ctx) => {
     const { organisation, account } = ctx.params;
     const { userRole } = (ctx.request.body || {}) as InvitationPayload;
     ctx.body = await OrganisationAccount.query()
@@ -57,7 +74,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       .andWhere("account", "=", account)
       .returning("*").first();
   })
-  .del("/accounts/:account", async (ctx) => {
+  .del("/accounts/:account", administratorExists, async (ctx) => {
     const { organisation, account } = ctx.params;
     await OrganisationAccount.query().delete() // remove pre-existing roles from account in the organisation
       .where("organisation", "=", organisation)

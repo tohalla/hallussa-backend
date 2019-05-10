@@ -1,6 +1,7 @@
 language;key;translation
 en;account.authentication.createNewAccount;Create a new account
 en;account.authentication.form.submit;Authenticate
+en;account.authentication.title;Authenticate
 en;account.field.email;Email address
 en;account.field.firstName;First name
 en;account.field.id;Id
@@ -14,6 +15,7 @@ en;account.registration.form.error.invalidEmail;Invalid email address.
 en;account.registration.form.error.passwordsDontMatch;Passwords do not match.
 en;account.registration.form.submit;Register
 en;account.registration.form.tosLabel;I have read and accepted <1>terms of service</1>.
+en;account.registration.title;Create a new account
 en;appliance.action.delete;Delete appliance
 en;appliance.action.downloadQR;Download QR code
 en;appliance.action.edit;Edit appliance
@@ -89,6 +91,7 @@ en;organisation.field.organisationIdentifier;Organisation identifier
 en;organisation.logins.title;Logins
 en;organisation.maintainers.title;Maintainers
 en;organisation.noOrganisations;No organisations created
+en;organisation.selectOrganisation;Select organisation
 en;organisation.users.title;Users
 en;role.administrator;Administrator
 en;role.maintainer;Maintainer
@@ -99,6 +102,6 @@ en;tab.appliance.new;New appliance
 en;tab.maintainer.maintainers;Maintainers
 en;tab.maintainer.new;New maintainer
 en;tab.organisation.details;Details
-en;tab.organisation.users;Users
 en;tab.organisation.preferences;Preferences
+en;tab.organisation.users;Users
 en;updatedAt;Updated at
