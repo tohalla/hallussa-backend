@@ -93,12 +93,3 @@ export const hashPassword = async (password: string): Promise<string> => bcrypt.
   password || "", // objection validates according to provided json schema
   await bcrypt.genSalt(10)
 );
-
-// normalizes account
-export const normalizeAccount = (account: Account | undefined) =>
- account && evolve({
-   organisations: map((organisation: OrganisationAccount) => ({
-     id: organisation.organisation,
-     userRole: organisation.userRole,
-   })),
- }, account.toJSON());

@@ -34,7 +34,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
   .get("/accounts", async (ctx) => {
     // organisation param set in parent router
     const { organisation } = ctx.params;
-    ctx.body = await Account
+    const query = Account
       .query()
       .join(
         "organisation_account",
@@ -43,6 +43,12 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
           .andOn("organisation_account.account", "account.id")
       )
       .select();
+
+    if (ctx.query.accounts) {
+      query.whereIn("id", JSON.parse(ctx.query.accounts));
+    }
+
+    ctx.body = await query;
   })
   .use((ctx, next) => ctx.state.rights.allowManageUsers ? next() : ctx.throw(403))
   .post("/accounts", bodyParser(), async (ctx) => {

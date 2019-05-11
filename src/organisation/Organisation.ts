@@ -81,10 +81,6 @@ export default class Organisation extends Model {
 // normalizes organisation
 export const normalizeOrganisation = (organisation: Organisation | undefined) =>
  organisation && evolve({
-   accounts: map((account: OrganisationAccount) => ({
-     id: account.account,
-     userRole: account.userRole,
-   })),
    appliances: map(prop("id")),
    maintainers: map(prop("id")),
    userRoles: map(prop("id")),

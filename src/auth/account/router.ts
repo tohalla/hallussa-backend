@@ -3,19 +3,18 @@ import Router from "koa-router";
 import { path } from "ramda";
 
 import { secureRoute } from "../jwt";
-import Account, { normalizeAccount } from "./Account";
+import Account from "./Account";
 
 export default new Router({prefix: "/accounts"})
   .get("/", secureRoute, async (ctx) => {
     const accountId = path(["state", "claims", "accountId"], ctx);
-    ctx.body = normalizeAccount(await Account
+    ctx.body = await Account
       .query()
       .select()
       .where("id", "=", accountId)
       .eager(ctx.query.eager)
       .modifyEager("organisations", (builder) => builder.select("organisation", "user_role"))
-      .first()
-    );
+      .first();
   })
   .post("/", bodyParser(), async (ctx) => {
     try {
