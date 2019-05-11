@@ -37,6 +37,6 @@ export default new Router({ prefix: "/auth" })
     ) {
       ctx.body = await signToken(accountId);
     } else {
-      ctx.throw(401, "Account not found with provided credentials");
+      ctx.throw(404, "Account not found with provided credentials");
     }
   });

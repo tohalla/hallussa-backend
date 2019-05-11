@@ -22,10 +22,6 @@ export default new Router({prefix: "/accounts"})
       if (!ctx.request.body) {
         return ctx.throw(400);
       }
-      const {password, retypePassword} = ctx.request.body as {[key: string]: any};
-      if (password !== retypePassword) {
-        return ctx.throw(400, "Passwords do not match");
-      }
       ctx.body = await Account
         .query()
         .insert(ctx.request.body)

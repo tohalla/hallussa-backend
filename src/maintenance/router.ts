@@ -54,7 +54,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
 
     if (!maintenanceEvent.assignedTo) {
-      return ctx.throw(401, "Maintenance event has not been assigned to anyone.");
+      return ctx.throw(403, "Maintenance event has not been assigned to anyone.");
     }
     const description = path(["request", "body", "description"], ctx) as string | undefined;
     if (description) {

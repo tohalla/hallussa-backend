@@ -8,6 +8,8 @@ export const errorHandling: Middleware = async (ctx, next) => {
     if (e instanceof NotFoundError) {
       ctx.status = 400;
       ctx.body = e.message;
+    } else if (Array.isArray(e)) {
+      ctx.throw(...e);
     } else {
       // TODO: should we log errors somewhere?
       ctx.status = e.status || 500;

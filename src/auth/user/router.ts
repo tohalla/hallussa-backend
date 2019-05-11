@@ -13,16 +13,18 @@ interface InvitationPayload {
   userRole: number;
 }
 
-const administratorExists: Middleware = async (ctx, next) => {
+const ensureAdministrator: Middleware = async (ctx, next) => {
   const { organisation, account } = ctx.params;
-  const exists = path(["rows", 0, "exists"], await Model.raw(
-    `SELECT EXISTS(SELECT 1 FROM organisation_account WHERE organisation = organisation::integer AND (
-      (account = account::integer AND user_role != 1) OR
-      (account != account::integer AND user_role = 1)
-    ))`,
-    {account, organisation}
+  const allow = path(["rows", 0, "exists"], await Model.raw(
+    `SELECT EXISTS(
+      SELECT 1 FROM organisation_account WHERE organisation = :organisation:::integer AND (
+        (account = :account:::integer AND (user_role IS NULL OR user_role != 1)) OR
+        (account != :account:::integer AND user_role = 1)
+      )
+    )`,
+    {account: Number(account), organisation: Number(organisation)}
   ));
-  if (exists) {
+  if (allow) {
     return next();
   }
   return ctx.throw(409, "Organisation must have at least one administrator");
@@ -42,7 +44,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       )
       .select();
   })
-  .use((ctx, next) => ctx.state.rights.allowManageUsers ? next() : ctx.throw(401))
+  .use((ctx, next) => ctx.state.rights.allowManageUsers ? next() : ctx.throw(403))
   .post("/accounts", bodyParser(), async (ctx) => {
     // organisation param set in parent router
     const { organisation } = ctx.params;
@@ -65,7 +67,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       }
     }
   })
-  .put("/accounts/:account", administratorExists, bodyParser(), async (ctx) => {
+  .put("/accounts/:account", ensureAdministrator, bodyParser(), async (ctx) => {
     const { organisation, account } = ctx.params;
     const { userRole } = (ctx.request.body || {}) as InvitationPayload;
     ctx.body = await OrganisationAccount.query()
@@ -74,9 +76,10 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       .andWhere("account", "=", account)
       .returning("*").first();
   })
-  .del("/accounts/:account", administratorExists, async (ctx) => {
+  .del("/accounts/:account", ensureAdministrator, async (ctx) => {
     const { organisation, account } = ctx.params;
     await OrganisationAccount.query().delete() // remove pre-existing roles from account in the organisation
       .where("organisation", "=", organisation)
       .andWhere("account", "=", account);
+    ctx.status = 200;
   });

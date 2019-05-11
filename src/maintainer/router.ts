@@ -20,7 +20,7 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   })
   .post("/", bodyParser(), async (ctx) => {
     if (!ctx.state.rights.allowCreateMaintainer) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
@@ -32,7 +32,7 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   })
   .patch("/:maintainer", bodyParser(), async (ctx) => {
     if (!ctx.state.rights.allowUpdateMaintainer) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     const { maintainer } = ctx.params;
     ctx.body = await Maintainer
@@ -55,7 +55,7 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   })
   .del("/:maintainer", async (ctx) => {
     if (!ctx.state.rights.allowDeleteMaintainer) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     const { maintainer } = ctx.params;
     await Maintainer.query().deleteById(maintainer);

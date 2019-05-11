@@ -31,7 +31,7 @@ const organisationRouter = new Router({prefix: "/:organisation"})
   })
   .patch("/", bodyParser(), async (ctx) => {
     if (!ctx.state.rights.allowUpdateOrganisation) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     ctx.body = await Organisation
       .query()
@@ -42,7 +42,7 @@ const organisationRouter = new Router({prefix: "/:organisation"})
   })
   .del("/", async (ctx) => {
     if (!ctx.state.rights.allowDeleteOrganisation) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     await Organisation.query().deleteById(ctx.params.organisation);
     ctx.status = 200;

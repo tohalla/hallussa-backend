@@ -26,7 +26,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   .patch("/", bodyParser(), async (ctx) => {
     const { appliance } = ctx.params;
     if (!ctx.state.rights.allowUpdateAppliance) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     ctx.body = await Appliance
       .query()
@@ -37,7 +37,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   })
   .del("/", async (ctx) => {
     if (!ctx.state.rights.allowDeleteAppliance) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     const { appliance } = ctx.params;
     await Appliance.query().deleteById(appliance);
@@ -56,7 +56,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   })
   .post("/maintainers/:maintainer", async (ctx) => {
     if (!ctx.state.rights.allowUpdateAppliance) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     const { appliance, maintainer } = ctx.params;
 
@@ -70,7 +70,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   })
   .del("/maintainers/:maintainer", async (ctx) => {
     if (!ctx.state.rights.allowUpdateAppliance) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     const { appliance, maintainer } = ctx.params;
 
@@ -97,7 +97,7 @@ export default new Router({ prefix: "/appliances" })
   })
   .post("/", bodyParser(), async (ctx) => {
     if (!ctx.state.rights.allowCreateAppliance) {
-      return ctx.throw(401);
+      return ctx.throw(403);
     }
     // organisation param already set in parent router
     const { organisation } = ctx.params;

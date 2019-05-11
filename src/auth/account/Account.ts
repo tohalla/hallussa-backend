@@ -41,17 +41,27 @@ export default class Account extends Model {
   public firstName?: string;
   public lastName?: string;
   public password?: string;
-  public retypePassword?: string;
   public email?: string;
   public updatedAt?: string;
   public createdAt?: string;
   public organisations?: ReadonlyArray<{id: number, userRole: number}>;
+
+  private acceptTOS?: boolean;
+  private retypePassword?: string;
 
   public $formatJson(json: Pojo) {
     return omit(["password", "updatedAt", "createdAt"], super.$formatJson(json));
   }
 
   public async $beforeInsert() {
+    if (this.retypePassword !== this.password) {
+      throw [400, "Passwords do not match"];
+    }
+    if (!this.acceptTOS) {
+      throw [400, "Terms of service have to be accepted before creating an account"];
+    }
+
+    delete this.acceptTOS;
     delete this.retypePassword; // column does not exists in database
     this.password = await hashPassword(this.password as string); // password required and validated by json schema
     this.firstName = titleCase(this.firstName);

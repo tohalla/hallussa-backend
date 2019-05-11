@@ -42,5 +42,5 @@ export const secureOrganisation: Middleware = async (
     }
   }
   // if next not returned before, account isn't allowed to access route
-  return ctx.throw(401);
+  return ctx.throw(403);
 };

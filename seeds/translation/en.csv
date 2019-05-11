@@ -88,6 +88,7 @@ en;organisation.edit.form.submit;Update organisation
 en;organisation.edit.title;Edit organisation – {{organisation}}
 en;organisation.field.name;Name
 en;organisation.field.organisationIdentifier;Organisation identifier
+en;organisation.logins.noLogins;No logins found
 en;organisation.logins.title;Logins
 en;organisation.maintainers.title;Maintainers
 en;organisation.noOrganisations;No organisations created
