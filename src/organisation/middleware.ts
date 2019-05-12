@@ -26,7 +26,7 @@ export const secureOrganisation: Middleware = async (
         user_role.allow_update_maintainer,
         user_role.allow_update_organisation
       FROM organisation_account
-        JOIN user_role ON organisation_account.user_role = user_role.id
+        LEFT JOIN user_role ON organisation_account.user_role = user_role.id
           AND COALESCE(user_role.organisation, :organisation:::integer) = :organisation:::integer
       WHERE organisation_account.account=:account:::integer
         AND organisation_account.organisation=:organisation:::integer

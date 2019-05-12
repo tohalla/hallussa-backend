@@ -18,9 +18,9 @@ app
       process.env.NODE_ENV === "development" ? "*" : process.env.WEBAPP_URL || ""
     );
     ctx.response.set("Access-Control-Allow-Credentials", "true");
-    ctx.response.set("Access-Control-Request-Method", "GET, PATCH, POST, DELETE, OPTIONS");
+    ctx.response.set("Access-Control-Request-Method", "GET, PATCH, POST, PUT, DELETE, OPTIONS");
     ctx.response.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    ctx.response.set("Access-Control-Allow-Methods", "GET, PATCH, POST, DELETE, OPTIONS");
+    ctx.response.set("Access-Control-Allow-Methods", "GET, PATCH, POST, PUT, DELETE, OPTIONS");
     return next();
   })
   .use(errorHandling)

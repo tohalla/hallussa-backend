@@ -56,7 +56,7 @@ export default class MaintenanceEvent extends Model {
     if (maintainers.length > 0) {
       // create task for maintainers
       await MaintenanceTask
-        .query()
+        .query(queryContext.transaction)
         .insert(
           map((maintainer) => ({
             maintainer,
