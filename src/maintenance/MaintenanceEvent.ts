@@ -29,13 +29,25 @@ export default class MaintenanceEvent extends Model {
   public appliance?: number;
   public assignedTo?: number;
 
+  public async $beforeInsert(queryContext) {
+    const preExistingMaintenanceEvent = await MaintenanceEvent
+      .query(queryContext.transaction)
+      .select()
+      .whereNull("resolved_at")
+      .andWhere("appliance", this.appliance)
+      .first();
+    if (preExistingMaintenanceEvent) { // TODO: Add description to possible additional_information table
+      throw [409, "Maintenance event already created"];
+    }
+  }
+
   // should create maintenance task for each maintainer assigned to the appliance
   // when new maintenance event is created
-  public async $afterInsert() {
+  public async $afterInsert(queryContext) {
     // fetch list of maintainers assigned to the appliance
     const maintainers = map(
       (am) => am.maintainer,
-      (await Model.raw(
+      (await queryContext.transaction.raw(
         "SELECT maintainer FROM appliance_maintainer WHERE appliance=?::integer",
         this.appliance as number
       )).rows

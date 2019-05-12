@@ -116,12 +116,10 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
     const description = path(["request", "body", "description"], ctx) as string | undefined;
     const subscribe = path(["request", "body", "subscribe"], ctx) as string | undefined;
 
-    if (description) {
-      await MaintenanceEvent.query().insert({
-        appliance: appliance.id,
-        description,
-      });
-    }
+    await MaintenanceEvent.query().insert({
+      appliance: appliance.id,
+      description,
+    });
 
     if (subscribe) {
       // TODO: Subscription

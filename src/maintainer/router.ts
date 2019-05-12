@@ -3,6 +3,7 @@ import Router from "koa-router";
 import { map } from "ramda";
 
 import Appliance from "../appliance/Appliance";
+import MaintenanceTask from "../maintenance/MaintenanceTask";
 import { RouterStateContext } from "../organisation/router";
 import Maintainer, { normalizeMaintainer } from "./Maintainer";
 
@@ -71,4 +72,12 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
         "AND appliance_maintainer.appliance=appliance.id",
         maintainer
       );
+  })
+  .get("/:maintainer/maintenance-tasks", async (ctx) => {
+    const { maintainer } = ctx.params;
+    ctx.body = await MaintenanceTask
+      .query()
+      .select()
+      .join("maintenance_event", "maintenance_event.id", "maintenance_task.maintenance_event")
+      .where("maintenance_task.maintainer", maintainer);
   });
