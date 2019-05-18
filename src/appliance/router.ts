@@ -4,6 +4,7 @@ import { Model } from "objection";
 import { map } from "ramda";
 
 import Maintainer from "../maintainer/Maintainer";
+import MaintenanceEvent from "../maintenance/MaintenanceEvent";
 import { RouterStateContext } from "../organisation/router";
 import { getQRPage } from "../util/qr";
 import Appliance, { normalizeAppliance } from "./Appliance";
@@ -81,6 +82,13 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
     );
 
     ctx.status = 200;
+  })
+  .get("/maintenance-events", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await MaintenanceEvent
+      .query()
+      .select()
+      .where("maintenance_event.appliance", appliance);
   });
 
 export default new Router({ prefix: "/appliances" })

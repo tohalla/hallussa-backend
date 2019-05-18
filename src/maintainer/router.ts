@@ -78,6 +78,5 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
     ctx.body = await MaintenanceTask
       .query()
       .select()
-      .join("maintenance_event", "maintenance_event.id", "maintenance_task.maintenance_event")
       .where("maintenance_task.maintainer", maintainer);
   });
