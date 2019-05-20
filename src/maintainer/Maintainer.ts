@@ -38,6 +38,7 @@ export default class Maintainer extends Model {
   };
 
   public id?: number;
+  public language?: string;
   public firstName?: string;
   public lastName?: string;
   public email?: string;

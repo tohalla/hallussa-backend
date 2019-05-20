@@ -61,6 +61,7 @@ export default class Organisation extends Model {
   };
 
   public id?: number;
+  public language?: string;
   public name?: string;
   public organisationIdentifier?: string;
   public updatedAt?: string;

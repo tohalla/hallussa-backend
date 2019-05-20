@@ -59,6 +59,7 @@ en;maintainer.field.id;Id
 en;maintainer.field.lastName;Last name
 en;maintainer.field.name;Name
 en;maintainer.field.phone;Phone number
+en;maintainer.field.language;Language
 en;maintainer.form.error.invalidEmail;Invalid email address.
 en;maintainer.form.error.invalidPhone;Ivanlid phone number. Phone numbers may only contain numbers and specific characters (-+()).
 en;maintainer.listing.noMaintainers;No maintainers found
@@ -95,6 +96,9 @@ en;organisation.maintainers.title;Maintainers
 en;organisation.noOrganisations;No organisations created
 en;organisation.selectOrganisation;Select organisation
 en;organisation.users.title;Users
+en;organisation.preferences.field.language;Language
+en;organisation.preferences.submit;Save changes
+en;organisation.preferences.title;Preferences
 en;userRole.name.administrator;Administrator
 en;userRole.name.maintainer;Maintainer
 en;userRole.name.moderator;Moderator

@@ -38,6 +38,7 @@ export default class Account extends Model {
   };
 
   public id?: number;
+  public language?: string;
   public firstName?: string;
   public lastName?: string;
   public password?: string;

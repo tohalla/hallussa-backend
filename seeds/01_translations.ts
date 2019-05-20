@@ -17,12 +17,10 @@ export const seed = async (knex: Knex) => {
     seedFileOptions
   );
 
-  return Promise.all([
-    ["translation", "en.csv"],
-  ].map(([table, fileName]) => seedFile(
+  return Promise.all(["en.csv", "shared.csv"].map((fileName) => seedFile(
     knex,
     path.resolve(__dirname, "translation", fileName),
-    table,
+    "translation",
     seedFileOptions
   )));
 };
