@@ -80,8 +80,8 @@ export default class Account extends Model {
       this.password = await hashPassword(this.password);
     }
     this.updatedAt = new Date().toISOString();
-    this.firstName = titleCase(this.firstName);
-    this.lastName = titleCase(this.lastName);
+    this.firstName = this.firstName && titleCase(this.firstName);
+    this.lastName = this.lastName && titleCase(this.lastName);
   }
 
   public async $afterInsert() {

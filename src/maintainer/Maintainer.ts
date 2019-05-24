@@ -55,9 +55,9 @@ export default class Maintainer extends Model {
 
     this.phone = formatPhone(this.phone);
     this.updatedAt = new Date().toISOString();
-    this.firstName = titleCase(this.firstName);
-    this.lastName = titleCase(this.lastName);
-    this.email = lowerCase(this.email);
+    this.firstName = this.firstName && titleCase(this.firstName);
+    this.lastName = this.lastName && titleCase(this.lastName);
+    this.email = this.email && lowerCase(this.email);
   }
 
   public $beforeInsert() {
