@@ -5,6 +5,7 @@ import { map } from "ramda";
 
 import Maintainer from "../maintainer/Maintainer";
 import MaintenanceEvent from "../maintenance/MaintenanceEvent";
+import ScheduledMaintenance from "../maintenance/ScheduledMaintenance";
 import { RouterStateContext } from "../organisation/router";
 import { getQRPage } from "../util/qr";
 import Appliance, { normalizeAppliance } from "./Appliance";
@@ -89,6 +90,14 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
       .query()
       .select()
       .where("maintenance_event.appliance", appliance);
+  })
+  // TODO: create separate router for scheduled maintenance-events
+  .get("/scheduled-maintenance", async (ctx) => {
+    const { appliance } = ctx.params;
+    ctx.body = await ScheduledMaintenance
+      .query()
+      .select()
+      .where("scheduled_maintenance.appliance", appliance);
   });
 
 export default new Router({ prefix: "/appliances" })

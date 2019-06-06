@@ -1,11 +1,11 @@
 import { Model, snakeCaseMappers } from "objection";
 
-export default class ScheduledMaintenance extends Model {
+export default class RepetitiveMaintenance extends Model {
   static get columnNameMappers() {
     return snakeCaseMappers();
   }
 
-  public static tableName = "scheduled_maintenance";
+  public static tableName = "repetitive_maintenance";
 
   public static jsonSchema = {
     type: "object",
@@ -16,15 +16,17 @@ export default class ScheduledMaintenance extends Model {
       appliance: {type: "integer"},
       description: {type: "string"},
     },
-    required: ["appliance", "triggerAt"],
+    required: ["appliance", "interval"],
   };
 
   public id?: number;
   public updatedAt?: string;
   public createdAt?: string;
+  public previousTrigger?: string;
+  public enabled?: boolean;
+  public interval?: number;
   public description?: string;
   public appliance?: number;
-  public triggerAt?: string;
 
   public async $beforeUpdate() {
     delete this.id; // should not update id field
