@@ -1,4 +1,5 @@
 language;key;translation
+en;account.action.changePassword;Change password
 en;account.authentication.createNewAccount;Create a new account
 en;account.authentication.form.submit;Authenticate
 en;account.authentication.title;Authenticate
@@ -9,6 +10,7 @@ en;account.field.lastName;Last name
 en;account.field.name;Name
 en;account.field.password;Password
 en;account.field.retypePassword;Retype password
+en;account.field.currentPassword;Current password
 en;account.field.userRole;Role
 en;account.registration.authenticate;I already have an account
 en;account.registration.form.error.invalidEmail;Invalid email address.
@@ -16,6 +18,7 @@ en;account.registration.form.error.passwordsDontMatch;Passwords do not match.
 en;account.registration.form.submit;Register
 en;account.registration.form.tosLabel;I have read and accepted <1>terms of service</1>.
 en;account.registration.title;Create a new account
+en;account.preferences.submit;Save changes
 en;appliance.action.delete;Delete appliance
 en;appliance.action.downloadQR;Download QR code
 en;appliance.action.edit;Edit appliance
@@ -26,6 +29,7 @@ en;appliance.drawer.maintainers.title;Maintainers
 en;appliance.drawer.overview.numberOfAppliances;Number of appliances
 en;appliance.drawer.overview.operativeAppliances;Operative appliances
 en;appliance.drawer.overview.title;Overview
+en;appliance.drawer.scheduledMaintenance.title;Scheduled maintenance
 en;appliance.edit.form.submit;Update appliance
 en;appliance.edit.title;Edit appliance – {{appliance}}
 en;appliance.event.list.title;Maintenance events
@@ -104,6 +108,9 @@ en;userRole.name.maintainer;Maintainer
 en;userRole.name.moderator;Moderator
 en;userRole.action.setUserRole;Set role
 en;submit;Submit
+en;tab.profile.account;Account
+en;tab.profile.preferences;Preferences
+en;tab.profile.security;Security
 en;tab.appliance.appliances;Appliances
 en;tab.appliance.new;New appliance
 en;tab.maintainer.maintainers;Maintainers
