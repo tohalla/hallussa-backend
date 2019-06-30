@@ -8,6 +8,7 @@ export const seed = async (knex: Knex) => {
 
   const seedFileOptions = {
     columnSeparator: ";",
+    rowSeparator: "\r\n",
   };
 
   await seedFile(

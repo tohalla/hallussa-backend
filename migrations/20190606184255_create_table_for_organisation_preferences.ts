@@ -1,7 +1,7 @@
 import Knex from "knex";
 
-exports.up = (knex: Knex) => {
-  knex.schema.table("organisation_preferences", (table) => {
+exports.up = (knex: Knex) =>
+  knex.schema.createTable("organisation_preferences", (table) => {
     table.integer("organisation")
       .references("organisation.id")
       .notNullable()
@@ -12,6 +12,5 @@ exports.up = (knex: Knex) => {
       .notNullable()
       .defaultTo(true);
   });
-};
 
 exports.down = (knex: Knex) => knex.schema.dropTable("organisation_preferences");
