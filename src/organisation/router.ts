@@ -9,6 +9,7 @@ import userRoleRouter from "../auth/user-role/router";
 import { RoleRights } from "../auth/user-role/UserRole";
 import userRouter from "../auth/user/router";
 import maintainerRouter from "../maintainer/router";
+import { checkRelationExpression } from "../model/validation";
 import { secureOrganisation } from "./middleware";
 import Organisation, { normalizeOrganisation } from "./Organisation";
 
@@ -19,6 +20,9 @@ export type RouterStateContext = RouterContext<{}, {
 
 const organisationRouter = new Router({prefix: "/:organisation"})
   .get("/", async (ctx) => {
+    if (!checkRelationExpression(Organisation, ctx.query.eager)) {
+      return ctx.throw(400, "invalid relation expression");
+    }
     ctx.body = normalizeOrganisation(await Organisation.query()
       .select()
       .where("id", "=", ctx.params.organisation)
@@ -58,6 +62,9 @@ const organisationRouter = new Router({prefix: "/:organisation"})
 export default new Router<RouterStateContext>({ prefix: "/organisations" })
   .use(secureRoute)
   .get("/", async (ctx) => {
+    if (!checkRelationExpression(Organisation, ctx.query.eager)) {
+      return ctx.throw(400, "invalid relation expression");
+    }
     const accountID = path(["state", "claims", "accountId"], ctx);
     // TODO: Should organisations be public? if so, limit public data
     const organisations = await Organisation

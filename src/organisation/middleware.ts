@@ -1,6 +1,7 @@
 import { Middleware } from "koa";
 import { Model } from "objection";
 import { path } from "ramda";
+import { RoleRights } from "../auth/user-role/UserRole";
 import { formatObjectKeys } from "../util/format";
 
 export const secureOrganisation: Middleware = async (
@@ -12,7 +13,7 @@ export const secureOrganisation: Middleware = async (
   const {organisation} = ctx.params;
 
   if (typeof organisation !== "undefined" && typeof accountId === "number") {
-    const result = await Model.raw(`
+    const result = await Model.raw<{rows: RoleRights[]}>(`
       SELECT
         user_role.allow_create_appliance,
         user_role.allow_create_maintainer,

@@ -3,11 +3,15 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { dissoc, path, prop } from "ramda";
 
+import { checkRelationExpression } from "../../model/validation";
 import { secureRoute } from "../jwt";
 import Account from "./Account";
 
 export default new Router({prefix: "/accounts"})
   .get("/", secureRoute, async (ctx) => {
+    if (!checkRelationExpression(Account, ctx.query.eager)) {
+      return ctx.throw(400, "invalid relation expression");
+    }
     const accountId = path(["state", "claims", "accountId"], ctx);
     ctx.body = await Account
       .query()

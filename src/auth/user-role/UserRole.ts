@@ -37,4 +37,4 @@ export default class UserRole extends Model {
   }
 }
 
-export type RoleRights = Omit<Omit<UserRole, Model>, "id" | "organisation" | "name">;
+export type RoleRights = Omit<UserRole, "id" | "organisation" | "name">;

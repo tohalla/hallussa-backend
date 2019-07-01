@@ -6,6 +6,7 @@ import { map } from "ramda";
 import Maintainer from "../maintainer/Maintainer";
 import MaintenanceEvent from "../maintenance/MaintenanceEvent";
 import ScheduledMaintenance from "../maintenance/ScheduledMaintenance";
+import { checkRelationExpression } from "../model/validation";
 import { RouterStateContext } from "../organisation/router";
 import { getQRPage } from "../util/qr";
 import Appliance, { normalizeAppliance } from "./Appliance";
@@ -13,6 +14,9 @@ import Appliance, { normalizeAppliance } from "./Appliance";
 // separate router for single appliance
 const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   .get("/", async (ctx) => {
+    if (!checkRelationExpression(Appliance, ctx.query.eager)) {
+      return ctx.throw(400, "invalid relation expression");
+    }
     // organisation param already set in parent router
     const { organisation, appliance } = ctx.params;
     ctx.body = normalizeAppliance(await Appliance
@@ -102,6 +106,9 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
 
 export default new Router({ prefix: "/appliances" })
   .get("/", async (ctx) => {
+    if (!checkRelationExpression(Appliance, ctx.query.eager)) {
+      return ctx.throw(400, "invalid relation expression");
+    }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
     ctx.body = map(normalizeAppliance, await Appliance

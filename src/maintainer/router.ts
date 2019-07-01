@@ -4,11 +4,15 @@ import { map } from "ramda";
 
 import Appliance from "../appliance/Appliance";
 import MaintenanceTask from "../maintenance/MaintenanceTask";
+import { checkRelationExpression } from "../model/validation";
 import { RouterStateContext } from "../organisation/router";
 import Maintainer, { normalizeMaintainer } from "./Maintainer";
 
 export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   .get("/", async (ctx) => {
+    if (!checkRelationExpression(Maintainer, ctx.query.eager)) {
+      return ctx.throw(400, "invalid relation expression");
+    }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
     ctx.body = map(normalizeMaintainer, await Maintainer
@@ -44,6 +48,9 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
       .first();
   })
   .get("/:maintainer", async (ctx) => {
+    if (!checkRelationExpression(Maintainer, ctx.query.eager)) {
+      return ctx.throw(400, "invalid relation expression");
+    }
     const { maintainer } = ctx.params;
     ctx.body = normalizeMaintainer((await Maintainer
       .query()
