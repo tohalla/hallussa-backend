@@ -6,7 +6,7 @@ exports.up = (knex: Knex) =>
       .references("organisation.id")
       .notNullable()
       .onDelete("CASCADE")
-      .index();
+      .primary();
     table.boolean("qr_codes").notNullable().defaultTo(true);
     table.boolean("allow_resolving_events")
       .notNullable()
