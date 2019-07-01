@@ -24,7 +24,7 @@ export default class Organisation extends Model {
         from: "organisation.id",
         to: "appliance.organisation",
       },
-      // imported here to prevent errors due to future circular dependencies
+      // imported here to prevent errors due to possible future circular dependencies
       modelClass: require("../appliance/Appliance").default,
       relation: Model.HasManyRelation,
     },
@@ -33,16 +33,24 @@ export default class Organisation extends Model {
         from: "organisation.id",
         to: "maintainer.organisation",
       },
-      // imported here to prevent errors due to future circular dependencies
+      // imported here to prevent errors due to possible future circular dependencies
       modelClass: require("../maintainer/Maintainer").default,
       relation: Model.HasManyRelation,
+    },
+    preferences: {
+      join: {
+        from: "organisation.id",
+        to: "organisation_preferences.organisation",
+      },
+      modelClass: require("./Preferences").default,
+      relation: Model.HasOneRelation,
     },
     userRoles: { // should never eagerly load roles, only ID's
       join: {
         from: "organisation.id",
         to: "user_role.organisation",
       },
-      // imported here to prevent errors due to future circular dependencies
+      // imported here to prevent errors due to possible future circular dependencies
       modelClass: require("../auth/user-role/UserRole").default,
       relation: Model.HasManyRelation,
     },
