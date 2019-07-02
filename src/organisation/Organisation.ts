@@ -2,6 +2,7 @@ import { Model, RelationMappings, snakeCaseMappers } from "objection";
 import { evolve, map, prop } from "ramda";
 
 import OrganisationAccount from "../relation-models/OrganisationAccount";
+import OrganisationPreferences from "./Preferences";
 
 export default class Organisation extends Model {
   static get columnNameMappers() {
@@ -78,6 +79,7 @@ export default class Organisation extends Model {
   public maintainers: ReadonlyArray<number> = [];
   public appliances: ReadonlyArray<number> = [];
   public userRoles: ReadonlyArray<number> = [];
+  public preferences?: Omit<OrganisationPreferences, keyof Model>;
 
   public async $beforeUpdate() {
     delete this.id; // should not update id field

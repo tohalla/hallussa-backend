@@ -101,8 +101,8 @@ en;organisation.noOrganisations;No organisations created
 en;organisation.selectOrganisation;Select organisation
 en;organisation.users.title;Users
 en;organisation.preferences.field.language;Language
-en;organisaiton.preferences.field.allow_resolving_events;Allow resolving maintenance events from the appliaction
-en;organisaiton.preferences.field.qr_codes;Allow downloading of QR codes
+en;organisation.preferences.field.allowResolvingEvents;Allow resolving maintenance events from the appliaction
+en;organisation.preferences.field.qrCodes;Allow downloading of QR codes
 en;organisation.preferences.submit;Save changes
 en;organisation.preferences.title;Preferences
 en;userRole.name.administrator;Administrator

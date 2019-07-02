@@ -1,8 +1,8 @@
 import bodyParser from "koa-bodyparser";
 import Router, { RouterContext } from "koa-router";
-import { concat, map, path, reduce } from "ramda";
+import { concat, map, omit, path, reduce } from "ramda";
 
-import { transaction } from "objection";
+import { Model, transaction } from "objection";
 import applianceRouter from "../appliance/router";
 import { Claims, secureRoute } from "../auth/jwt";
 import userRoleRouter from "../auth/user-role/router";
@@ -12,6 +12,7 @@ import maintainerRouter from "../maintainer/router";
 import { checkRelationExpression } from "../model/validation";
 import { secureOrganisation } from "./middleware";
 import Organisation, { normalizeOrganisation } from "./Organisation";
+import OrganisationPreferences from "./Preferences";
 
 export type RouterStateContext = RouterContext<{}, {
   rights: RoleRights | {[key: string]: never}
@@ -38,12 +39,32 @@ const organisationRouter = new Router({prefix: "/:organisation"})
     if (!ctx.state.rights.allowUpdateOrganisation) {
       return ctx.throw(403);
     }
-    ctx.body = await Organisation
-      .query()
-      .patch(ctx.request.body || {})
-      .where("id", "=", ctx.params.organisation)
-      .returning("*")
-      .first();
+
+    let organisation: Partial<Omit<Organisation, keyof Model>>;
+    const trx = await transaction.start(Organisation.knex());
+
+    try {
+      const body = ctx.request.body as Partial<Omit<Organisation, keyof Model>>;
+      organisation = await Organisation
+        .query(trx)
+        .patch(omit(["preferences"], ctx.request.body) || {})
+        .where("id", "=", ctx.params.organisation)
+        .returning("*")
+        .first();
+      if (body.preferences) {
+        organisation.preferences = await OrganisationPreferences
+          .query(trx)
+          .patch(body.preferences)
+          .where("organisation", "=", ctx.params.organisation)
+          .returning("*")
+          .first();
+      }
+      trx.commit();
+    } catch (e) {
+      trx.rollback();
+      throw e;
+    }
+    ctx.body = organisation;
   })
   .del("/", async (ctx) => {
     if (!ctx.state.rights.allowDeleteOrganisation) {
@@ -85,7 +106,7 @@ export default new Router<RouterStateContext>({ prefix: "/organisations" })
     ctx.body = map(normalizeOrganisation, organisations);
   })
   .post("/", bodyParser(), async (ctx) => {
-    const trx = await transaction.start(Organisation);
+    const trx = await transaction.start(Organisation.knex());
     try {
       const accountId = ctx.state.claims.accountId;
       // attempt to create a new organisation

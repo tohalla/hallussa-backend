@@ -80,7 +80,7 @@ export default class MaintenanceEvent extends Model {
     }
     // should not be able assign task if it's already assigned
     if (this.assignedTo) { return false; }
-    const trx = await transaction.start(MaintenanceTask);
+    const trx = await transaction.start(MaintenanceTask.knex());
     try {
       // attempt to assign task
       const maintainer = path(

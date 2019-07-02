@@ -20,7 +20,7 @@ export const checkRelationExpression = (M: any & Model, relationExpression?: str
     const relations = new Set(Object.keys(M.relationMappings));
 
     for (const relation of expression.split(",")) {
-      if (!relations.has(relation)) {
+      if (!relations.has(relation.trim())) {
         return false;
       }
     }

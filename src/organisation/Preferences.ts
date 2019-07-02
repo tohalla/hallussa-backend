@@ -19,6 +19,8 @@ export default class OrganisationPreferences extends Model {
   };
 
   public organisation?: number;
+  public allowResolvingEvents?: boolean;
+  public qrCodes?: boolean;
 
   public async $beforeUpdate() {
     delete this.organisation; // should not update organisation field
