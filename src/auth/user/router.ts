@@ -50,6 +50,18 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
 
     ctx.body = await query;
   })
+  .del("/accounts/:account", ensureAdministrator, async (ctx) => {
+    const { organisation, account } = ctx.params;
+    // Should be allowed to acces only if querying own account, or has right to manage users
+    if (!(ctx.state.rights.allowManageUsers || ctx.state.claims.accountId === Number(account))) {
+      return ctx.throw(403);
+    }
+    await OrganisationAccount.query().delete() // remove pre-existing roles from account in the organisation
+      .where("organisation", "=", organisation)
+      .andWhere("account", "=", account);
+    ctx.body = {organisation, account: Number(account)};
+    ctx.status = 200;
+  })
   .use((ctx, next) => ctx.state.rights.allowManageUsers ? next() : ctx.throw(403))
   .post("/accounts", bodyParser(), async (ctx) => {
     // organisation param set in parent router
@@ -81,11 +93,4 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
       .where("organisation", "=", organisation)
       .andWhere("account", "=", account)
       .returning("*").first();
-  })
-  .del("/accounts/:account", ensureAdministrator, async (ctx) => {
-    const { organisation, account } = ctx.params;
-    await OrganisationAccount.query().delete() // remove pre-existing roles from account in the organisation
-      .where("organisation", "=", organisation)
-      .andWhere("account", "=", account);
-    ctx.status = 200;
   });

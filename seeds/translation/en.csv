@@ -85,6 +85,7 @@ en;organisation.account.addAccount;Add account
 en;organisation.account.field.email;Email address
 en;organisation.action.activate;Set as active
 en;organisation.action.create;Create a new organisation
+en;organisation.action.leaveOrganisation;Leave from organisation
 en;organisation.action.delete;Delete organisation
 en;organisation.action.edit;Edit organisation
 en;organisation.appliances.title;Appliances
