@@ -72,6 +72,9 @@ en;maintenanceEvent.field.assignedTo;Assigned to
 en;maintenanceEvent.field.createdAt;Created at
 en;maintenanceEvent.field.description;Description
 en;maintenanceEvent.field.resolvedAt;Resolved at
+en;maintenanceEvent.create.title;Create new
+en;maintenanceEvent.create.scheduled.title;Scheduled event
+en;maintenanceEvent.create.repetitive.title;Repetitive event
 en;maintenanceEvent.listing.noEvents;No maintenance events found
 en;navigation.item.appliances;Appliances
 en;navigation.item.maintainers;Maintainers
