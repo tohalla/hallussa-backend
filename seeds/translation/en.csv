@@ -1,127 +1,128 @@
-language;key;translation
-en;account.action.changePassword;Change password
-en;account.authentication.createNewAccount;Create a new account
-en;account.authentication.form.submit;Authenticate
-en;account.authentication.title;Authenticate
-en;account.field.email;Email address
-en;account.field.firstName;First name
-en;account.field.id;Id
-en;account.field.lastName;Last name
-en;account.field.name;Name
-en;account.field.password;Password
-en;account.field.retypePassword;Retype password
-en;account.field.currentPassword;Current password
-en;account.field.userRole;Role
-en;account.registration.authenticate;I already have an account
-en;account.registration.form.error.invalidEmail;Invalid email address.
-en;account.registration.form.error.passwordsDontMatch;Passwords do not match.
-en;account.registration.form.submit;Register
-en;account.registration.form.tosLabel;I have read and accepted <1>terms of service</1>.
-en;account.registration.title;Create a new account
-en;account.preferences.submit;Save changes
-en;appliance.action.delete;Delete appliance
-en;appliance.action.downloadQR;Download QR code
-en;appliance.action.edit;Edit appliance
-en;appliance.create.form.submit;Create appliance
-en;appliance.create.title;New appliance
-en;appliance.createdAt;Created at {{createdAt}}
-en;appliance.drawer.maintainers.title;Maintainers
-en;appliance.drawer.overview.numberOfAppliances;Number of appliances
-en;appliance.drawer.overview.operativeAppliances;Operative appliances
-en;appliance.drawer.overview.title;Overview
-en;appliance.drawer.scheduledMaintenance.title;Scheduled maintenance
-en;appliance.edit.form.submit;Update appliance
-en;appliance.edit.title;Edit appliance – {{appliance}}
-en;appliance.event.list.title;Maintenance events
-en;appliance.field.description;Description
-en;appliance.field.id;Id
-en;appliance.field.location;Location
-en;appliance.field.name;Name
-en;appliance.field.status;Status
-en;appliance.listing.noAppliances;No appliances found
-en;appliance.maintainer.addMaintainer;Assign maintainer
-en;appliance.maintainer.noMaintainers;No maintainers to assign
-en;appliance.maintainer.selectMaintainer;Select maintainer to assign
-en;appliance.status.malfunctioning;Malfunctioning
-en;appliance.status.ok;OK
-en;appliance.updatedAt;Updated at {{updatedAt}}
-en;cancel;Cancel
-en;createdAt;Created at
-en;general.misc.confirmTimed;Click again to confirm ({{time}})
-en;general.misc.id;Identifier
-en;maintainer.action.delete;Delete maintainer
-en;maintainer.action.edit;Edit maintainer
-en;maintainer.appliance.list.title;Appliances assigned to maintainer
-en;maintainer.create.form.submit;Create maintainer
-en;maintainer.create.title;New maintainer
-en;maintainer.createdAt;Created at {{createdAt}}
-en;maintainer.edit.form.submit;Update maintainer
-en;maintainer.edit.title;Edit maintainer – {{maintainer}}
-en;maintainer.field.email;Email
-en;maintainer.field.firstName;First name
-en;maintainer.field.id;Id
-en;maintainer.field.lastName;Last name
-en;maintainer.field.name;Name
-en;maintainer.field.phone;Phone number
-en;maintainer.field.language;Language
-en;maintainer.form.error.invalidEmail;Invalid email address.
-en;maintainer.form.error.invalidPhone;Ivanlid phone number. Phone numbers may only contain numbers and specific characters (-+()).
-en;maintainer.listing.noMaintainers;No maintainers found
-en;maintainer.updatedAt;Updated at {{updatedAt}}
-en;maintenanceEvent.field.assignedTo;Assigned to
-en;maintenanceEvent.field.createdAt;Created at
-en;maintenanceEvent.field.description;Description
-en;maintenanceEvent.field.resolvedAt;Resolved at
-en;maintenanceEvent.create.title;Create new
-en;maintenanceEvent.create.scheduled.title;Scheduled event
-en;maintenanceEvent.create.repetitive.title;Repetitive event
-en;maintenanceEvent.listing.noEvents;No maintenance events found
-en;navigation.item.appliances;Appliances
-en;navigation.item.maintainers;Maintainers
-en;navigation.item.organisations;Organisations
-en;navigation.item.profile;Profile
-en;navigation.user.greeting;Hello, <1>{{name}}</1>
-en;navigation.user.signOut;Log out
-en;notSet;Not set
-en;none;None
-en;organisation.account.addAccount;Add account
-en;organisation.account.field.email;Email address
-en;organisation.action.activate;Set as active
-en;organisation.action.create;Create a new organisation
-en;organisation.action.leaveOrganisation;Leave from organisation
-en;organisation.action.delete;Delete organisation
-en;organisation.action.edit;Edit organisation
-en;organisation.appliances.title;Appliances
-en;organisation.create.form.submit;Create organisation
-en;organisation.create.title;New organisation
-en;organisation.edit.form.submit;Update organisation
-en;organisation.edit.title;Edit organisation – {{organisation}}
-en;organisation.field.name;Name
-en;organisation.field.organisationIdentifier;Organisation identifier
-en;organisation.logins.noLogins;No logins found
-en;organisation.logins.title;Logins
-en;organisation.maintainers.title;Maintainers
-en;organisation.noOrganisations;No organisations created
-en;organisation.selectOrganisation;Select organisation
-en;organisation.users.title;Users
-en;organisation.preferences.field.language;Language
-en;organisation.preferences.field.allowResolvingEvents;Allow resolving maintenance events from the appliaction
-en;organisation.preferences.field.qrCodes;Allow downloading of QR codes
-en;organisation.preferences.submit;Save changes
-en;organisation.preferences.title;Preferences
-en;userRole.name.administrator;Administrator
-en;userRole.name.maintainer;Maintainer
-en;userRole.name.moderator;Moderator
-en;userRole.action.setUserRole;Set role
-en;submit;Submit
-en;tab.profile.account;Account
-en;tab.profile.preferences;Preferences
-en;tab.profile.security;Security
-en;tab.appliance.appliances;Appliances
-en;tab.appliance.new;New appliance
-en;tab.maintainer.maintainers;Maintainers
-en;tab.maintainer.new;New maintainer
-en;tab.organisation.details;Details
-en;tab.organisation.preferences;Preferences
-en;tab.organisation.users;Users
-en;updatedAt;Updated at
+language;key;translation;namespace
+en;error.invalidCredentials;Invalid creadentials.;backend
+en;account.action.changePassword;Change password;common
+en;account.authentication.createNewAccount;Create a new account;common
+en;account.authentication.form.submit;Authenticate;common
+en;account.authentication.title;Authenticate;common
+en;account.field.email;Email address;common
+en;account.field.firstName;First name;common
+en;account.field.id;Id;common
+en;account.field.lastName;Last name;common
+en;account.field.name;Name;common
+en;account.field.password;Password;common
+en;account.field.retypePassword;Retype password;common
+en;account.field.currentPassword;Current password;common
+en;account.field.userRole;Role;common
+en;account.registration.authenticate;I already have an account;common
+en;account.registration.form.error.invalidEmail;Invalid email address.;common
+en;account.registration.form.error.passwordsDontMatch;Passwords do not match.;common
+en;account.registration.form.submit;Register;common
+en;account.registration.form.tosLabel;I have read and accepted <1>terms of service</1>.;common
+en;account.registration.title;Create a new account;common
+en;account.preferences.submit;Save changes;common
+en;appliance.action.delete;Delete appliance;common
+en;appliance.action.downloadQR;Download QR code;common
+en;appliance.action.edit;Edit appliance;common
+en;appliance.create.form.submit;Create appliance;common
+en;appliance.create.title;New appliance;common
+en;appliance.createdAt;Created at {{createdAt}};common
+en;appliance.drawer.maintainers.title;Maintainers;common
+en;appliance.drawer.overview.numberOfAppliances;Number of appliances;common
+en;appliance.drawer.overview.operativeAppliances;Operative appliances;common
+en;appliance.drawer.overview.title;Overview;common
+en;appliance.drawer.scheduledMaintenance.title;Scheduled maintenance;common
+en;appliance.edit.form.submit;Update appliance;common
+en;appliance.edit.title;Edit appliance – {{appliance}};common
+en;appliance.event.list.title;Maintenance events;common
+en;appliance.field.description;Description;common
+en;appliance.field.id;Id;common
+en;appliance.field.location;Location;common
+en;appliance.field.name;Name;common
+en;appliance.field.status;Status;common
+en;appliance.listing.noAppliances;No appliances found;common
+en;appliance.maintainer.addMaintainer;Assign maintainer;common
+en;appliance.maintainer.noMaintainers;No maintainers to assign;common
+en;appliance.maintainer.selectMaintainer;Select maintainer to assign;common
+en;appliance.status.malfunctioning;Malfunctioning;common
+en;appliance.status.ok;OK;common
+en;appliance.updatedAt;Updated at {{updatedAt}};common
+en;cancel;Cancel;common
+en;createdAt;Created at;common
+en;general.misc.confirmTimed;Click again to confirm ({{time}});common
+en;general.misc.id;Identifier;common
+en;maintainer.action.delete;Delete maintainer;common
+en;maintainer.action.edit;Edit maintainer;common
+en;maintainer.appliance.list.title;Appliances assigned to maintainer;common
+en;maintainer.create.form.submit;Create maintainer;common
+en;maintainer.create.title;New maintainer;common
+en;maintainer.createdAt;Created at {{createdAt}};common
+en;maintainer.edit.form.submit;Update maintainer;common
+en;maintainer.edit.title;Edit maintainer – {{maintainer}};common
+en;maintainer.field.email;Email;common
+en;maintainer.field.firstName;First name;common
+en;maintainer.field.id;Id;common
+en;maintainer.field.lastName;Last name;common
+en;maintainer.field.name;Name;common
+en;maintainer.field.phone;Phone number;common
+en;maintainer.field.language;Language;common
+en;maintainer.form.error.invalidEmail;Invalid email address.;common
+en;maintainer.form.error.invalidPhone;Ivanlid phone number. Phone numbers may only contain numbers and specific characters (-+()).;common
+en;maintainer.listing.noMaintainers;No maintainers found;common
+en;maintainer.updatedAt;Updated at {{updatedAt}};common
+en;maintenanceEvent.field.assignedTo;Assigned to;common
+en;maintenanceEvent.field.createdAt;Created at;common
+en;maintenanceEvent.field.description;Description;common
+en;maintenanceEvent.field.resolvedAt;Resolved at;common
+en;maintenanceEvent.create.title;Create new;common
+en;maintenanceEvent.create.scheduled.title;Scheduled event;common
+en;maintenanceEvent.create.repetitive.title;Repetitive event;common
+en;maintenanceEvent.listing.noEvents;No maintenance events found;common
+en;navigation.item.appliances;Appliances;common
+en;navigation.item.maintainers;Maintainers;common
+en;navigation.item.organisations;Organisations;common
+en;navigation.item.profile;Profile;common
+en;navigation.user.greeting;Hello, <1>{{name}}</1>;common
+en;navigation.user.signOut;Log out;common
+en;notSet;Not set;common
+en;none;None;common
+en;organisation.account.addAccount;Add account;common
+en;organisation.account.field.email;Email address;common
+en;organisation.action.activate;Set as active;common
+en;organisation.action.create;Create a new organisation;common
+en;organisation.action.leaveOrganisation;Leave from organisation;common
+en;organisation.action.delete;Delete organisation;common
+en;organisation.action.edit;Edit organisation;common
+en;organisation.appliances.title;Appliances;common
+en;organisation.create.form.submit;Create organisation;common
+en;organisation.create.title;New organisation;common
+en;organisation.edit.form.submit;Update organisation;common
+en;organisation.edit.title;Edit organisation – {{organisation}};common
+en;organisation.field.name;Name;common
+en;organisation.field.organisationIdentifier;Organisation identifier;common
+en;organisation.logins.noLogins;No logins found;common
+en;organisation.logins.title;Logins;common
+en;organisation.maintainers.title;Maintainers;common
+en;organisation.noOrganisations;No organisations created;common
+en;organisation.selectOrganisation;Select organisation;common
+en;organisation.users.title;Users;common
+en;organisation.preferences.field.language;Language;common
+en;organisation.preferences.field.allowResolvingEvents;Allow resolving maintenance events from the appliaction;common
+en;organisation.preferences.field.qrCodes;Allow downloading of QR codes;common
+en;organisation.preferences.submit;Save changes;common
+en;organisation.preferences.title;Preferences;common
+en;userRole.name.administrator;Administrator;common
+en;userRole.name.maintainer;Maintainer;common
+en;userRole.name.moderator;Moderator;common
+en;userRole.action.setUserRole;Set role;common
+en;submit;Submit;common
+en;tab.profile.account;Account;common
+en;tab.profile.preferences;Preferences;common
+en;tab.profile.security;Security;common
+en;tab.appliance.appliances;Appliances;common
+en;tab.appliance.new;New appliance;common
+en;tab.maintainer.maintainers;Maintainers;common
+en;tab.maintainer.new;New maintainer;common
+en;tab.organisation.details;Details;common
+en;tab.organisation.preferences;Preferences;common
+en;tab.organisation.users;Users;common
+en;updatedAt;Updated at;common
