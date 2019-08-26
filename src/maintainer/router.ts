@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { map } from "ramda";
@@ -11,7 +12,7 @@ import Maintainer, { normalizeMaintainer } from "./Maintainer";
 export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Maintainer, ctx.query.eager)) {
-      return ctx.throw(400, "invalid relation expression");
+      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
     }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
@@ -49,7 +50,7 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   })
   .get("/:maintainer", async (ctx) => {
     if (!checkRelationExpression(Maintainer, ctx.query.eager)) {
-      return ctx.throw(400, "invalid relation expression");
+      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
     }
     const { maintainer } = ctx.params;
     ctx.body = normalizeMaintainer((await Maintainer

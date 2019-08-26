@@ -1,4 +1,4 @@
-import { Model, NotFoundError, snakeCaseMappers, transaction } from "objection";
+import { Model, snakeCaseMappers, transaction } from "objection";
 import { map, path } from "ramda";
 import MaintenanceTask from "./MaintenanceTask";
 
@@ -37,7 +37,7 @@ export default class MaintenanceEvent extends Model {
       .andWhere("appliance", this.appliance)
       .first();
     if (preExistingMaintenanceEvent) { // TODO: Add description to possible additional_information table
-      throw [409, "Maintenance event already created"];
+      throw { status: 409, message: "error.maintenance.event.duplicate" };
     }
   }
 
@@ -76,7 +76,7 @@ export default class MaintenanceEvent extends Model {
 
   public async assign(taskHash?: string) {
     if (typeof taskHash !== "string") {
-      throw new Error("Task hash not provided");
+      throw { status: 400, message: "error.maintenance.task.notFound" };
     }
     // should not be able assign task if it's already assigned
     if (this.assignedTo) { return false; }
@@ -94,7 +94,7 @@ export default class MaintenanceEvent extends Model {
       ) as number | undefined;
 
       if (!maintainer) {
-        throw new NotFoundError("Maintainer not found for given hash");
+        throw { status: 400, message: "error.maintainer.notFound" };
       }
 
       // delete tasks assigned to other maintainers

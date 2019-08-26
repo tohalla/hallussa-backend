@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { path } from "ramda";
@@ -54,7 +55,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
 
     if (!maintenanceEvent.assignedTo) {
-      return ctx.throw(403, "Maintenance event has not been assigned to anyone.");
+      ctx.throw(403, i18n.t("error.maintenance.event.notAssigned", {lng: ctx.headers["Accept-Language"]}));
     }
     const description = path(["request", "body", "description"], ctx) as string | undefined;
     if (description) {
@@ -78,7 +79,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
   .post("/accept", async (ctx) => {
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
     if (maintenanceEvent.assignedTo) {
-      return ctx.throw(400, "Maintenance event has already been assigned.");
+      ctx.throw(400, i18n.t("error.maintenance.event.alreadyAssigned", {lng: ctx.headers["Accept-Language"]}));
     }
     maintenanceEvent.assign(maintenanceTask.hash);
     ctx.status = 200;

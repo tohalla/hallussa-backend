@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "./node_modules/typescript/bin/tsc",
-    "start": "./node_modules/nodemon/bin/nodemon.js ./dist/src/index.js",
+    "start": "./node_modules/nodemon/bin/nodemon.js --legacy-watch ./dist/src/index.js",
     "watch": "tsc --watch",
     "migrate": "ts-node -P ./tsconfig.json node_modules/knex/bin/cli.js migrate:latest --knexfile knex.ts",
     "migrate:rollback": "ts-node -P ./tsconfig.json node_modules/knex/bin/cli.js migrate:rollback --knexfile knex.ts",
@@ -48,6 +48,7 @@
     "dotenv": "^8.0.0",
     "emotion": "^10.0.9",
     "emotion-server": "^10.0.9",
+    "i18next": "^17.0.12",
     "jsonwebtoken": "^8.3.0",
     "knex": "^0.19.1",
     "koa": "^2.5.3",

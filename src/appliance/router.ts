@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { Model } from "objection";
@@ -15,7 +16,7 @@ import Appliance, { normalizeAppliance } from "./Appliance";
 const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Appliance, ctx.query.eager)) {
-      return ctx.throw(400, "invalid relation expression");
+      ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
     }
     // organisation param already set in parent router
     const { organisation, appliance } = ctx.params;
@@ -32,7 +33,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   .patch("/", bodyParser(), async (ctx) => {
     const { appliance } = ctx.params;
     if (!ctx.state.rights.allowUpdateAppliance) {
-      return ctx.throw(403);
+      ctx.throw(403);
     }
     ctx.body = await Appliance
       .query()
@@ -43,7 +44,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   })
   .del("/", async (ctx) => {
     if (!ctx.state.rights.allowDeleteAppliance) {
-      return ctx.throw(403);
+      ctx.throw(403);
     }
     const { appliance } = ctx.params;
     await Appliance.query().deleteById(appliance);
@@ -62,7 +63,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   })
   .post("/maintainers/:maintainer", async (ctx) => {
     if (!ctx.state.rights.allowUpdateAppliance) {
-      return ctx.throw(403);
+      ctx.throw(403);
     }
     const { appliance, maintainer } = ctx.params;
 
@@ -76,7 +77,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   })
   .del("/maintainers/:maintainer", async (ctx) => {
     if (!ctx.state.rights.allowUpdateAppliance) {
-      return ctx.throw(403);
+      ctx.throw(403);
     }
     const { appliance, maintainer } = ctx.params;
 
@@ -107,7 +108,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
 export default new Router({ prefix: "/appliances" })
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Appliance, ctx.query.eager)) {
-      return ctx.throw(400, "invalid relation expression");
+      ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
     }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
@@ -121,7 +122,7 @@ export default new Router({ prefix: "/appliances" })
   })
   .post("/", bodyParser(), async (ctx) => {
     if (!ctx.state.rights.allowCreateAppliance) {
-      return ctx.throw(403);
+      ctx.throw(403);
     }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
@@ -138,7 +139,7 @@ export default new Router({ prefix: "/appliances" })
     const applianceIDs = JSON.parse(ctx.request.query.appliances);
     // should throw error if appliance ID's not passed
     if (!Array.isArray(applianceIDs) || applianceIDs.length === 0) {
-      return ctx.throw(400, "Define requested appliance");
+      ctx.throw(400, i18n.t("error.appliance.query.missingIDs"), {lng: ctx.headers["Accept-Language"]});
     }
 
     ctx.body = `<!doctype html><html><head></head><body>${

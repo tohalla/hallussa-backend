@@ -47,7 +47,7 @@ export const jwtMiddleware: Middleware = async (ctx, next) => {
   const token: string = path(["header", "authorization"], ctx) || "";
   try {
     if (!token.startsWith("Bearer")) {
-      throw new Error("provided token in wrong format");
+      throw {message: "error.misc.jwtFormat"};
     }
     ctx.state.claims = await verify(token.replace("Bearer ", ""));
   } catch (e) {

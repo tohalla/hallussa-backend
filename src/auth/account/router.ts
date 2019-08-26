@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import i18n from "i18next";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { dissoc, path, prop } from "ramda";
@@ -10,7 +11,7 @@ import Account from "./Account";
 export default new Router({prefix: "/accounts"})
   .get("/", secureRoute, async (ctx) => {
     if (!checkRelationExpression(Account, ctx.query.eager)) {
-      return ctx.throw(400, "invalid relation expression");
+      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression", {lng: ctx.headers["Accept-Language"]}));
     }
     const accountId = path(["state", "claims", "accountId"], ctx);
     ctx.body = await Account
@@ -36,9 +37,10 @@ export default new Router({prefix: "/accounts"})
         if (e.constraint === "account_email_unique") {
           ctx.throw(
             409,
-            `Account with email ${
-              path(["request", "body", "email"], ctx)
-            } already exists.`
+            i18n.t(
+              "error.account.uniqueEmail",
+              {email: path(["request", "body", "email"], ctx), lng: ctx.headers["Accept-Language"]}
+            )
           );
         }
       }
@@ -56,7 +58,7 @@ export default new Router({prefix: "/accounts"})
     const {password, currentPassword, retypePassword} = ctx.request.body as {[key: string]: string};
 
     if (typeof password !== "string" || typeof currentPassword !== "string" || password !== retypePassword) {
-      return ctx.throw(401, "Invalid request body");
+      ctx.throw(401, i18n.t("error.account.passwordsDoNotMatch", {lng: ctx.headers["Accept-Language"]}));
     }
 
     const hashed = prop("password", await Account.query().select("password").where("id", account).first());
@@ -65,6 +67,6 @@ export default new Router({prefix: "/accounts"})
       await Account.query().patch({password}).where("id", account);
       ctx.status = 200;
     } else {
-      ctx.throw(401, "Incorrect current password");
+      ctx.throw(401, i18n.t("error.account.invalidCurrentPassword", {lng: ctx.headers["Accept-Language"]}));
     }
   });

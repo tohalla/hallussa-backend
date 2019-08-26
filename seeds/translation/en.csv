@@ -1,5 +1,23 @@
 language;key;translation;namespace
-en;error.invalidCredentials;Invalid creadentials.;backend
+en;error.authentication.invalidCredentials;Account not found with provided credentials.;backend
+en;error.authentication.passwordOrEmailMissing;Password and/or email address were not provided.;backend
+en;error.account.uniqueEmail;Account with email {{email}} already exists.;backend
+en;error.account.passwordsDoNotMatch;Passwords do not match.;backend
+en;error.account.requireTOS;Terms of service have to be accepted before creating an account.;backend
+en;error.account.invalidCurrentPassword;Invalid current password.;backend
+en;error.organisation.administratorRequired;Organisation must have at least one administrator.;backend
+en;error.organisation.users.accountNotFound;Account not found with email {{email}}.;backend
+en;error.organisation.users.accountAlreadyAdded;Account already added to the organisation.;backend
+en;error.maintenance.event.notAssigned;Maintenance event has not been assigned to anyone.;backend
+en;error.maintenance.event.alreadyAssigned;Maintenance event has already been assigned.;backend
+en;error.misc.invalidRelationExpression;invalid relation expression.;backend
+en;error.appliance.notFound;Appliance not found.;backend
+en;error.maintainer.notFound;Maintainer not found.;backend
+en;error.maintenance.event.notFound;Maintenance event not found.;backend
+en;error.maintenance.event.duplicate;Maintenance event already created.;backend
+en;error.maintenance.task.notFound;Maintenance task not found.;backend
+en;error.misc.jwtFormat;Token was provided in a wrong format.;backend
+en;error.appliance.query.missingIDs;Appliance IDs not provided.;backend
 en;account.action.changePassword;Change password;common
 en;account.authentication.createNewAccount;Create a new account;common
 en;account.authentication.form.submit;Authenticate;common

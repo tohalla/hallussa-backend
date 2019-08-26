@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import i18n from "i18next";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { Model } from "objection";
@@ -13,14 +14,17 @@ export default new Router({ prefix: "/auth" })
     if (typeof accountId === "number") {
       ctx.body = await signToken(accountId);
     } else {
-      return ctx.throw(401, "Invalid credentials");
+      return ctx.throw(401, i18n.t("error.authentication.invalidCredentials", {lng: ctx.headers["Accept-Language"]}));
     }
   })
   .post("/", bodyParser(), async (ctx) => {
     const password = path(["request", "body", "password"], ctx);
     const email = path(["request", "body", "email"], ctx);
     if (typeof password !== "string" || typeof email !== "string") {
-      return ctx.throw(401, "Password and/or email not found in request");
+      return ctx.throw(
+        401,
+        i18n.t("error.authentication.passwordOrEmailMissing", {lng: ctx.headers["Accept-Language"]})
+      );
     }
 
     const result = await Model.raw(
@@ -37,6 +41,9 @@ export default new Router({ prefix: "/auth" })
     ) {
       ctx.body = await signToken(accountId);
     } else {
-      ctx.throw(404, "Account not found with provided credentials");
+      ctx.throw(
+        404,
+        i18n.t("error.authentication.invalidCredentials", {lng: ctx.get("Accept-Language")})
+      );
     }
   });

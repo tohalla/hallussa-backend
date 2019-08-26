@@ -25,7 +25,7 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@babel/runtime@^7.4.2":
+"@babel/runtime@^7.3.1", "@babel/runtime@^7.4.2":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
   integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
@@ -1753,6 +1753,13 @@ https-proxy-agent@^2.2.1:
   dependencies:
     agent-base "^4.3.0"
     debug "^3.1.0"
+
+i18next@^17.0.12:
+  version "17.0.12"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-17.0.12.tgz#d732a6c1131fc3b02305a8241eac25ec0d1cf663"
+  integrity sha512-FoYYnORcAMNznVXSpwJ1zVGL8kXcv1JUmvTqoQyuPPRncBq9rd7Mi0I/oVXkGR3YIek5dDiunvA/NGG2o+mMuw==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
 
 iconv-lite@0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"

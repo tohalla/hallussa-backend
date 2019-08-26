@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { Model } from "objection";
@@ -27,7 +28,7 @@ const ensureAdministrator: Middleware = async (ctx, next) => {
   if (allow) {
     return next();
   }
-  return ctx.throw(409, "Organisation must have at least one administrator");
+  ctx.throw(409, i18n.t("error.organisation.administratorRequired", {lng: ctx.headers["Accept-Language"]}));
 };
 
 export default new Router<RouterStateContext>({ prefix: "/users" })
@@ -70,7 +71,9 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
     if (typeof email === "string") {
       const account = await Account.query().select("id").where("email", "=", email).first();
       if (!account) {
-        return ctx.throw(400, `Account not found with email ${email}`);
+        ctx.throw(
+          404,
+          i18n.t("error.organisation.users.accountNotFound", {lng: ctx.headers["Accept-Language"], email}));
       }
       try {
         ctx.body = await OrganisationAccount.query().insert({
@@ -80,7 +83,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
         }).returning("*");
       } catch (e) {
         if (typeof e === "object" && e.constraint === "organisation_account_account_organisation_unique") {
-          return ctx.throw(409, "Account already added to the organisation");
+          ctx.throw(409, i18n.t("error.organisation.users.accountAlreadyAdded", {lng: ctx.headers["Accept-Language"]}));
         }
       }
     }

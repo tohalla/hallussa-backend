@@ -3,12 +3,15 @@ import helmet from "koa-helmet";
 
 import { jwtMiddleware } from "./auth/jwt";
 import "./database/db"; // initialize objection
+import { initializeI18n } from "./i18n";
 import router from "./router";
 import { errorHandling } from "./util/error";
 
 const app = new Koa();
 
 const {API_PORT} = process.env;
+
+initializeI18n();
 
 app
   .use(helmet()) // security headers

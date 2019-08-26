@@ -1,7 +1,8 @@
 import bcrypt from "bcryptjs";
 import { lowerCase, titleCase } from "change-case";
+import i18n from "i18next";
 import { Model, Pojo, snakeCaseMappers } from "objection";
-import { evolve, map, omit } from "ramda";
+import { omit } from "ramda";
 
 import OrganisationAccount from "../../relation-models/OrganisationAccount";
 
@@ -56,10 +57,10 @@ export default class Account extends Model {
 
   public async $beforeInsert() {
     if (this.retypePassword !== this.password) {
-      throw [400, "Passwords do not match"];
+      throw { status: 400, message: "error.account.passwordsDoNotMatch" };
     }
     if (!this.acceptTOS) {
-      throw [400, "Terms of service have to be accepted before creating an account"];
+      throw { status: 400, message: "error.account.requireTOS" };
     }
 
     delete this.acceptTOS;

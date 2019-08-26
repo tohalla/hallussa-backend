@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import { Middleware } from "koa";
 import { NotFoundError } from "objection";
 
@@ -5,15 +6,12 @@ export const errorHandling: Middleware = async (ctx, next) => {
   try {
     await next();
   } catch (e) {
-    if (e instanceof NotFoundError) {
-      ctx.status = 400;
-      ctx.body = e.message;
-    } else if (Array.isArray(e)) {
+    if (Array.isArray(e)) {
       ctx.throw(...e);
-    } else {
-      // TODO: should we log errors somewhere?
-      ctx.status = e.status || 500;
-      ctx.body = e.message;
     }
+    ctx.throw(
+      i18n.t(e.message, {defaultValue: e.message, lng: ctx.headers["Accept-Language"]}),
+      e instanceof NotFoundError ? 400 : e.status || 500
+    );
   }
 };

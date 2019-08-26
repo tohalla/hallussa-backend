@@ -1,5 +1,4 @@
 import { IParamMiddleware } from "koa-router";
-import { NotFoundError } from "objection";
 import { merge } from "ramda";
 
 import Appliance from "../appliance/Appliance";
@@ -16,7 +15,7 @@ export const secureEvent: IParamMiddleware = async (taskHash, ctx, next) => {
 
   // if task with given hash doesn't exists...
   if (typeof maintenanceTask === "undefined") {
-    throw new NotFoundError("Maintenance task not found for given hash");
+    throw { status: 400, message: "error.maintenance.task.notFound" };
   }
 
   const maintenanceEvent = await MaintenanceEvent
@@ -25,7 +24,7 @@ export const secureEvent: IParamMiddleware = async (taskHash, ctx, next) => {
     .where("id", "=", maintenanceTask.maintenanceEvent)
     .first();
   if (typeof maintenanceEvent === "undefined") {
-    throw new NotFoundError("Maintenance event not found for given hash");
+    throw { status: 400, message: "error.maintenance.event.notFound" };
   } else if (maintenanceEvent.resolvedAt) { // task has been resolved
     // TODO: task resolved page
     ctx.body = `Task has been resolved at ${maintenanceEvent.resolvedAt}`;
@@ -64,7 +63,7 @@ export const applianceFromHash = (
   }
 
   if (typeof ctx.state.appliance === "undefined") {
-    throw new NotFoundError("appliance not found with given hash");
+    throw { status: 400, message: "error.appliance.notFound" };
   } else {
     return next();
   }

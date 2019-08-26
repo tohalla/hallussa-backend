@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import bodyParser from "koa-bodyparser";
 import Router, { RouterContext } from "koa-router";
 import { concat, map, omit, path, reduce } from "ramda";
@@ -22,7 +23,7 @@ export type RouterStateContext = RouterContext<{}, {
 const organisationRouter = new Router({prefix: "/:organisation"})
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Organisation, ctx.query.eager)) {
-      return ctx.throw(400, "invalid relation expression");
+      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
     }
     ctx.body = normalizeOrganisation(await Organisation.query()
       .select()
@@ -85,7 +86,7 @@ export default new Router<RouterStateContext>({ prefix: "/organisations" })
   .use(secureRoute)
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Organisation, ctx.query.eager)) {
-      return ctx.throw(400, "invalid relation expression");
+      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
     }
     const accountID = path(["state", "claims", "accountId"], ctx);
     // TODO: Should organisations be public? if so, limit public data
