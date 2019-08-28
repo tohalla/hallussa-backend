@@ -23,7 +23,7 @@ export type RouterStateContext = RouterContext<{}, {
 const organisationRouter = new Router({prefix: "/:organisation"})
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Organisation, ctx.query.eager)) {
-      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
+      return ctx.throw(i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]}, 400);
     }
     ctx.body = normalizeOrganisation(await Organisation.query()
       .select()
@@ -51,7 +51,7 @@ const organisationRouter = new Router({prefix: "/:organisation"})
         .patch(omit(["preferences"], ctx.request.body) || {})
         .where("id", "=", ctx.params.organisation)
         .returning("*")
-        .first();
+        .first() || {};
       if (body.preferences) {
         organisation.preferences = await OrganisationPreferences
           .query(trx)
@@ -77,7 +77,7 @@ const organisationRouter = new Router({prefix: "/:organisation"})
   .use(
     ...reduce(
       (prev, curr) => concat(prev, [curr.routes(), curr.allowedMethods()]),
-      [],
+      [] as any[],
       [applianceRouter, maintainerRouter, userRoleRouter(), userRouter]
     )
   );
@@ -86,7 +86,7 @@ export default new Router<RouterStateContext>({ prefix: "/organisations" })
   .use(secureRoute)
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Organisation, ctx.query.eager)) {
-      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
+      return ctx.throw(i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]}, 400);
     }
     const accountID = path(["state", "claims", "accountId"], ctx);
     // TODO: Should organisations be public? if so, limit public data

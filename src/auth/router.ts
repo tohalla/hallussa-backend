@@ -14,7 +14,7 @@ export default new Router({ prefix: "/auth" })
     if (typeof accountId === "number") {
       ctx.body = await signToken(accountId);
     } else {
-      return ctx.throw(401, i18n.t("error.authentication.invalidCredentials", {lng: ctx.headers["Accept-Language"]}));
+      return ctx.throw(i18n.t("error.authentication.invalidCredentials", {lng: ctx.headers["Accept-Language"]}), 401);
     }
   })
   .post("/", bodyParser(), async (ctx) => {
@@ -22,8 +22,8 @@ export default new Router({ prefix: "/auth" })
     const email = path(["request", "body", "email"], ctx);
     if (typeof password !== "string" || typeof email !== "string") {
       return ctx.throw(
-        401,
-        i18n.t("error.authentication.passwordOrEmailMissing", {lng: ctx.headers["Accept-Language"]})
+        i18n.t("error.authentication.passwordOrEmailMissing", {lng: ctx.headers["Accept-Language"]}),
+        401
       );
     }
 
@@ -42,8 +42,8 @@ export default new Router({ prefix: "/auth" })
       ctx.body = await signToken(accountId);
     } else {
       ctx.throw(
-        404,
-        i18n.t("error.authentication.invalidCredentials", {lng: ctx.get("Accept-Language")})
+        i18n.t("error.authentication.invalidCredentials", {lng: ctx.get("Accept-Language")}),
+        404
       );
     }
   });

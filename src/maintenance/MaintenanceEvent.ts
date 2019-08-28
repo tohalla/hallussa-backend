@@ -1,4 +1,4 @@
-import { Model, snakeCaseMappers, transaction } from "objection";
+import { Model, QueryContext, snakeCaseMappers, transaction } from "objection";
 import { map, path } from "ramda";
 import MaintenanceTask from "./MaintenanceTask";
 
@@ -29,7 +29,7 @@ export default class MaintenanceEvent extends Model {
   public appliance?: number;
   public assignedTo?: number;
 
-  public async $beforeInsert(queryContext) {
+  public async $beforeInsert(queryContext: QueryContext) {
     const preExistingMaintenanceEvent = await MaintenanceEvent
       .query(queryContext.transaction)
       .select()
@@ -43,7 +43,7 @@ export default class MaintenanceEvent extends Model {
 
   // should create maintenance task for each maintainer assigned to the appliance
   // when new maintenance event is created
-  public async $afterInsert(queryContext) {
+  public async $afterInsert(queryContext: QueryContext) {
     // fetch list of maintainers assigned to the appliance
     const maintainers = map(
       (am) => am.maintainer,

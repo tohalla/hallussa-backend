@@ -11,7 +11,7 @@ import Account from "./Account";
 export default new Router({prefix: "/accounts"})
   .get("/", secureRoute, async (ctx) => {
     if (!checkRelationExpression(Account, ctx.query.eager)) {
-      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression", {lng: ctx.headers["Accept-Language"]}));
+      return ctx.throw(i18n.t("error.misc.invalidRelationExpression", {lng: ctx.headers["Accept-Language"]}), 400);
     }
     const accountId = path(["state", "claims", "accountId"], ctx);
     ctx.body = await Account
@@ -36,11 +36,11 @@ export default new Router({prefix: "/accounts"})
       if (typeof e === "object") {
         if (e.constraint === "account_email_unique") {
           ctx.throw(
-            409,
             i18n.t(
               "error.account.uniqueEmail",
               {email: path(["request", "body", "email"], ctx), lng: ctx.headers["Accept-Language"]}
-            )
+            ),
+            409
           );
         }
       }
@@ -58,15 +58,15 @@ export default new Router({prefix: "/accounts"})
     const {password, currentPassword, retypePassword} = ctx.request.body as {[key: string]: string};
 
     if (typeof password !== "string" || typeof currentPassword !== "string" || password !== retypePassword) {
-      ctx.throw(401, i18n.t("error.account.passwordsDoNotMatch", {lng: ctx.headers["Accept-Language"]}));
+      ctx.throw(i18n.t("error.account.passwordsDoNotMatch", {lng: ctx.headers["Accept-Language"]}), 401);
     }
 
-    const hashed = prop("password", await Account.query().select("password").where("id", account).first());
+    const hashed = prop("password", await Account.query().select("password").where("id", account).first() as Account);
 
     if (typeof hashed === "string" && (await bcrypt.compare(currentPassword, hashed))) {
       await Account.query().patch({password}).where("id", account);
       ctx.status = 200;
     } else {
-      ctx.throw(401, i18n.t("error.account.invalidCurrentPassword", {lng: ctx.headers["Accept-Language"]}));
+      ctx.throw(i18n.t("error.account.invalidCurrentPassword", {lng: ctx.headers["Accept-Language"]}), 401);
     }
   });

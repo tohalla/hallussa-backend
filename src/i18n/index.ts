@@ -6,7 +6,7 @@ import Language from "./Language";
 import Translation, { normalizeTranslations } from "./Translation";
 
 export const initializeI18n = async () => {
-  const languages = pluck("locale", await Language.query().select("locale"));
+  const languages = pluck("locale", await Language.query().select("locale")) as string[];
 
   await i18n.init({
     defaultNS: "backend",
@@ -23,7 +23,7 @@ export const initializeI18n = async () => {
 };
 
 export const fetchTranslations = async (locale: string, namespace = "common") =>
-  normalizeTranslations(await Translation
+  normalizeTranslations((await Translation
     .query()
     .select("key", "translation")
     .joinRaw(
@@ -32,4 +32,4 @@ export const fetchTranslations = async (locale: string, namespace = "common") =>
       locale
     )
     .where("namespace", namespace)
-  );
+  ) as any);

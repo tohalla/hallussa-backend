@@ -31,8 +31,8 @@ export default class Language extends Model {
     required: ["locale", "name"],
   };
 
-  public locale: string;
-  public name: string;
+  public locale?: string;
+  public name?: string;
   public languageCode?: string;
   public languageShortCode?: string;
   public translations: Readonly<Translation[]> = [];

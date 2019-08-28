@@ -1,4 +1,4 @@
-import { Model, snakeCaseMappers } from "objection";
+import { Model, ModelOptions, QueryContext, snakeCaseMappers } from "objection";
 
 export default class UserRole extends Model {
   static get columnNameMappers() {
@@ -11,9 +11,9 @@ export default class UserRole extends Model {
     return ["isShared"];
   }
 
-  public id: number;
+  public id?: number;
   public organisation?: number;
-  public name: string;
+  public name?: string;
 
   public allowCreateAppliance = false;
   public allowCreateMaintainer = false;
@@ -31,7 +31,7 @@ export default class UserRole extends Model {
     return !this.organisation;
   }
 
-  public $beforeUpdate(opt, queryContext) {
+  public $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
     delete this.id; // should not update id field
     delete this.organisation; // should not update organisation field
   }

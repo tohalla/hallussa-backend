@@ -19,14 +19,15 @@ export default class Translation extends Model {
     required: ["key", "translation", "language"],
   };
 
-  public key: string;
-  public translation: string;
-  public language: string;
+  public key?: string;
+  public translation?: string;
+  public language?: string;
 }
 
 interface NestedTranslation {
   [key: string]: NestedTranslation | string;
 }
 
-export const normalizeTranslations = reduce<Translation, NestedTranslation>((acc, {key, translation}) =>
-  assocPath<string, NestedTranslation>(key.split("."), translation, acc), {});
+export const normalizeTranslations = reduce<Required<Pick<Translation, "key" | "translation">>, NestedTranslation>(
+  (acc, {key, translation}) => assocPath<string, NestedTranslation>(key.split("."), translation, acc), {}
+);

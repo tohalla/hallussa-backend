@@ -38,7 +38,7 @@ export const secureOrganisation: Middleware = async (
       }
     );
     if (result.rows.length > 0) {
-      ctx.state.rights = formatObjectKeys(path(["rows", 0], result));
+      ctx.state.rights = formatObjectKeys(path(["rows", 0], result) || {});
       return next();
     }
   }

@@ -28,7 +28,7 @@ const ensureAdministrator: Middleware = async (ctx, next) => {
   if (allow) {
     return next();
   }
-  ctx.throw(409, i18n.t("error.organisation.administratorRequired", {lng: ctx.headers["Accept-Language"]}));
+  ctx.throw(i18n.t("error.organisation.administratorRequired", {lng: ctx.headers["Accept-Language"]}), 409);
 };
 
 export default new Router<RouterStateContext>({ prefix: "/users" })
@@ -71,9 +71,10 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
     if (typeof email === "string") {
       const account = await Account.query().select("id").where("email", "=", email).first();
       if (!account) {
-        ctx.throw(
-          404,
-          i18n.t("error.organisation.users.accountNotFound", {lng: ctx.headers["Accept-Language"], email}));
+        return ctx.throw(
+          i18n.t("error.organisation.users.accountNotFound", {lng: ctx.headers["Accept-Language"], email}),
+          404
+        );
       }
       try {
         ctx.body = await OrganisationAccount.query().insert({
@@ -83,7 +84,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
         }).returning("*");
       } catch (e) {
         if (typeof e === "object" && e.constraint === "organisation_account_account_organisation_unique") {
-          ctx.throw(409, i18n.t("error.organisation.users.accountAlreadyAdded", {lng: ctx.headers["Accept-Language"]}));
+          ctx.throw(i18n.t("error.organisation.users.accountAlreadyAdded", {lng: ctx.headers["Accept-Language"]}), 409);
         }
       }
     }

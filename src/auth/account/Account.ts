@@ -33,7 +33,6 @@ export default class Account extends Model {
       firstName: {type: "string", minLength: 1, maxLength: 64},
       lastName: {type: "string", minLength: 1, maxLength: 64},
       password: {type: "string", minLength: 6},
-      // validation of the email address is done at the client side, after which the confirmation email is sent
     },
     required: ["firstName", "lastName", "password", "email"],
   };
@@ -66,16 +65,16 @@ export default class Account extends Model {
     delete this.acceptTOS;
     delete this.retypePassword; // column does not exists in database
     this.password = await hashPassword(this.password as string); // password required and validated by json schema
-    this.firstName = titleCase(this.firstName);
-    this.lastName = titleCase(this.lastName);
-    this.email = lowerCase(this.email);
+    this.firstName = this.firstName && titleCase(this.firstName);
+    this.lastName = this.lastName && titleCase(this.lastName);
+    this.email = this.email && lowerCase(this.email);
   }
 
   public async $beforeUpdate() {
     delete this.id; // should not update id field
     delete this.retypePassword; // column does not exists in database
     delete this.createdAt; // should not update createdAt field
-    delete this.email; // TODO: send email confirmation if email update was requested
+    delete this.email;
 
     if (this.password)  {
       this.password = await hashPassword(this.password);

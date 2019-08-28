@@ -16,7 +16,7 @@ import Appliance, { normalizeAppliance } from "./Appliance";
 const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Appliance, ctx.query.eager)) {
-      ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
+      ctx.throw(i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]}, 400);
     }
     // organisation param already set in parent router
     const { organisation, appliance } = ctx.params;
@@ -108,7 +108,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
 export default new Router({ prefix: "/appliances" })
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Appliance, ctx.query.eager)) {
-      ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
+      ctx.throw(i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]}, 400);
     }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
@@ -139,7 +139,7 @@ export default new Router({ prefix: "/appliances" })
     const applianceIDs = JSON.parse(ctx.request.query.appliances);
     // should throw error if appliance ID's not passed
     if (!Array.isArray(applianceIDs) || applianceIDs.length === 0) {
-      ctx.throw(400, i18n.t("error.appliance.query.missingIDs"), {lng: ctx.headers["Accept-Language"]});
+      ctx.throw(i18n.t("error.appliance.query.missingIDs"), {lng: ctx.headers["Accept-Language"]}, 400);
     }
 
     ctx.body = `<!doctype html><html><head></head><body>${

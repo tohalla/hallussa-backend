@@ -12,7 +12,7 @@ import Maintainer, { normalizeMaintainer } from "./Maintainer";
 export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   .get("/", async (ctx) => {
     if (!checkRelationExpression(Maintainer, ctx.query.eager)) {
-      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
+      return ctx.throw(i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]}, 400);
     }
     // organisation param already set in parent router
     const { organisation } = ctx.params;
@@ -50,7 +50,7 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
   })
   .get("/:maintainer", async (ctx) => {
     if (!checkRelationExpression(Maintainer, ctx.query.eager)) {
-      return ctx.throw(400, i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]});
+      return ctx.throw(i18n.t("error.misc.invalidRelationExpression"), {lng: ctx.headers["Accept-Language"]}, 400);
     }
     const { maintainer } = ctx.params;
     ctx.body = normalizeMaintainer((await Maintainer

@@ -55,7 +55,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
 
     if (!maintenanceEvent.assignedTo) {
-      ctx.throw(403, i18n.t("error.maintenance.event.notAssigned", {lng: ctx.headers["Accept-Language"]}));
+      ctx.throw(i18n.t("error.maintenance.event.notAssigned", {lng: ctx.headers["Accept-Language"]}), 403);
     }
     const description = path(["request", "body", "description"], ctx) as string | undefined;
     await Promise.all([
@@ -79,7 +79,7 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
   .post("/accept", async (ctx) => {
     const {maintenanceEvent, maintenanceTask} = ctx.state as MaintenanceState;
     if (maintenanceEvent.assignedTo) {
-      ctx.throw(400, i18n.t("error.maintenance.event.alreadyAssigned", {lng: ctx.headers["Accept-Language"]}));
+      ctx.throw(i18n.t("error.maintenance.event.alreadyAssigned", {lng: ctx.headers["Accept-Language"]}), 400);
     }
     maintenanceEvent.assign(maintenanceTask.hash);
     ctx.status = 200;

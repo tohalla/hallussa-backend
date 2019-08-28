@@ -4,6 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "preserveConstEnums": true,
     "removeComments": true,
+    "strict": true,
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
