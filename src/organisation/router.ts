@@ -124,7 +124,7 @@ export default new Router<RouterStateContext>({ prefix: "/organisations" })
       await trx.commit();
       ctx.body = {
         ...organisation,
-        accounts: [{id: accountId, userRole: 1}],
+        accounts: [{account: accountId, userRole: 1}],
       };
       ctx.status = 201;
     } catch (e) {
