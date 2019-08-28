@@ -1,7 +1,10 @@
+import { send } from "@sendgrid/mail";
 import { Model, snakeCaseMappers } from "objection";
-import { path } from "ramda";
+import { omit, path } from "ramda";
 
-import { RequestParams, sendRepairRequestEmail } from "../emails/request";
+import { apiURL } from "../config";
+import { sender } from "../email";
+import { getTemplateIDByLanguage } from "../email/templates";
 
 export default class MaintenanceTask extends Model {
   static get columnNameMappers() {
@@ -39,11 +42,13 @@ export default class MaintenanceTask extends Model {
   }
 
   public async $afterInsert() {
-    const data = path<RequestParams>(["rows", 0], await Model.raw(`
+    const data = path<any>(["rows", 0], await Model.raw(`
       SELECT
-        organisation.id as org_id, organisation.name as org_name,
-        appliance.name as app_name, appliance.description as app_description, appliance.hash as app_hash,
+        organisation.id as organisation_id, organisation.name as organisation_name,
+        appliance.name as appliance_name, appliance.description as appliance_description,
+        appliance.hash as appliance_hash,
         maintainer.email as email, maintainer.first_name as first_name, maintainer.last_name as last_name,
+        COALESCE(maintainer.language, organisation.language) as language,
         maintenance_event.description as event_description, maintenance_event.created_at as created_at
       FROM maintenance_task
         JOIN maintainer ON maintainer.id = maintenance_task.maintainer
@@ -53,10 +58,15 @@ export default class MaintenanceTask extends Model {
       WHERE maintenance_task.hash=?::uuid`, this.hash as string)
     );
 
-    if (data) {
-      sendRepairRequestEmail({
-        ...data,
-        ["task_hash"]: this.hash as string,
+    if (typeof data === "object") {
+      send({
+        dynamicTemplateData: {
+          ...omit(["language", "appliance_hash", "email"], data),
+          ["maintenance_url"]: `${apiURL}/maintenance/${data.appliance_hash}/${this.hash}`,
+        },
+        from: sender.noReply,
+        templateId: getTemplateIDByLanguage(data.language, "repairRequest"),
+        to: data.email,
       });
     }
   }

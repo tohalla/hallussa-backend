@@ -68,7 +68,7 @@ export default class Appliance extends Model {
   }
 }
 
-// normalizes maintainer
+// normalizes appliance
 export const normalizeAppliance = (appliance: Appliance | undefined) =>
  appliance && evolve({
    maintainers: map(prop("maintainer")),

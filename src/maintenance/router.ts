@@ -58,13 +58,13 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
       ctx.throw(403, i18n.t("error.maintenance.event.notAssigned", {lng: ctx.headers["Accept-Language"]}));
     }
     const description = path(["request", "body", "description"], ctx) as string | undefined;
-    if (description) {
-      await MaintenanceTask.query().patch({description}).where("hash", maintenanceTask.hash);
-      await MaintenanceEvent
+    await Promise.all([
+      MaintenanceTask.query().patch({description}).where("hash", maintenanceTask.hash),
+      MaintenanceEvent
         .query()
         .patch({ resolvedAt: new Date().toISOString() })
-        .where("id", maintenanceTask.maintenanceEvent);
-    }
+        .where("id", maintenanceTask.maintenanceEvent),
+    ]);
     // TODO infopage
     ctx.body = Resolve(
       {
