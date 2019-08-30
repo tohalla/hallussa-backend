@@ -41,7 +41,7 @@ export const indicator = {
 };
 
 export const colors: {
-  [key: string]: { [key in ColorAccents]?: string } | string | string[];
+  [key: string]: { [key in ColorAccents]?: string } | string | string[];
 } = {
   accent,
   greyscale,

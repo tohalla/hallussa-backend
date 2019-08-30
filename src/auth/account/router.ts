@@ -50,11 +50,11 @@ export default new Router({prefix: "/accounts"})
   .use(secureRoute)
   .patch("/:account", bodyParser(), async (ctx) => {
     ctx.body = await Account.query().patch(
-      dissoc("password", ctx.request.body || {}) // use separate route for updating password
+      dissoc("password", ctx.request.body || {}) // use separate route for updating password
     ).returning("*").first();
   })
   .put("/:account/password", bodyParser(), async (ctx) => {
-    const {account} = ctx.params;
+    const {account} = ctx.params;
     const {password, currentPassword, retypePassword} = ctx.request.body as {[key: string]: string};
 
     if (typeof password !== "string" || typeof currentPassword !== "string" || password !== retypePassword) {

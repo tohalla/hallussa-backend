@@ -1,6 +1,10 @@
 import jwt from "jsonwebtoken";
-import { Context, Middleware } from "koa";
+import { Middleware } from "koa";
 import { path } from "ramda";
+
+if (!process.env.JWT_SECRET) {
+  throw Error("define JWT_SECRET environment variable");
+}
 
 export interface JWTPayload {
   // iss: string; // issuer
@@ -30,14 +34,11 @@ export const signToken = (accountId: number) => new Promise((resolve, reject) =>
   );
 });
 
-export const verify = (token: string) => new Promise<JWTPayload>((resolve, reject) => {
-  if (!process.env.JWT_SECRET) {
-    return reject(new Error("define JWT_SECRET environment variable"));
-  }
-  jwt.verify(token, process.env.JWT_SECRET, (err, payload) =>
+export const verifyToken = (token: string) => new Promise<JWTPayload>((resolve, reject) =>
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, payload) =>
     err ? reject(err) : resolve(payload as JWTPayload)
-  );
-});
+  )
+);
 
 /**
  *  validated token passed in authorization header.
@@ -49,7 +50,7 @@ export const jwtMiddleware: Middleware = async (ctx, next) => {
     if (!token.startsWith("Bearer")) {
       throw {message: "error.misc.jwtFormat"};
     }
-    ctx.state.claims = await verify(token.replace("Bearer ", ""));
+    ctx.state.claims = await verifyToken(token.replace("Bearer ", ""));
   } catch (e) {
     ctx.state.claims = undefined;
   }

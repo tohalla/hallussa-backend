@@ -43,7 +43,7 @@ export default new Router<RouterStateContext>({ prefix: "/maintainers" })
     const { maintainer } = ctx.params;
     ctx.body = await Maintainer
       .query()
-      .patch(ctx.request.body || {})
+      .patch(ctx.request.body || {})
       .where("id", "=", maintainer)
       .returning("*")
       .first();

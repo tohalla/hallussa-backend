@@ -25,7 +25,7 @@ export default class Translation extends Model {
 }
 
 interface NestedTranslation {
-  [key: string]: NestedTranslation | string;
+  [key: string]: NestedTranslation | string;
 }
 
 export const normalizeTranslations = reduce<Required<Pick<Translation, "key" | "translation">>, NestedTranslation>(

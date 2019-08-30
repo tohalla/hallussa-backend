@@ -54,7 +54,7 @@ export default class Account extends Model {
     return omit(["password", "updatedAt", "createdAt"], super.$formatJson(json));
   }
 
-  public async $beforeInsert() {
+  public async $beforeInsert() {
     if (this.retypePassword !== this.password) {
       throw { status: 400, message: "error.account.passwordsDoNotMatch" };
     }
@@ -70,7 +70,7 @@ export default class Account extends Model {
     this.email = this.email && lowerCase(this.email);
   }
 
-  public async $beforeUpdate() {
+  public async $beforeUpdate() {
     delete this.id; // should not update id field
     delete this.retypePassword; // column does not exists in database
     delete this.createdAt; // should not update createdAt field
@@ -91,6 +91,6 @@ export default class Account extends Model {
 
 // hash and salt plain text password
 export const hashPassword = async (password: string): Promise<string> => bcrypt.hash(
-  password || "", // objection validates according to provided json schema
+  password || "", // objection validates according to provided json schema
   await bcrypt.genSalt(10)
 );

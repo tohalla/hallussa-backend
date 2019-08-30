@@ -37,7 +37,7 @@ const applianceRouter = new Router<RouterStateContext>({ prefix: "/:appliance"})
     }
     ctx.body = await Appliance
       .query()
-      .patch(ctx.request.body || {})
+      .patch(ctx.request.body || {})
       .where("id", "=", appliance)
       .returning("*")
       .first();

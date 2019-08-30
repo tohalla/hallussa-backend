@@ -1,11 +1,14 @@
+import http from "http";
 import Koa from "koa";
 import helmet from "koa-helmet";
+import socketIO from "socket.io";
 
 import { jwtMiddleware } from "./auth/jwt";
 import "./database/db"; // initialize objection
 import { initializeSG } from "./email";
 import { initializeI18n } from "./i18n";
 import router from "./router";
+import { wsAuth } from "./socketIO";
 import { errorHandling } from "./util/error";
 
 const app = new Koa();
@@ -33,3 +36,5 @@ app
   .use(router.routes())
   .use(router.allowedMethods())
   .listen(API_PORT);
+
+export const io = socketIO(http.createServer(app.callback())).use(wsAuth);

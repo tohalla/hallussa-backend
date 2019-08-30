@@ -53,7 +53,7 @@ export const link = css`
   flex: 0;
   white-space: nowrap;
 
-  &:hover {
+  &:hover {
     color: ${text.dark};
   }
 

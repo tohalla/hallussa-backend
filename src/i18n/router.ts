@@ -8,7 +8,7 @@ export default new Router({ prefix: "/i18n" })
   })
   .get("/languages/:locale", async (ctx) => {
     const locale = ctx.params.locale;
-    const {ns = "common"} = ctx.query;
+    const {ns = "common"} = ctx.query;
 
     ctx.body = await fetchTranslations(locale,  ns);
   });

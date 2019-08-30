@@ -48,7 +48,7 @@ const organisationRouter = new Router({prefix: "/:organisation"})
       const body = ctx.request.body as Partial<Omit<Organisation, keyof Model>>;
       organisation = await Organisation
         .query(trx)
-        .patch(omit(["preferences"], ctx.request.body) || {})
+        .patch(omit(["preferences"], ctx.request.body) || {})
         .where("id", "=", ctx.params.organisation)
         .returning("*")
         .first() || {};

@@ -91,7 +91,7 @@ export default new Router<RouterStateContext>({ prefix: "/users" })
   })
   .put("/accounts/:account", ensureAdministrator, bodyParser(), async (ctx) => {
     const { organisation, account } = ctx.params;
-    const { userRole } = (ctx.request.body || {}) as InvitationPayload;
+    const { userRole } = (ctx.request.body || {}) as InvitationPayload;
     ctx.body = await OrganisationAccount.query()
       .update({userRole})
       .where("organisation", "=", organisation)
