@@ -10,4 +10,4 @@ export const cdnURL = `${PROTOCOL}://${BASE_URL}${
 
 export const wsURL = `${PROTOCOL === "http" ? "ws" : "wss"}://${BASE_URL}${
   API_PORT === "443" || API_PORT === "80" ? "" : `:${API_PORT}`
-}${WS_PREFIX}`;
+}`;

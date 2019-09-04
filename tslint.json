@@ -10,6 +10,7 @@
     "interface-name": [true, "never-prefix"],
     "no-submodule-imports": false,
     "no-implicit-dependencies": false,
+    "no-object-literal-type-assertion": [true, {"allow-arguments": true}],
     "trailing-comma": [
       true,
       {
