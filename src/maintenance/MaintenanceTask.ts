@@ -12,6 +12,7 @@ export default class MaintenanceTask extends Model {
   }
 
   public static tableName = "maintenance_task";
+  public static idColumn = "hash";
 
   public static jsonSchema = {
     type: "object",
