@@ -1,6 +1,8 @@
 import http from "http";
-import socketIO, { ServerOptions, Socket } from "socket.io";
+import { path } from "ramda";
+import io, { ServerOptions, Socket } from "socket.io";
 
+import { Model } from "objection";
 import { verifyToken } from "../auth/jwt";
 
 export type WSMiddleware = (socket: Socket & {[k: string]: any}, next: (err?: any) => void) => void;
@@ -22,7 +24,7 @@ const wsAuth: WSMiddleware = async (socket, next) => {
 
       socket.accountId = accountId; // link account to the socket
 
-      next();
+      return next();
     } catch (e) {
       return next(Error(e));
     }
@@ -30,7 +32,47 @@ const wsAuth: WSMiddleware = async (socket, next) => {
   return next(Error("Authentication error."));
 };
 
-export default (server: http.Server) => socketIO(server, {
-  handlePreflightRequest,
-  path: process.env.WS_PREFIX,
-} as ServerOptions).use(wsAuth);
+let socketIO: undefined | io.Server;
+
+export const initializeSocketIO = (server: http.Server) => {
+  socketIO = io(server, {
+    handlePreflightRequest,
+    path: process.env.WS_PREFIX,
+  } as ServerOptions);
+  socketIO
+    .use(wsAuth)
+    .on("connection", (socket: Socket & {[k: string]: any}) => {
+      socket.on("organisation", async (organisation) => {
+        // Check that account is a member of the requested organisation
+        if (path(
+          ["rows", 0, "exists"],
+          await Model.raw(
+            `SELECT EXISTS(
+              SELECT 1 FROM organisation_account where account = ?::integer AND organisation = ?::integer
+            )`,
+            socket.accountId,
+            organisation
+          )
+        )) {
+          socket.join(`/org/${organisation}`);
+        }
+      });
+    });
+};
+
+export const emitTo = (
+  organisation: number,
+  event: "maintenanceEvent" | "maintenanceTask" | "message",
+  ...args: any
+) => {
+  if (socketIO) {
+    return socketIO
+      .to(`/org/${organisation}`)
+      .emit(event, ...args);
+  }
+  return false;
+};
+
+export const sendTo = (organisation: number, ...args: any) => emitTo(organisation, "message", ...args);
+
+export default socketIO;

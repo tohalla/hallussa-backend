@@ -7,7 +7,7 @@ import "./database/db"; // initialize objection
 import { initializeSG } from "./email";
 import { initializeI18n } from "./i18n";
 import router from "./router";
-import socketIO from "./socketIO";
+import { initializeSocketIO } from "./socketIO";
 import { errorHandling } from "./util/error";
 
 const {API_PORT} = process.env;
@@ -35,6 +35,6 @@ const app = new Koa()
 
 const server = http.createServer(app.callback());
 
-socketIO(server);
+initializeSocketIO(server);
 
 server.listen(API_PORT);

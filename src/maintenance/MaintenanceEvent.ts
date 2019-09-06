@@ -1,5 +1,6 @@
 import { Model, QueryContext, snakeCaseMappers, transaction } from "objection";
 import { map, path } from "ramda";
+import { emitTo } from "../socketIO";
 import MaintenanceTask from "./MaintenanceTask";
 
 export default class MaintenanceEvent extends Model {
@@ -37,9 +38,13 @@ export default class MaintenanceEvent extends Model {
       .whereNull("resolved_at")
       .andWhere("appliance", this.appliance)
       .first();
+
     if (preExistingMaintenanceEvent) { // TODO: Add description to possible additional_information table
       throw { status: 409, message: "error.maintenance.event.duplicate" };
     }
+
+    // update createdAt for current instance
+    this.createdAt = new Date().toISOString();
   }
 
   // should create maintenance task for each maintainer assigned to the appliance
@@ -54,8 +59,11 @@ export default class MaintenanceEvent extends Model {
       )).rows
     );
 
+    // update to subscribed clients
+    emitTo(this.organisation as number, "maintenanceEvent", this.toJSON());
+
+    // create task for maintainers
     if (maintainers.length > 0) {
-      // create task for maintainers
       await MaintenanceTask
         .query(queryContext.transaction)
         .insert(
