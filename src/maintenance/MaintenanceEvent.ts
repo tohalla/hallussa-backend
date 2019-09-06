@@ -1,7 +1,7 @@
-import { Model, QueryContext, snakeCaseMappers, transaction } from "objection";
+import { Model, ModelOptions, QueryContext, snakeCaseMappers, transaction } from "objection";
 import { map, path } from "ramda";
 import ApplianceStatus from "../appliance/ApplianceStatus";
-import socketIO, { emitTo, hasClients } from "../socketIO";
+import { emitTo, hasClients } from "../socketIO";
 import MaintenanceTask from "./MaintenanceTask";
 
 export default class MaintenanceEvent extends Model {
@@ -92,6 +92,21 @@ export default class MaintenanceEvent extends Model {
     this.updatedAt = new Date().toISOString();
   }
 
+  public async $afterUpdate(opt: ModelOptions) {
+    if (opt.old instanceof MaintenanceEvent && hasClients(this.organisation as number)) {
+      // update new event to subscribed clients
+      emitTo(opt.old.organisation as number, "maintenanceEvent", {...opt.old.toJSON(), ...this.toJSON()});
+      // update appliance status if necessary to subscribed clients
+      if (opt.old.resolvedAt !== this.resolvedAt) {
+        emitTo(
+          opt.old.organisation as number,
+          "applianceStatus",
+          await ApplianceStatus.query().where("appliance", opt.old.appliance).first()
+        );
+      }
+    }
+  }
+
   public async assign(taskHash?: string) {
     if (typeof taskHash !== "string") {
       throw { status: 400, message: "error.maintenance.task.notFound" };
@@ -123,7 +138,7 @@ export default class MaintenanceEvent extends Model {
         .andWhere("maintenance_event", "=", this.id);
 
       // set selected maintainer responsible of the maintenance
-      await MaintenanceEvent.query(trx).patch({
+      await this.$query<MaintenanceEvent>(trx).patch({
         assignedTo: maintainer,
       });
 

@@ -59,9 +59,8 @@ const taskRouter = new Router({ prefix: "/:taskHash" })
     }
     const description = path(["request", "body", "description"], ctx) as string | undefined;
     await Promise.all([
-      MaintenanceTask.query().patch({description}).where("hash", maintenanceTask.hash),
-      MaintenanceEvent
-        .query()
+      maintenanceTask.$query().patch({description}).where("hash", maintenanceTask.hash),
+      maintenanceEvent.$query()
         .patch({ resolvedAt: new Date().toISOString() })
         .where("id", maintenanceTask.maintenanceEvent),
     ]);
