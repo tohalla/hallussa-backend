@@ -62,7 +62,7 @@ export const initializeSocketIO = (server: http.Server) => {
 
 export const emitTo = (
   organisation: number,
-  event: "maintenanceEvent" | "maintenanceTask" | "message",
+  event: string,
   ...args: any
 ) => {
   if (socketIO) {
@@ -72,6 +72,9 @@ export const emitTo = (
   }
   return false;
 };
+
+export const hasClients = (organisation: number) =>
+  socketIO && socketIO.in(`/org/${organisation}`).clients.length > 0;
 
 export const sendTo = (organisation: number, ...args: any) => emitTo(organisation, "message", ...args);
 

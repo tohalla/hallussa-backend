@@ -1,6 +1,7 @@
 import { Model, QueryContext, snakeCaseMappers, transaction } from "objection";
 import { map, path } from "ramda";
-import { emitTo } from "../socketIO";
+import ApplianceStatus from "../appliance/ApplianceStatus";
+import socketIO, { emitTo, hasClients } from "../socketIO";
 import MaintenanceTask from "./MaintenanceTask";
 
 export default class MaintenanceEvent extends Model {
@@ -59,8 +60,16 @@ export default class MaintenanceEvent extends Model {
       )).rows
     );
 
-    // update to subscribed clients
-    emitTo(this.organisation as number, "maintenanceEvent", this.toJSON());
+    if (hasClients(this.organisation as number)) {
+      // update new event to subscribed clients
+      emitTo(this.organisation as number, "maintenanceEvent", this.toJSON());
+      // update appliance status to subscribed clients
+      emitTo(
+        this.organisation as number,
+        "applianceStatus",
+        await ApplianceStatus.query().where("appliance", this.appliance).first()
+      );
+    }
 
     // create task for maintainers
     if (maintainers.length > 0) {
