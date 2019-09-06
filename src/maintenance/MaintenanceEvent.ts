@@ -27,6 +27,7 @@ export default class MaintenanceEvent extends Model {
   public resolvedAt?: string;
   public description?: string;
   public appliance?: number;
+  public organisation?: number;
   public assignedTo?: number;
 
   public async $beforeInsert(queryContext: QueryContext) {

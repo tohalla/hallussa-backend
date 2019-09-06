@@ -120,6 +120,7 @@ export default new Router({ prefix: "/maintenance/:applianceHash" })
     await MaintenanceEvent.query().insert({
       appliance: appliance.id,
       description,
+      organisation: appliance.organisation,
     });
 
     if (subscribe) {
