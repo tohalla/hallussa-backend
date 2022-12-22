@@ -50,7 +50,7 @@
     "emotion": "^10.0.9",
     "emotion-server": "^10.0.9",
     "i18next": "^17.0.12",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^9.0.0",
     "knex": "^0.19.1",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
